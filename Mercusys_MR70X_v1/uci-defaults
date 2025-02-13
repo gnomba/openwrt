@@ -1,0 +1,77 @@
+### uci-defaults ###
+
+uci -q batch << EOI
+# system #
+set system.@system[0].hostname='MercusysMR70Xv1'
+set system.@system[0].timezone='MSK-3'
+set system.@system[0].log_size='64'
+set system.@system[0].zonename='Europe/Moscow'
+set system.@system[0].zram_comp_algo='lz4'
+set system.ntp.server='3.ru.pool.ntp.org 2.ru.pool.ntp.org 1.ru.pool.ntp.org 0.ru.pool.ntp.org'
+add system led
+set system.@led[0].name='wan-on'
+set system.@led[0].sysfs='green:power'
+set system.@led[0].trigger='netdev'
+set system.@led[0].dev='wan'
+set system.@led[0].mode='link'
+commit system
+
+# wireless #
+# 2.4GHz #
+set wireless.radio0.disabled='0'
+set wireless.radio0.country='RU'
+set wireless.radio0.channel='auto'
+set wireless.radio0.band='2g'
+set wireless.radio0.htmode='HE40'
+set wireless.default_radio0.device='radio0'
+set wireless.default_radio0.network='lan'
+set wireless.default_radio0.ssid='MERCUSYS_2'
+set wireless.default_radio0.mode='ap'
+set wireless.default_radio0.encryption='psk-mixed'
+set wireless.default_radio0.key='2-MERCUSYS'
+# 5GHz #
+set wireless.radio1.disabled='0'
+set wireless.radio1.country='RU'
+set wireless.radio1.channel='auto'
+set wireless.radio1.band='5g'
+set wireless.radio1.htmode='HE80'
+set wireless.default_radio1.device='radio1'
+set wireless.default_radio1.network='lan'
+set wireless.default_radio1.ssid='MERCUSYS_5'
+set wireless.default_radio1.mode='ap'
+set wireless.default_radio1.encryption='psk-mixed'
+set wireless.default_radio1.key='5-MERCUSYS'
+
+#-- START temp settings --#
+add wireless wifi-iface
+set wireless.@wifi-iface[-1].device='radio1'
+set wireless.@wifi-iface[-1].network='wan'
+set wireless.@wifi-iface[-1].mode='sta'
+set wireless.@wifi-iface[-1].ssid='<ssid-name>'
+set wireless.@wifi-iface[-1].encryption='<encryption-type>'
+set wireless.@wifi-iface[-1].key='<password>'
+set wireless.@wifi-iface[-1].disabled='0'
+#-- END temp settings --#
+commit wireless
+
+# network #
+#set network.lan.ipaddr='192.168.1.1'
+#set network.lan.netmask='255.255.255.0'
+#-- START temp settings --#
+set network.lan.ipaddr='192.168.2.1'
+set network.lan.netmask='255.255.255.0'
+set network.wan.device='phy1-sta0'
+set network.wan.proto='dhcp'
+#-- END temp settings --#
+commit network
+
+# adblock #
+set adblock.global.adb_trigger='wan'
+commit adblock
+
+# firewall #
+#rename firewall.@zone[0]='lan'
+#rename firewall.@zone[1]='wan'
+#rename firewall.@forwarding[0]='lan_wan'
+#commit firewall
+EOI
