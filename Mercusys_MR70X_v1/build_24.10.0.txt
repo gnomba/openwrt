@@ -201,6 +201,7 @@ libreadline8
 librrd1
 librt
 libsensors5
+libspeedtestcpp
 libss2
 libstdcpp6
 libsysfs2
@@ -284,6 +285,7 @@ rpcd-mod-rrdns
 rpcd-mod-rpcsys
 rpcd-mod-ucode
 rrdtool1
+speedtestcpp
 sysfsutils
 tc-tiny
 terminfo
