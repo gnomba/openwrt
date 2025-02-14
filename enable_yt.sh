@@ -15,38 +15,68 @@ echo "${vURL}/${vFILE}"
 echo "${vURL}/${vFILELUCI}"
 opkg install ${vURL}/${vFILE}
 opkg install ${vURL}/${vFILELUCI}
+
+vCURL="$(which curl) -s"
+## TODO vFILTER : grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"
+
 uci set youtubeUnblock.@section[0].all_domains='0'
 uci set youtubeUnblock.@section[0].quic_drop='1'
-uci set youtubeUnblock.@section[0].sni_domains='googlevideo.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='ggpht.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='ytimg.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='youtube.com'
+
+#- google -#
+vGOOGLE=""
+uci set youtubeUnblock.@section[0].sni_domains='googleapis.com'
 uci add_list youtubeUnblock.@section[0].sni_domains='play.google.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='youtu.be'
-uci add_list youtubeUnblock.@section[0].sni_domains='googleapis.com'
 uci add_list youtubeUnblock.@section[0].sni_domains='googleusercontent.com'
 uci add_list youtubeUnblock.@section[0].sni_domains='gstatic.com'
 uci add_list youtubeUnblock.@section[0].sni_domains='l.google.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='yt.be'
 uci add_list youtubeUnblock.@section[0].sni_domains='gvt1.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='youtube-nocookie.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='youtube-ui.l.google.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='youtubeembeddedplayer.googleapis.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='youtube.googleapis.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='youtubei.googleapis.com'
 uci add_list youtubeUnblock.@section[0].sni_domains='yt-video-upload.l.google.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='wide-youtube.l.google.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='discord.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='discordapp.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='discord.gg'
-uci add_list youtubeUnblock.@section[0].sni_domains='discordapp.net'
-uci add_list youtubeUnblock.@section[0].sni_domains='discord.media'
+
+#- youtube -#
+vYOUTUBE="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data/youtube"
+for vYT_ITEM in $(${vCURL} ${vYOUTUBE} | grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
+    uci add_list youtubeUnblock.@section[0].sni_domains=${vYT_ITEM}
+done
+
+#- discord -#
+vDISCORD="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data/discord"
+for vDS_ITEM in $(${vCURL} ${vDISCORD} | grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
+    uci add_list youtubeUnblock.@section[0].sni_domains=${vDS_ITEM}
+done
+
+#- facebook -#
+vFACEBOOK="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data/facebook"
+uci add_list youtubeUnblock.@section[0].sni_domains='meta.ai'
+uci add_list youtubeUnblock.@section[0].sni_domains='meta.com'
+for vFB_ITEM in $(${vCURL} ${vFACEBOOK} | grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
+    uci add_list youtubeUnblock.@section[0].sni_domains=${vFB_ITEM}
+done
+
+#- instagram -#
+vINSTAGRAM="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data/instagram"
+for vIN_ITEM in $(${vCURL} ${vINSTAGRAM} | grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
+    uci add_list youtubeUnblock.@section[0].sni_domains=${vIN_ITEM}
+done
+
+#- whatsapp  -#
+vWHATSAPP="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data/whatsapp"
+for vWT_ITEM in $(${vCURL} ${vWHATSAPP} | grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
+    uci add_list youtubeUnblock.@section[0].sni_domains=${vWT_ITEM}
+done
+
+#- twitter -#
+vTWITTER="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data/twitter"
+for vTW_ITEM in $(${vCURL} ${vTWITTER} | grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
+    uci add_list youtubeUnblock.@section[0].sni_domains=${vTW_ITEM}
+done
+
+#- other -#
 uci add_list youtubeUnblock.@section[0].sni_domains='filmix.day'
 uci add_list youtubeUnblock.@section[0].sni_domains='rutracker.org'
 uci add_list youtubeUnblock.@section[0].sni_domains='nnmclub.to'
 uci add_list youtubeUnblock.@section[0].sni_domains='upaste.me'
 uci add_list youtubeUnblock.@section[0].sni_domains='dmitry-tv.ddns.net'
-uci add_list youtubeUnblock.@section[0].sni_domains='facebook.com'
+
 uci commit youtubeUnblock
 /etc/init.d/youtubeUnblock restart
 
