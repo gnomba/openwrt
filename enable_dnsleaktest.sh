@@ -4,5 +4,8 @@
 set -x
 
 curl -s https://raw.githubusercontent.com/animegasan/luci-app-dnsleaktest/master/install.sh | sh
+rm -fv /root/luci-app-dnsleaktest*
+
+echo -e "---\nСеть -> DNS Leak Test\nNetwork -> DNS Leak Test\n---"
 
 exit 0
