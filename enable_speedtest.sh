@@ -1,4 +1,5 @@
 #!/bin/sh
+# INFO: https://github.com/animegasan/luci-app-speedtest
 
 set -x
 
