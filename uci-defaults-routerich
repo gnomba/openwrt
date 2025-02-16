@@ -1,0 +1,173 @@
+#!/bin/sh
+
+rootfs_type() {
+	/bin/mount | awk '($3 ~ /^\/$/) && ($5 !~ /rootfs/) { print $5 }'
+}
+# clean all log if new flash firmware
+mount -t pstore -o noatime pstore /sys/fs/pstore 2>/dev/null
+if ! [ "$(rootfs_type)" = "tmpfs" ]; then
+	rm -f /sys/fs/pstore/*
+else
+	mkdir -p /tmp/pstore
+	mv /sys/fs/pstore/* /tmp/pstore/
+fi
+
+# sysctl
+SYSCTL_LOCAL=/etc/sysctl.d/99-local.conf
+mkdir -p /etc/sysctl.d
+
+cat <<-EOF >$SYSCTL_LOCAL
+vm.dirty_background_ratio=5
+vm.dirty_ratio=10
+vm.dirty_expire_centisecs=500
+vm.dirty_writeback_centisecs=200
+vm.swappiness=100
+vm.vfs_cache_pressure=300
+vm.min_free_kbytes=4096
+vm.panic_on_oom=2
+kernel.randomize_va_space=0
+net.core.rmem_max=2500000
+net.core.wmem_max=2500000
+EOF
+
+# ntp
+uci del system.ntp.server
+uci add_list system.ntp.server="216.239.35.0"     # time.google.com
+uci add_list system.ntp.server="216.239.35.4"     # time.google.com
+uci add_list system.ntp.server="216.239.35.8"     # time.google.com
+uci add_list system.ntp.server="216.239.35.12"    # time.google.com
+uci add_list system.ntp.server="162.159.200.123"  # time.cloudflare.com
+uci add_list system.ntp.server="162.159.200.1"    # time.cloudflare.com
+uci commit system
+service system restart
+
+# feeds
+
+# routerich feed
+echo "src/gz routerich http://github.com/routerich/packages.routerich/raw/23.05.5/routerich" > /etc/opkg/customfeeds.conf
+# do not use https
+cat <<-EOF >  /etc/opkg/distfeeds.conf
+src/gz openwrt_core http://github.com/routerich/packages.routerich/raw/23.05.5/targets/mediatek/filogic/packages
+src/gz openwrt_base http://downloads.openwrt.org/releases/23.05.5/packages/aarch64_cortex-a53/base
+src/gz openwrt_luci http://downloads.openwrt.org/releases/23.05.5/packages/aarch64_cortex-a53/luci
+src/gz openwrt_packages http://downloads.openwrt.org/releases/23.05.5/packages/aarch64_cortex-a53/packages
+src/gz openwrt_routing http://downloads.openwrt.org/releases/23.05.5/packages/aarch64_cortex-a53/routing
+src/gz openwrt_telephony http://downloads.openwrt.org/releases/23.05.5/packages/aarch64_cortex-a53/telephony
+EOF
+
+#############################################################
+# exit if inited
+[ "$(uci -q get  system.@system[0].inited)" = "2" ] && exit 0
+
+# firewall fix mtu
+
+[ "$(uci get firewall.@zone[0].name 2>/dev/null)" = "lan" ] && {
+    [ "$(uci get firewall.@zone[0].mtu_fix 2>/dev/null)" = "1" ] || uci set firewall.@zone[0].mtu_fix='1'
+}
+uci commit firewall
+service firewall restart
+
+# RR part
+    current_hostname=$(uci get system.@system[0].hostname)
+    if [ "$current_hostname" = "OpenWrt" ]; then
+        # Изменение значения переменной на "RouteRich"
+        uci set system.@system[0].hostname="RouteRich"
+	uci set system.cfg01e48a.zonename='Europe/Moscow'
+	uci set system.cfg01e48a.timezone='MSK-3'
+        # Применение изменений
+        uci commit system
+        /etc/init.d/system reload
+        echo "Hostname обновлен на RouteRich"
+    else
+        echo "Hostname не требует изменений"
+    fi
+
+    current_ssid=$(uci get wireless.default_radio0.ssid)
+
+    if [ "$current_ssid" = "OpenWrt" ]; then
+        # Изменение значения переменной на "RouteRich"
+	uci set wireless.radio0.htmode='HE40'
+        uci set wireless.radio0.country='RU'
+        uci set wireless.radio0.cell_density='0'
+	uci set wireless.radio0.channel='3'
+	uci set wireless.radio0.noscan='1'
+        uci set wireless.default_radio0.ssid='RouteRich_2'
+        uci set wireless.radio0.disabled='0'
+
+        # Применение изменений
+        uci commit wireless
+        wifi
+        echo "SSID обновлен на RouteRich"
+    else
+        echo "SSID не требует изменений"
+    fi
+
+    current_ssid=$(uci get wireless.default_radio1.ssid)
+
+    if [ "$current_ssid" = "OpenWrt" ]; then
+        # Изменение значения переменной на "RouteRich"
+        uci set wireless.radio1.htmode='HE160'
+        uci set wireless.radio1.country='RU'
+        uci set wireless.radio1.cell_density='0'
+	uci set wireless.radio1.channel='36'
+        uci set wireless.default_radio1.ssid='RouteRich_5'
+        uci set wireless.radio1.disabled='0'
+
+        # Применение изменений
+        uci commit wireless
+        wifi
+        echo "SSID обновлен на RouteRich"
+    else
+        echo "SSID не требует изменений"
+    fi
+
+
+# dnsmasq
+uci -q get dhcp.@dnsmasq[0] || uci add dhcp dnsmasq
+uci set dhcp.@dnsmasq[0].cachesize='2048'
+uci set dhcp.@dnsmasq[0].dnsforwardmax='2048'
+uci set dhcp.@dnsmasq[0].min_cache_ttl="600"
+uci set dhcp.@dnsmasq[0].max_cache_ttl="86400"
+uci set dhcp.@dnsmasq[0].nonegcache='1'
+uci commit dhcp
+
+# DNS
+uci del https-dns-proxy.config.canary_domains_mozilla
+uci del https-dns-proxy.config.canary_domains_icloud
+uci set https-dns-proxy.config.force_dns='0'
+while uci -q delete https-dns-proxy.@https-dns-proxy[0]; do :; done
+
+id="$(uci add https-dns-proxy https-dns-proxy)"
+uci set https-dns-proxy.$id.bootstrap_dns="94.140.14.14,94.140.15.15"
+uci set https-dns-proxy.$id.resolver_url="https://dns.adguard-dns.com/dns-query"
+
+#id="$(uci add https-dns-proxy https-dns-proxy)"
+#uci set https-dns-proxy.$id.bootstrap_dns="1.1.1.1,1.0.0.1"
+#uci set https-dns-proxy.$id.resolver_url="https://cloudflare-dns.com/dns-query"
+
+uci commit https-dns-proxy
+/etc/init.d/rpcd restart
+/etc/init.d/https-dns-proxy disable
+/etc/init.d/https-dns-proxy stop
+
+# network
+# packet steering
+uci -q get network.globals.packet_steering > /dev/null || {
+    uci set network.globals='globals'
+    uci set network.globals.packet_steering=1
+    uci commit network
+}
+
+# wan6
+uci del network.wan6
+uci commit network
+
+# zram
+uci set system.@system[0].zram_comp_algo='lz4'
+uci commit system
+
+# inited
+uci set system.@system[0].inited='2'
+uci commit system
+
+exit 0

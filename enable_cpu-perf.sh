@@ -11,6 +11,6 @@ opkg install https://github.com/gSpotx2f/packages-openwrt/raw/master/current/luc
 
 set +x
 
-echo -e "---\nСтатус -> Производительность ЦПУ\nStatus -> CPU Performance\n---"
+echo -e "---\nСтатус -> Производительность ЦПУ\nСлужбы -> Производительность ЦПУ\nStatus -> CPU Performance\nServices -> CPU Performance\n---"
 
 exit 0
