@@ -14,6 +14,8 @@ curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_
 
 curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_dnsleaktest.sh | sh
 
+curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_cpu-status.sh | sh
+
 curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ipv6.sh | sh
 
 curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ads.sh | sh
