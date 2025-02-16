@@ -8,6 +8,8 @@
 
 > curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_speedtest.sh | sh
 
+> curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_log-viewer.sh | sh
+
 > curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_ipinfo.sh | sh
 
 > curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_internet-detector.sh | sh
