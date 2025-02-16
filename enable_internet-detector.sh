@@ -14,6 +14,6 @@ opkg install https://github.com/gSpotx2f/packages-openwrt/raw/master/current/luc
 
 set +x
 
-echo -e "---\nСтатус -> Обзор -> Интернет\nStatus -> Overview -> Internet\n---"
+echo -e "---\nСтатус -> Обзор -> Интернет\nСлужбы -> Интернет-детектор\nStatus -> Overview -> Internet\nServices -> Internet-detector\n---"
 
 exit 0
