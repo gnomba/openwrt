@@ -8,6 +8,6 @@ rm -fv /root/luci-app-ipinfo*
 
 set +x
 
-echo -e "---\nСлужбы -> IP Information\nServices -> IP Information\n---"
+echo -e "---\nСтатус -> Обзор -> IP Information\nСлужбы -> IP Information\nStatus -> Overview -> IP Information\nServices -> IP Information\n---"
 
 exit 0
