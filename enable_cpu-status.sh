@@ -9,6 +9,6 @@ opkg install https://github.com/gSpotx2f/packages-openwrt/raw/master/current/luc
 
 set +x
 
-echo -e "---\nСтатус -> CPU\nStatus -> CPU\n---"
+echo -e "---\nСтатус -> Загрузка ЦПУ\nStatus -> CPU Load\n---"
 
 exit 0
