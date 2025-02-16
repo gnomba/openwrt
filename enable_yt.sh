@@ -80,6 +80,8 @@ uci add_list youtubeUnblock.@section[0].sni_domains='dmitry-tv.ddns.net'
 uci commit youtubeUnblock
 /etc/init.d/youtubeUnblock restart
 
+set +x
+
 echo -e "---\nСлужбы -> youtubeUnblock\nServices -> youtubeUnblock\n---"
 
 exit 0
