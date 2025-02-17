@@ -53,7 +53,7 @@ set wireless.radio1.band='5g'
 set wireless.radio1.htmode='HE80'
 set wireless.default_radio1.device='radio1'
 set wireless.default_radio1.network='lan'
-set wireless.default_radio1.ssid='${wlan_name_2g}'
+set wireless.default_radio1.ssid='${wlan_name_5g}'
 set wireless.default_radio1.mode='${wlan_mode}'
 set wireless.default_radio1.encryption='${wlan_encryption}'
 set wireless.default_radio1.key='${wlan_password}'
@@ -67,10 +67,4 @@ commit network
 # adblock #
 set adblock.global.adb_trigger='wan'
 commit adblock
-
-# firewall #
-#rename firewall.@zone[0]='lan'
-#rename firewall.@zone[1]='wan'
-#rename firewall.@forwarding[0]='lan_wan'
-#commit firewall
 EOI
