@@ -16,66 +16,29 @@ echo "${vURL}/${vFILELUCI}"
 opkg install ${vURL}/${vFILE}
 opkg install ${vURL}/${vFILELUCI}
 
+vDOMAINS_URL="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data"; echo "vDOMAINS_URL=${vDOMAINS_URL}"
+vDOMAINS_LIST="youtube discord facebook instagram whatsapp twitter"; echo "vDOMAINS_LIST=${vDOMAINS_LIST}"
+vDOMAINS_CUSTOM="googleapis.com play.google.com googleusercontent.com gstatic.com l.google.com gvt1.com yt-video-upload.l.google.com meta.ai meta.com
+filmix.day rutracker.org nnmclub.to upaste.me dmitry-tv.ddns.net dmi3y-tv.ru"; echo "vDOMAINS_CUSTOM=${vDOMAINS_CUSTOM}"
+
 vCURL="$(which curl) -s"
 ## TODO vFILTER : grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"
 
+uci set youtubeUnblock.@section[0].sni_domains=''
 uci set youtubeUnblock.@section[0].all_domains='0'
 uci set youtubeUnblock.@section[0].quic_drop='1'
 
-#- google -#
-vGOOGLE=""
-uci set youtubeUnblock.@section[0].sni_domains='googleapis.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='play.google.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='googleusercontent.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='gstatic.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='l.google.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='gvt1.com'
-uci add_list youtubeUnblock.@section[0].sni_domains='yt-video-upload.l.google.com'
-
-#- youtube -#
-vYOUTUBE="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data/youtube"
-for vYT_ITEM in $(${vCURL} ${vYOUTUBE} | grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
+for vYT_ITEM in ${vDOMAINS_CUSTOM}; do
     uci add_list youtubeUnblock.@section[0].sni_domains=${vYT_ITEM}
 done
 
-#- discord -#
-vDISCORD="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data/discord"
-for vDS_ITEM in $(${vCURL} ${vDISCORD} | grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
-    uci add_list youtubeUnblock.@section[0].sni_domains=${vDS_ITEM}
+for vDOMAIN_ITEM in ${vDOMAINS_LIST};do
+    echo "###--- vDOMAIN_ITEM ---###"
+    vITEM_URL="${vDOMAINS_URL}/${vDOMAIN_ITEM}"
+    for vYT_ITEM in $(${vCURL} ${vITEM_URL} | grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
+        uci add_list youtubeUnblock.@section[0].sni_domains=${vYT_ITEM}
+    done
 done
-
-#- facebook -#
-vFACEBOOK="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data/facebook"
-uci add_list youtubeUnblock.@section[0].sni_domains='meta.ai'
-uci add_list youtubeUnblock.@section[0].sni_domains='meta.com'
-for vFB_ITEM in $(${vCURL} ${vFACEBOOK} | grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
-    uci add_list youtubeUnblock.@section[0].sni_domains=${vFB_ITEM}
-done
-
-#- instagram -#
-vINSTAGRAM="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data/instagram"
-for vIN_ITEM in $(${vCURL} ${vINSTAGRAM} | grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
-    uci add_list youtubeUnblock.@section[0].sni_domains=${vIN_ITEM}
-done
-
-#- whatsapp  -#
-vWHATSAPP="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data/whatsapp"
-for vWT_ITEM in $(${vCURL} ${vWHATSAPP} | grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
-    uci add_list youtubeUnblock.@section[0].sni_domains=${vWT_ITEM}
-done
-
-#- twitter -#
-vTWITTER="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data/twitter"
-for vTW_ITEM in $(${vCURL} ${vTWITTER} | grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
-    uci add_list youtubeUnblock.@section[0].sni_domains=${vTW_ITEM}
-done
-
-#- other -#
-uci add_list youtubeUnblock.@section[0].sni_domains='filmix.day'
-uci add_list youtubeUnblock.@section[0].sni_domains='rutracker.org'
-uci add_list youtubeUnblock.@section[0].sni_domains='nnmclub.to'
-uci add_list youtubeUnblock.@section[0].sni_domains='upaste.me'
-uci add_list youtubeUnblock.@section[0].sni_domains='dmitry-tv.ddns.net'
 
 uci commit youtubeUnblock
 /etc/init.d/youtubeUnblock restart
