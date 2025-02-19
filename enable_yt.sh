@@ -25,6 +25,7 @@ vDOMAINS_CUSTOM="googleapis.com play.google.com googleusercontent.com gstatic.co
 filmix.day rutracker.org nnmclub.to upaste.me dmitry-tv.ddns.net dmi3y-tv.ru"
 echo "vDOMAINS_CUSTOM=${vDOMAINS_CUSTOM}"
 
+uci set youtubeUnblock.youtubeUnblock.no_ipv6='1'
 uci set youtubeUnblock.@section[0].sni_domains=''
 uci set youtubeUnblock.@section[0].all_domains='0'
 uci set youtubeUnblock.@section[0].quic_drop='1'
