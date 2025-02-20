@@ -1,9 +1,9 @@
-### uci-defaults Mercusys MR70X v1 ###
+### uci-defaults RouteRich AX3000 ###
 
 set -x
 
-wlan_name_2g="MERCUSYS_2"
-wlan_name_5g="MERCUSYS_5"
+wlan_name_2g="RouteRich_2"
+wlan_name_5g="RouteRich_5"
 wlan_password="1234567890"
 wlan_mode="ap"
 wlan_encryption="psk2"
@@ -20,7 +20,7 @@ fi
 
 uci -q batch << EOI
 # system #
-set system.@system[0].hostname='MercusysMR70Xv1'
+set system.@system[0].hostname='RouteRichAX3000'
 set system.@system[0].timezone='MSK-3'
 set system.@system[0].log_size='64'
 set system.@system[0].zonename='Europe/Moscow'
@@ -28,13 +28,50 @@ set system.@system[0].zram_comp_algo='lz4'
 set system.ntp.server='3.ru.pool.ntp.org 2.ru.pool.ntp.org 1.ru.pool.ntp.org 0.ru.pool.ntp.org'
 
 # system led #
-# горит зеленым пока есть линк у 'WAN'
+# все лампочки гаснут после загрузки
+# красным загорится 'WAN' если пропадает линк
 add system led
-set system.@led[0].name='wan-on'
-set system.@led[0].sysfs='green:power'
-set system.@led[0].trigger='netdev'
-set system.@led[0].dev='wan'
-set system.@led[0].mode='link'
+uci set system.@led[0].name='power'
+uci set system.@led[0].sysfs='blue:power'
+uci set system.@led[0].trigger='none'
+uci set system.@led[0].default='0'
+uci add system led
+uci set system.@led[1].name='wlan-2g'
+uci set system.@led[1].sysfs='blue:wlan-24'
+uci set system.@led[1].trigger='none'
+uci set system.@led[1].default='0'
+uci add system led
+uci set system.@led[2].name='wlan-5g'
+uci set system.@led[2].sysfs='red:wlan-50'
+uci set system.@led[2].trigger='none'
+uci set system.@led[2].default='0'
+uci set system.led_lan_1=led
+uci set system.led_lan_1.name='lan-1'
+uci set system.led_lan_1.sysfs='blue:lan-1'
+uci set system.led_lan_1.trigger='none'
+uci set system.led_lan_1.default='0'
+uci set system.led_lan_2=led
+uci set system.led_lan_2.name='lan-2'
+uci set system.led_lan_2.sysfs='blue:lan-2'
+uci set system.led_lan_2.trigger='none'
+uci set system.led_lan_2.default='0'
+uci set system.led_lan_3=led
+uci set system.led_lan_3.name='lan-3'
+uci set system.led_lan_3.sysfs='blue:lan-3'
+uci set system.led_lan_3.trigger='none'
+uci set system.led_lan_3.default='0'
+uci set system.led_wan=led
+uci set system.led_wan.name='wan-on'
+uci set system.led_wan.sysfs='blue:wan'
+uci set system.led_wan.trigger='none'
+uci set system.led_wan.default='0'
+uci set system.led_wan_off=led
+uci set system.led_wan_off.name='wan-off'
+uci set system.led_wan_off.sysfs='red:wan'
+uci set system.led_wan_off.trigger='netdev'
+# тут поменять на свой физический интерфейс
+uci set system.led_wan_off.dev='wan'
+uci set system.led_wan_off.mode='link'
 commit system
 
 # wireless #
@@ -44,6 +81,7 @@ set wireless.radio0.country='RU'
 set wireless.radio0.channel='auto'
 set wireless.radio0.band='2g'
 set wireless.radio0.htmode='HE40'
+set wireless.radio0.cell_density='0'
 set wireless.default_radio0.device='radio0'
 set wireless.default_radio0.network='lan'
 set wireless.default_radio0.ssid='${wlan_name_2g}'
@@ -55,7 +93,8 @@ set wireless.radio1.disabled='0'
 set wireless.radio1.country='RU'
 set wireless.radio1.channel='auto'
 set wireless.radio1.band='5g'
-set wireless.radio1.htmode='HE80'
+set wireless.radio1.htmode='HE160'
+set wireless.radio1.cell_density='0'
 set wireless.default_radio1.device='radio1'
 set wireless.default_radio1.network='lan'
 set wireless.default_radio1.ssid='${wlan_name_5g}'
