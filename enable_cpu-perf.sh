@@ -3,8 +3,8 @@
 
 set -x
 
-opkg install https://github.com/gSpotx2f/packages-openwrt/raw/master/current/luci-app-cpu-perf_0.4.0-r1_all.ipk
-opkg install https://github.com/gSpotx2f/packages-openwrt/raw/master/current/luci-i18n-cpu-perf-ru_0.4.0-r1_all.ipk
+opkg install https://github.com/gSpotx2f/packages-openwrt/raw/refs/heads/master/current/luci-app-cpu-perf_0.4.0-r1_all.ipk
+opkg install https://github.com/gSpotx2f/packages-openwrt/raw/refs/heads/master/current/luci-i18n-cpu-perf-ru_0.4.0-r1_all.ipk
 /etc/init.d/rpcd reload
 /etc/init.d/cpu-perf enable
 /etc/init.d/cpu-perf start

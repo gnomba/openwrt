@@ -111,32 +111,33 @@ commit network
 # adblock #
 set adblock.global.adb_trigger='wan'
 commit adblock
+EOI
 
 # https-dns-proxy #
-set https-dns-proxy.config.force_dns='1'
-#add https-dns-proxy https-dns-proxy
-set https-dns-proxy.@https-dns-proxy[0].resolver_url='https://cloudflare-dns.com/dns-query'
-set https-dns-proxy.@https-dns-proxy[0].bootstrap_dns='1.1.1.1,1.0.0.1'
-set https-dns-proxy.@https-dns-proxy[0].listen_addr='127.0.0.1'
-set https-dns-proxy.@https-dns-proxy[0].listen_port='5053'
-set https-dns-proxy.@https-dns-proxy[0].user='nobody'
-set https-dns-proxy.@https-dns-proxy[0].group='nogroup'
-#add https-dns-proxy https-dns-proxy
-set https-dns-proxy.@https-dns-proxy[1].resolver_url='https://dns.google/dns-query'
-set https-dns-proxy.@https-dns-proxy[1].bootstrap_dns='8.8.4.4,8.8.8.8'
-set https-dns-proxy.@https-dns-proxy[1].listen_addr='127.0.0.1'
-set https-dns-proxy.@https-dns-proxy[1].listen_port='5054'
-set https-dns-proxy.@https-dns-proxy[1].user='nobody'
-set https-dns-proxy.@https-dns-proxy[1].group='nogroup'
-add https-dns-proxy https-dns-proxy
-set https-dns-proxy.@https-dns-proxy[2].resolver_url='https://common.dot.dns.yandex.net/dns-query'
-set https-dns-proxy.@https-dns-proxy[2].bootstrap_dns='77.88.8.8,77.88.8.1'
-set https-dns-proxy.@https-dns-proxy[2].listen_addr='127.0.0.1'
-set https-dns-proxy.@https-dns-proxy[2].listen_port='5055'
-set https-dns-proxy.@https-dns-proxy[2].user='nobody'
-set https-dns-proxy.@https-dns-proxy[2].group='nogroup'
-commit https-dns-proxy
-EOI
+uci set https-dns-proxy.config.force_dns='1'
+#uci add https-dns-proxy https-dns-proxy
+uci set https-dns-proxy.@https-dns-proxy[0].resolver_url='https://cloudflare-dns.com/dns-query'
+uci set https-dns-proxy.@https-dns-proxy[0].bootstrap_dns='1.1.1.1,1.0.0.1'
+uci set https-dns-proxy.@https-dns-proxy[0].listen_addr='127.0.0.1'
+uci set https-dns-proxy.@https-dns-proxy[0].listen_port='5053'
+uci set https-dns-proxy.@https-dns-proxy[0].user='nobody'
+uci set https-dns-proxy.@https-dns-proxy[0].group='nogroup'
+uci add https-dns-proxy https-dns-proxy
+uci set https-dns-proxy.@https-dns-proxy[1].resolver_url='https://dns.google/dns-query'
+uci set https-dns-proxy.@https-dns-proxy[1].bootstrap_dns='8.8.4.4,8.8.8.8'
+uci set https-dns-proxy.@https-dns-proxy[1].listen_addr='127.0.0.1'
+uci set https-dns-proxy.@https-dns-proxy[1].listen_port='5054'
+uci set https-dns-proxy.@https-dns-proxy[1].user='nobody'
+uci set https-dns-proxy.@https-dns-proxy[1].group='nogroup'
+uci add https-dns-proxy https-dns-proxy
+uci set https-dns-proxy.@https-dns-proxy[2].resolver_url='https://common.dot.dns.yandex.net/dns-query'
+uci set https-dns-proxy.@https-dns-proxy[2].bootstrap_dns='77.88.8.8,77.88.8.1'
+uci set https-dns-proxy.@https-dns-proxy[2].listen_addr='127.0.0.1'
+uci set https-dns-proxy.@https-dns-proxy[2].listen_port='5055'
+uci set https-dns-proxy.@https-dns-proxy[2].user='nobody'
+uci set https-dns-proxy.@https-dns-proxy[2].group='nogroup'
+uci commit https-dns-proxy
+
 
 /etc/init.d/rpcd restart
 /etc/init.d/https-dns-proxy enable
