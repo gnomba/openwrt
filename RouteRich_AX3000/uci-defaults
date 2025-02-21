@@ -32,20 +32,20 @@ set system.ntp.server='3.ru.pool.ntp.org 2.ru.pool.ntp.org 1.ru.pool.ntp.org 0.r
 # все лампочки гаснут после загрузки
 # красным загорится 'WAN' если пропадает линк
 add system led
-set system.@led[0].name='power'
-set system.@led[0].sysfs='blue:power'
-set system.@led[0].trigger='none'
-set system.@led[0].default='0'
+set system.@led[-1].name='power'
+set system.@led[-1].sysfs='blue:power'
+set system.@led[-1].trigger='none'
+set system.@led[-1].default='0'
 add system led
-set system.@led[1].name='wlan-2g'
-set system.@led[1].sysfs='blue:wlan-24'
-set system.@led[1].trigger='none'
-set system.@led[1].default='0'
+set system.@led[-1].name='wlan-2g'
+set system.@led[-1].sysfs='blue:wlan-24'
+set system.@led[-1].trigger='none'
+set system.@led[-1].default='0'
 add system led
-set system.@led[2].name='wlan-5g'
-set system.@led[2].sysfs='red:wlan-50'
-set system.@led[2].trigger='none'
-set system.@led[2].default='0'
+set system.@led[-1].name='wlan-5g'
+set system.@led[-1].sysfs='red:wlan-50'
+set system.@led[-1].trigger='none'
+set system.@led[-1].default='0'
 set system.led_lan_1=led
 set system.led_lan_1.name='lan-1'
 set system.led_lan_1.sysfs='blue:lan-1'
