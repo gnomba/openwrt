@@ -5,13 +5,14 @@ vCURL="$(which curl) -s"
 
 # youtubeUnblock #
 vNAME="youtubeUnblock"
-vRELEASE="v1.0.0-rc6"; echo "vRELEASE=${vRELEASE}"
-vCOMMIT="a03d05c"; echo "vCOMMIT=${vCOMMIT}"
+vRELEASE="v1.0.0"; echo "vRELEASE=${vRELEASE}"
+vBUILD="10"
+vCOMMIT="f37c3dd"; echo "vCOMMIT=${vCOMMIT}"
 vVERSION="$(echo ${vRELEASE} | sed 's/v//g;s/rc//g')"; echo "vVERSION=${vVERSION}"
 vURL="https://github.com/Waujito/${vNAME}/releases/download/${vRELEASE}"; echo "vURL=${vURL}"
 vARCH="$(opkg print-architecture | tail -n 1 | awk '{print $2}')"; echo "vARCH=${vARCH}"
-vFILE="${vNAME}-${vVERSION}-${vCOMMIT}-${vARCH}-openwrt-23.05.ipk"
-vFILELUCI="luci-app-${vNAME}-${vVERSION}-${vCOMMIT}.ipk"
+vFILE="${vNAME}-${vVERSION}-${vBUILD}-${vCOMMIT}-${vARCH}-openwrt-23.05.ipk"
+vFILELUCI="luci-app-${vNAME}-${vVERSION}-${vBUILD}-${vCOMMIT}.ipk"
 echo "${vURL}/${vFILE}"
 echo "${vURL}/${vFILELUCI}"
 opkg install ${vURL}/${vFILE}
@@ -22,7 +23,7 @@ echo "vDOMAINS_URL=${vDOMAINS_URL}"
 vDOMAINS_LIST="youtube discord facebook instagram whatsapp twitter"
 echo "vDOMAINS_LIST=${vDOMAINS_LIST}"
 vDOMAINS_CUSTOM="googleapis.com play.google.com googleusercontent.com gstatic.com l.google.com gvt1.com yt-video-upload.l.google.com meta.ai meta.com
-filmix.day rutracker.org nnmclub.to upaste.me dmitry-tv.ddns.net dmi3y-tv.ru"
+filmix.day rutracker.org rutracker.net rutracker.cc rutor.info rutor.is nnmclub.to pscp.tv upaste.me dmitry-tv.ddns.net dmi3y-tv.ru"
 echo "vDOMAINS_CUSTOM=${vDOMAINS_CUSTOM}"
 
 uci set youtubeUnblock.youtubeUnblock.no_ipv6='1'
