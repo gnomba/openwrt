@@ -439,6 +439,6 @@ wsdd2
 wwan
 xl2tpd
 xmm-modem
-youtubeUnblock
+-youtubeUnblock
 zlib
 zram-swap
