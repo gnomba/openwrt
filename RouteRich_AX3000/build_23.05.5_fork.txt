@@ -294,7 +294,7 @@ luci-app-ttyd
 luci-app-upnp
 luci-app-vsftpd
 luci-app-wizard
-luci-app-youtubeUnblock
+-luci-app-youtubeUnblock
 luci-base
 luci-compat
 luci-i18n-3ginfo-lite-ru
