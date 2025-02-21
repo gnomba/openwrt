@@ -15,8 +15,12 @@ vFILE="${vNAME}-${vVERSION}-${vBUILD}-${vCOMMIT}-${vARCH}-openwrt-23.05.ipk"
 vFILELUCI="luci-app-${vNAME}-${vVERSION}-${vBUILD}-${vCOMMIT}.ipk"
 echo "${vURL}/${vFILE}"
 echo "${vURL}/${vFILELUCI}"
-opkg install ${vURL}/${vFILE}
-opkg install ${vURL}/${vFILELUCI}
+wget ${vURL}/${vFILE} -O /tmp/${vFILE}
+wget ${vURL}/${vFILELUCI} -O /tmp/${vFILELUCI}
+opkg install /tmp/${vFILE}
+opkg install /tmp/${vFILELUCI}
+rm -fv /tmp/${vFILE}
+rm -fv /tmp/${vFILELUCI}
 
 vDOMAINS_URL="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data"
 echo "vDOMAINS_URL=${vDOMAINS_URL}"
