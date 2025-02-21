@@ -160,23 +160,17 @@ uci set dhcp.@dnsmasq[0].dnsforwardmax='2048'
 uci set dhcp.@dnsmasq[0].min_cache_ttl="600"
 uci set dhcp.@dnsmasq[0].max_cache_ttl="86400"
 uci set dhcp.@dnsmasq[0].nonegcache='1'
-uci add_list dhcp.@dnsmasq[0].server='/*.comss.ru/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.comss.one/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.chatgpt.com/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.oaistatic.com/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.oaiusercontent.com/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.openai.com/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.microsoft.com/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.windowsupdate.com/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.bing.com/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.supercell.com/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.seeurlpcl.com/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.supercellid.com/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.supercellgames.com/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.clashroyale.com/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.brawlstars.com/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.clash.com/127.0.0.1#5056'
-uci add_list dhcp.@dnsmasq[0].server='/*.clashofclans.com/127.0.0.1#5056'
+vVIA_COMSS_LIST="comss.ru comss.one chatgpt.com oaistatic.com oaiusercontent.com openai.com microsoft.com windowsupdate.com bing.com supercell.com seeurlpcl.com supercellid.com
+supercellgames.com clashroyale.com brawlstars.com clash.com clashofclans.com x.ai grok.com"
+for vCOMSS_ITEM in ${vVIA_COMSS_LIST}; do
+    uci add_list dhcp.@dnsmasq[0].server="/*.${vCOMSS_ITEM}/127.0.0.1#5056"
+done
+vDHCP_DOMAIN_LIST="chatgpt.com openai.com webrtc.chatgpt.com ios.chat.openai.com searchgpt.com"
+for vDOMAIN_ITEM in ${vDHCP_DOMAIN_LIST}; do
+    uci add dhcp domain
+    uci set dhcp.@domain[-1].name="${vDOMAIN_ITEM}"
+    uci set dhcp.@domain[-1].ip="94.131.119.85"
+done
 uci commit dhcp
 
 # firewall fix mtu #
