@@ -2,9 +2,9 @@
 
 set -x
 
-last_4_mac_phy0ap0="$(ip a show phy0-ap0 | tail -n 1 | sed 's/brd.*$//g' | awk -F':' '{print toupper($5$6)}')"
-wlan_name_2g="RouteRich_${last_4_mac_phy0ap0}"
-wlan_name_5g="RouteRich_${last_4_mac_phy0ap0}_5G"
+last_4_mac_wlan0="$(ip a show wlan0 | tail -n 1 | sed 's/brd.*$//g' | awk -F':' '{print toupper($5$6)}')"
+wlan_name_2g="RouteRich_${last_4_mac_wlan0}"
+wlan_name_5g="RouteRich_${last_4_mac_wlan0}_5G"
 wlan_password="1234567890"
 wlan_mode="ap"
 wlan_encryption="psk2"
