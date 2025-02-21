@@ -26,7 +26,7 @@ comgt-ncm
 confuse
 curl
 dbus
-default-settings
+-default-settings
 dnsmasq-full
 dropbear
 e2fsprogs
