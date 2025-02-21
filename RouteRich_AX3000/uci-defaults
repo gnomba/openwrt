@@ -2,8 +2,9 @@
 
 set -x
 
-wlan_name_2g="RouteRich_2"
-wlan_name_5g="RouteRich_5"
+last_4_mac_phy0ap0="$(ip a show phy0-ap0 | tail -n 1 | sed 's/brd.*$//g' | awk -F':' '{print toupper($5$6)}')"
+wlan_name_2g="RouteRich_${last_4_mac_phy0ap0}"
+wlan_name_5g="RouteRich_${last_4_mac_phy0ap0}_5G"
 wlan_password="1234567890"
 wlan_mode="ap"
 wlan_encryption="psk2"
@@ -20,7 +21,7 @@ fi
 
 uci -q batch << EOI
 # system #
-set system.@system[0].hostname='RouteRichAX3000'
+set system.@system[0].hostname=${wlan_name_2g}
 set system.@system[0].timezone='MSK-3'
 set system.@system[0].log_size='64'
 set system.@system[0].zonename='Europe/Moscow'
@@ -31,47 +32,47 @@ set system.ntp.server='3.ru.pool.ntp.org 2.ru.pool.ntp.org 1.ru.pool.ntp.org 0.r
 # все лампочки гаснут после загрузки
 # красным загорится 'WAN' если пропадает линк
 add system led
-uci set system.@led[0].name='power'
-uci set system.@led[0].sysfs='blue:power'
-uci set system.@led[0].trigger='none'
-uci set system.@led[0].default='0'
-uci add system led
-uci set system.@led[1].name='wlan-2g'
-uci set system.@led[1].sysfs='blue:wlan-24'
-uci set system.@led[1].trigger='none'
-uci set system.@led[1].default='0'
-uci add system led
-uci set system.@led[2].name='wlan-5g'
-uci set system.@led[2].sysfs='red:wlan-50'
-uci set system.@led[2].trigger='none'
-uci set system.@led[2].default='0'
-uci set system.led_lan_1=led
-uci set system.led_lan_1.name='lan-1'
-uci set system.led_lan_1.sysfs='blue:lan-1'
-uci set system.led_lan_1.trigger='none'
-uci set system.led_lan_1.default='0'
-uci set system.led_lan_2=led
-uci set system.led_lan_2.name='lan-2'
-uci set system.led_lan_2.sysfs='blue:lan-2'
-uci set system.led_lan_2.trigger='none'
-uci set system.led_lan_2.default='0'
-uci set system.led_lan_3=led
-uci set system.led_lan_3.name='lan-3'
-uci set system.led_lan_3.sysfs='blue:lan-3'
-uci set system.led_lan_3.trigger='none'
-uci set system.led_lan_3.default='0'
-uci set system.led_wan=led
-uci set system.led_wan.name='wan-on'
-uci set system.led_wan.sysfs='blue:wan'
-uci set system.led_wan.trigger='none'
-uci set system.led_wan.default='0'
-uci set system.led_wan_off=led
-uci set system.led_wan_off.name='wan-off'
-uci set system.led_wan_off.sysfs='red:wan'
-uci set system.led_wan_off.trigger='netdev'
+set system.@led[0].name='power'
+set system.@led[0].sysfs='blue:power'
+set system.@led[0].trigger='none'
+set system.@led[0].default='0'
+add system led
+set system.@led[1].name='wlan-2g'
+set system.@led[1].sysfs='blue:wlan-24'
+set system.@led[1].trigger='none'
+set system.@led[1].default='0'
+add system led
+set system.@led[2].name='wlan-5g'
+set system.@led[2].sysfs='red:wlan-50'
+set system.@led[2].trigger='none'
+set system.@led[2].default='0'
+set system.led_lan_1=led
+set system.led_lan_1.name='lan-1'
+set system.led_lan_1.sysfs='blue:lan-1'
+set system.led_lan_1.trigger='none'
+set system.led_lan_1.default='0'
+set system.led_lan_2=led
+set system.led_lan_2.name='lan-2'
+set system.led_lan_2.sysfs='blue:lan-2'
+set system.led_lan_2.trigger='none'
+set system.led_lan_2.default='0'
+set system.led_lan_3=led
+set system.led_lan_3.name='lan-3'
+set system.led_lan_3.sysfs='blue:lan-3'
+set system.led_lan_3.trigger='none'
+set system.led_lan_3.default='0'
+set system.led_wan=led
+set system.led_wan.name='wan-on'
+set system.led_wan.sysfs='blue:wan'
+set system.led_wan.trigger='none'
+set system.led_wan.default='0'
+set system.led_wan_off=led
+set system.led_wan_off.name='wan-off'
+set system.led_wan_off.sysfs='red:wan'
+set system.led_wan_off.trigger='netdev'
 # тут поменять на свой физический интерфейс
-uci set system.led_wan_off.dev='wan'
-uci set system.led_wan_off.mode='link'
+set system.led_wan_off.dev='wan'
+set system.led_wan_off.mode='link'
 commit system
 
 # wireless #
@@ -114,8 +115,11 @@ commit adblock
 EOI
 
 # https-dns-proxy #
+while uci -q delete https-dns-proxy.@https-dns-proxy[0]; do :; done
 uci set https-dns-proxy.config.force_dns='1'
-#uci add https-dns-proxy https-dns-proxy
+uci set https-dns-proxy.config.canary_domains_icloud='1'
+uci set https-dns-proxy.config.canary_domains_mozilla='1'
+uci add https-dns-proxy https-dns-proxy
 uci set https-dns-proxy.@https-dns-proxy[0].resolver_url='https://cloudflare-dns.com/dns-query'
 uci set https-dns-proxy.@https-dns-proxy[0].bootstrap_dns='1.1.1.1,1.0.0.1'
 uci set https-dns-proxy.@https-dns-proxy[0].listen_addr='127.0.0.1'
@@ -136,8 +140,14 @@ uci set https-dns-proxy.@https-dns-proxy[2].listen_addr='127.0.0.1'
 uci set https-dns-proxy.@https-dns-proxy[2].listen_port='5055'
 uci set https-dns-proxy.@https-dns-proxy[2].user='nobody'
 uci set https-dns-proxy.@https-dns-proxy[2].group='nogroup'
+uci add https-dns-proxy https-dns-proxy
+uci set https-dns-proxy.@https-dns-proxy[3].resolver_url='https://router.comss.one/dns-query'
+uci set https-dns-proxy.@https-dns-proxy[3].bootstrap_dns='195.133.25.16,212.109.195.93,83.220.169.155'
+uci set https-dns-proxy.@https-dns-proxy[3].listen_addr='127.0.0.1'
+uci set https-dns-proxy.@https-dns-proxy[3].listen_port='5056'
+uci set https-dns-proxy.@https-dns-proxy[3].user='nobody'
+uci set https-dns-proxy.@https-dns-proxy[3].group='nogroup'
 uci commit https-dns-proxy
-
 
 /etc/init.d/rpcd restart
 /etc/init.d/https-dns-proxy enable
@@ -150,4 +160,38 @@ uci set dhcp.@dnsmasq[0].dnsforwardmax='2048'
 uci set dhcp.@dnsmasq[0].min_cache_ttl="600"
 uci set dhcp.@dnsmasq[0].max_cache_ttl="86400"
 uci set dhcp.@dnsmasq[0].nonegcache='1'
+uci add_list dhcp.@dnsmasq[0].server='/*.comss.ru/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.comss.one/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.chatgpt.com/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.oaistatic.com/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.oaiusercontent.com/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.openai.com/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.microsoft.com/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.windowsupdate.com/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.bing.com/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.supercell.com/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.seeurlpcl.com/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.supercellid.com/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.supercellgames.com/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.clashroyale.com/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.brawlstars.com/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.clash.com/127.0.0.1#5056'
+uci add_list dhcp.@dnsmasq[0].server='/*.clashofclans.com/127.0.0.1#5056'
 uci commit dhcp
+
+# firewall fix mtu #
+[ "$(uci get firewall.@zone[0].name 2>/dev/null)" = "lan" ] && {
+    [ "$(uci get firewall.@zone[0].mtu_fix 2>/dev/null)" = "1" ] || uci set firewall.@zone[0].mtu_fix='1'
+}
+uci commit firewall
+service firewall restart
+
+# network         #
+# packet steering #
+uci -q get network.globals.packet_steering > /dev/null || {
+    uci set network.globals='globals'
+    uci set network.globals.packet_steering=1
+    uci commit network
+}
+
+reboot
