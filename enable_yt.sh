@@ -17,6 +17,8 @@ echo "${vURL}/${vFILE}"
 echo "${vURL}/${vFILELUCI}"
 wget ${vURL}/${vFILE} -O /tmp/${vFILE}
 wget ${vURL}/${vFILELUCI} -O /tmp/${vFILELUCI}
+#opkg remove ${vNAME}
+#opkg remove luci-app-${vNAME}
 opkg install /tmp/${vFILE}
 opkg install /tmp/${vFILELUCI}
 rm -fv /tmp/${vFILE}
