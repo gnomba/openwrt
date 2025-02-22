@@ -33,6 +33,7 @@ e2fsprogs
 eip197-mini-firmware
 ethtool
 ffprobe
+file
 filebrowser
 firewall4
 fm350-modem
