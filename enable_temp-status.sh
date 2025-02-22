@@ -5,8 +5,7 @@ set -x
 
 vBOARD_ID="$(cat /etc/board.json | grep id | sed 's/\"/ /g;s/,/ /g' | awk '{print $3}')"
 
-if [ "${vBOARD_ID}" == "routerich" ]
-then
+if [ "${vBOARD_ID}" == "routerich" ]; then 
     echo " --- DETECTED BOARD: routerich ---"
 else
     vNAME="temp-status"
@@ -22,7 +21,7 @@ else
     opkg install /tmp/${vFILELUCILANG}
 
     rm -fv /tmp/*${vNAME}*
-if
+fi
 
 set +x
 
