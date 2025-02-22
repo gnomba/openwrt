@@ -447,3 +447,7 @@ xmm-modem
 -youtubeUnblock
 zlib
 zram-swap
+attendedsysupgrade-common
+auc
+luci-app-attendedsysupgrade
+luci-i18n-attendedsysupgrade-ru

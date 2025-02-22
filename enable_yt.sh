@@ -15,8 +15,8 @@ vFILE="${vNAME}-${vVERSION}-${vBUILD}-${vCOMMIT}-${vARCH}-openwrt-23.05.ipk"
 vFILELUCI="luci-app-${vNAME}-${vVERSION}-${vBUILD}-${vCOMMIT}.ipk"
 echo "${vURL}/${vFILE}"
 echo "${vURL}/${vFILELUCI}"
-wget ${vURL}/${vFILE} -O /tmp/${vFILE}
-wget ${vURL}/${vFILELUCI} -O /tmp/${vFILELUCI}
+curl ${vURL}/${vFILE} -O /tmp/${vFILE}
+curl ${vURL}/${vFILELUCI} -O /tmp/${vFILELUCI}
 #opkg remove ${vNAME}
 #opkg remove luci-app-${vNAME}
 opkg install /tmp/${vFILE}
