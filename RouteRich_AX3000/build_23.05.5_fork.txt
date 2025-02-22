@@ -453,3 +453,6 @@ xmm-modem
 -youtubeUnblock
 zlib
 zram-swap
+ddns-scripts
+luci-app-ddns
+luci-i18n-ddns-ru
