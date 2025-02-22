@@ -28,6 +28,7 @@ comgt-ncm
 confuse
 curl
 dbus
+ddns-scripts
 -default-settings
 dnsmasq-full
 dropbear
@@ -278,6 +279,7 @@ luci-app-3ginfo-lite
 luci-app-access-control
 luci-app-adblock
 luci-app-atinout
+luci-app-ddns
 luci-app-filebrowser-go
 luci-app-filemanager
 luci-app-firewall
@@ -309,6 +311,7 @@ luci-i18n-access-control-ru
 luci-i18n-adblock-ru
 luci-i18n-atinout-ru
 luci-i18n-base-ru
+luci-i18n-ddns-ru
 luci-i18n-filebrowser-go-ru
 luci-i18n-firewall-ru
 luci-i18n-https-dns-proxy-ru
@@ -453,6 +456,3 @@ xmm-modem
 -youtubeUnblock
 zlib
 zram-swap
-ddns-scripts
-luci-app-ddns
-luci-i18n-ddns-ru
