@@ -1,6 +1,8 @@
 # https://firmware.routerich.ru/
 adblock
 atinout
+attendedsysupgrade-common
+auc
 automount
 base-config-routerich
 base-files
@@ -271,6 +273,7 @@ lua-bit32
 lua-ipops
 luaposix
 luci
+luci-app-attendedsysupgrade
 luci-app-3ginfo-lite
 luci-app-access-control
 luci-app-adblock
@@ -300,6 +303,7 @@ luci-app-wizard
 -luci-app-youtubeUnblock
 luci-base
 luci-compat
+luci-i18n-attendedsysupgrade-ru
 luci-i18n-3ginfo-lite-ru
 luci-i18n-access-control-ru
 luci-i18n-adblock-ru
@@ -439,7 +443,8 @@ usign
 vsftpd
 wireguard-tools
 wireless-regdb
-wget-nossl
+-wget-nossl
+wget-ssl
 wpad-openssl
 wsdd2
 wwan
@@ -448,7 +453,3 @@ xmm-modem
 -youtubeUnblock
 zlib
 zram-swap
-attendedsysupgrade-common
-auc
-luci-app-attendedsysupgrade
-luci-i18n-attendedsysupgrade-ru
