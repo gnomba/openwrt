@@ -2,40 +2,42 @@
 
 set -x
 
-# exit if routerich #
-#vBOARD_ID="$(cat /etc/board.json | grep id | sed 's/\"/ /g;s/,/ /g' | awk '{print $3}')"
-#[ "${vBOARD_ID}" = "routerich" ] && (echo " --- DETECTED BOARD: ${vBOARD_ID} --- Exit with code '1' ---"; exit 1)
-
 vCURL="$(which curl) -s"
 
 # youtubeUnblock #
 vNAME="youtubeUnblock"
-vRELEASE="v1.0.0"; echo "vRELEASE=${vRELEASE}"
-vBUILD="10"
-vCOMMIT="f37c3dd"; echo "vCOMMIT=${vCOMMIT}"
-vVERSION="$(echo ${vRELEASE} | sed 's/v//g;s/rc//g')"; echo "vVERSION=${vVERSION}"
-vURL="https://github.com/Waujito/${vNAME}/releases/download/${vRELEASE}"; echo "vURL=${vURL}"
-vARCH="$(opkg print-architecture | tail -n 1 | awk '{print $2}')"; echo "vARCH=${vARCH}"
+vRELEASE="v1.0.0"
+vBUILD="10" # TODO: add check version
+vCOMMIT="f37c3dd"
+vVERSION="$(echo ${vRELEASE} | sed 's/v//g;s/rc//g')"
+vURL="https://github.com/Waujito/${vNAME}/releases/download/${vRELEASE}"
+vARCH="$(opkg print-architecture | tail -n 1 | awk '{print $2}')"
 vFILE="${vNAME}-${vVERSION}-${vBUILD}-${vCOMMIT}-${vARCH}-openwrt-23.05.ipk"
 vFILELUCI="luci-app-${vNAME}-${vVERSION}-${vBUILD}-${vCOMMIT}.ipk"
-echo "${vURL}/${vFILE}"
-echo "${vURL}/${vFILELUCI}"
-wget ${vURL}/${vFILE} -O /tmp/${vFILE}
-wget ${vURL}/${vFILELUCI} -O /tmp/${vFILELUCI}
-#opkg remove ${vNAME}
-#opkg remove luci-app-${vNAME}
-opkg install /tmp/${vFILE}
-opkg install /tmp/${vFILELUCI}
-rm -fv /tmp/${vFILE}
-rm -fv /tmp/${vFILELUCI}
+
+vBOARD_ID="$(cat /etc/board.json | grep id | sed 's/\"/ /g;s/,/ /g' | awk '{print $3}')"
+
+if [ "${vBOARD_ID}" == "routerich" ]; then
+    echo " --- DETECTED BOARD: routerich ---"
+    opkg update
+    opkg install ${vNAME}
+    opkg install luci-app-${vNAME}
+else
+    echo " --- DETECTED BOARD: non-routerich ---"
+    wget ${vURL}/${vFILE} -O /tmp/${vFILE}
+    wget ${vURL}/${vFILELUCI} -O /tmp/${vFILELUCI}
+    opkg install /tmp/${vFILE}
+    opkg install /tmp/${vFILELUCI}
+    rm -fv /tmp/*${vNAME}*
+fi
 
 vDOMAINS_URL="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data"
-echo "vDOMAINS_URL=${vDOMAINS_URL}"
+#echo "vDOMAINS_URL=${vDOMAINS_URL}"
 vDOMAINS_LIST="youtube discord facebook instagram whatsapp twitter"
-echo "vDOMAINS_LIST=${vDOMAINS_LIST}"
+#echo "vDOMAINS_LIST=${vDOMAINS_LIST}"
 vDOMAINS_CUSTOM="googleapis.com play.google.com googleusercontent.com gstatic.com l.google.com gvt1.com yt-video-upload.l.google.com meta.ai meta.com
 filmix.day rutracker.org rutracker.net rutracker.cc rutor.info rutor.is nnmclub.to pscp.tv upaste.me dmitry-tv.ddns.net dmi3y-tv.ru"
-echo "vDOMAINS_CUSTOM=${vDOMAINS_CUSTOM}"
+#echo "vDOMAINS_CUSTOM=${vDOMAINS_CUSTOM}"
 
 uci set youtubeUnblock.youtubeUnblock.no_ipv6='1'
 uci set youtubeUnblock.@section[0].sni_domains=''
@@ -54,8 +56,8 @@ for vDOMAIN_ITEM in ${vDOMAINS_LIST};do
     done
 done
 
-uci commit youtubeUnblock
-/etc/init.d/youtubeUnblock restart
+uci commit ${vNAME}
+/etc/init.d/${vNAME} restart
 
 set +x
 
