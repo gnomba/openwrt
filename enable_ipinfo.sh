@@ -3,8 +3,10 @@
 
 set -x
 
-curl -s https://raw.githubusercontent.com/animegasan/luci-app-ipinfo/master/install.sh | sh
-rm -fv /root/luci-app-ipinfo*
+vNAME="ipinfo"
+
+curl -s https://raw.githubusercontent.com/animegasan/luci-app-${vNAME}/master/install.sh | sh
+rm -fv /root/*${vNAME}*
 
 set +x
 
