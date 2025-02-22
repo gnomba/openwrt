@@ -6,7 +6,10 @@ set -x
 
 # exit if routerich #
 vBOARD_ID="$(cat /etc/board.json | grep id | sed 's/\"/ /g;s/,/ /g' | awk '{print $3}')"
-[ "${vBOARD_ID}" = "routerich" ] && (echo " --- DETECTED BOARD: ${vBOARD_ID} --- Exit with code '1' ---"; exit 1)
+if [ "${vBOARD_ID}" == "routerich" ]; then 
+    echo " --- DETECTED BOARD: ${vBOARD_ID} --- Exit with code '1' ---"
+    exit 1
+fi
 
 vNAME="ttl"
 vVERSION="0.0.3"
