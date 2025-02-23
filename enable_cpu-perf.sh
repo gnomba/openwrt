@@ -16,8 +16,8 @@ opkg install /tmp/${vFILELUCI}
 opkg install /tmp/${vFILELUCILANG}
 
 /etc/init.d/rpcd reload
-/etc/init.d/cpu-perf enable
-/etc/init.d/cpu-perf start
+/etc/init.d/cpu-perf stop
+/etc/init.d/cpu-perf disable
 
 rm -fv /tmp/*${vNAME}*
 

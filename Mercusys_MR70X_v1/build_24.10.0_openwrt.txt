@@ -3,7 +3,7 @@
 -adb-enablemodem
 adblock
 -atinout
--attendedsysupgrade-common
+attendedsysupgrade-common
 -auc
 -automount
 base-files
@@ -277,7 +277,7 @@ lua-bit32
 -lua-ipops
 luaposix
 luci
--luci-app-attendedsysupgrade
+luci-app-attendedsysupgrade
 -luci-app-3ginfo-lite
 -luci-app-access-control
 luci-app-adblock
@@ -304,7 +304,7 @@ luci-app-upnp
 -luci-app-wizard
 luci-base
 luci-compat
--luci-i18n-attendedsysupgrade-ru
+luci-i18n-attendedsysupgrade-ru
 -luci-i18n-3ginfo-lite-ru
 -luci-i18n-access-control-ru
 luci-i18n-adblock-ru

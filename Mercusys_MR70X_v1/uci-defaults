@@ -159,3 +159,8 @@ uci get network.globals.packet_steering > /dev/null || {
     uci set network.globals.packet_steering=1
     uci commit network
 }
+
+echo "# igmpproxy #"
+/etc/init.d/igmpproxy stop
+/etc/init.d/igmpproxy disable
+/etc/init.d/igmpproxy status

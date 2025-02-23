@@ -203,3 +203,8 @@ echo "# ddns #"
 /etc/init.d/ddns disable
 /etc/init.d/ddns stop
 /etc/init.d/ddns status
+
+echo "# igmpproxy #"
+/etc/init.d/igmpproxy stop
+/etc/init.d/igmpproxy disable
+/etc/init.d/igmpproxy status
