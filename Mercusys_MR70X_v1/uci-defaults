@@ -5,10 +5,10 @@ exec >/tmp/setup.log 2>&1
 
 set -x
 ip a | grep 'state\|ether'
-last_4_mac_eth0="$(ip a show eth0 | grep 'link/ether' | sed 's/brd.*$//g' | awk -F':' '{print toupper($5$6)}')"
+last_4_mac_eth0="$(ip a show eth0 | grep 'link/ether' | sed 's/ brd.*$//g' | awk -F':' '{print toupper($5$6)}')"
 echo "last_4_mac_eth0=${last_4_mac_eth0}"
 wlan_name_2g="MERCUSYS_${last_4_mac_eth0}"
-echo "wlan_name_2g=${wlan_name_2g}"
+echo "wlan_name_2g='${wlan_name_2g}'"
 wlan_name_5g="MERCUSYS_${last_4_mac_eth0}_5G"
 echo "wlan_name_5g=${wlan_name_5g}"
 wlan_password="1234567890"
