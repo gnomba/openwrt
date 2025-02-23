@@ -2,7 +2,7 @@
 # INFO: https://github.com/gSpotx2f/luci-app-cpu-perf
 
 set -x
-
+# TODO: add check cpu model
 vNAME="cpu-perf"
 vVERSION="0.4.0-r1"
 vFILELUCI="luci-app-${vNAME}_${vVERSION}_all.ipk"

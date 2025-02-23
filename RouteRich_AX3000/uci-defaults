@@ -1,25 +1,33 @@
 ### uci-defaults RouteRich AX3000 ###
 
-set -x
+echo "# log potential errors: /tmp/setup.log"
+exec >/tmp/setup.log 2>&1
 
-last_4_mac_wlan0="$(ip a show wlan0 | tail -n 1 | sed 's/brd.*$//g' | awk -F':' '{print toupper($5$6)}')"
-wlan_name_2g="RouteRich_${last_4_mac_wlan0}"
-wlan_name_5g="RouteRich_${last_4_mac_wlan0}_5G"
+set -x
+ip a
+last_4_mac_eth0="$(ip a show eth0 | grep 'link/ether' | sed 's/brd.*$//g' | awk -F':' '{print toupper($5$6)}')"
+echo "last_4_mac_eth0=${last_4_mac_eth0}"
+wlan_name_2g="RouteRich_${last_4_mac_eth0}"
+echo "wlan_name_2g=${wlan_name_2g}"
+wlan_name_5g="RouteRich_${last_4_mac_eth0}_5G"
+echo "wlan_name_5g=${wlan_name_5g}"
 wlan_password="1234567890"
+echo "wlan_password=${wlan_password}"
 wlan_mode="ap"
+echo "wlan_mode=${wlan_mode}"
 wlan_encryption="psk2"
+echo "wlan_encryption=${wlan_encryption}"
 
 root_password="${wlan_password}"
+echo "root_password=${root_password}"
 lan_ip_address="192.168.1.1"
-
-# log potential errors
-exec >/tmp/setup.log 2>&1
+echo "lan_ip_address=${lan_ip_address}"
 
 if [ -n "${root_password}" ]; then
   (echo "${root_password}"; sleep 1; echo "${root_password}") | passwd > /dev/null
 fi
 
-uci -q batch << EOI
+uci batch << EOI
 # system #
 set system.@system[0].hostname=${wlan_name_2g}
 set system.@system[0].timezone='MSK-3'
@@ -114,7 +122,7 @@ set adblock.global.adb_trigger='wan'
 commit adblock
 EOI
 
-# https-dns-proxy #
+echo "# https-dns-proxy #"
 while uci -q delete https-dns-proxy.@https-dns-proxy[0]; do :; done
 uci set https-dns-proxy.config.force_dns='1'
 uci set https-dns-proxy.config.canary_domains_icloud='1'
@@ -150,11 +158,13 @@ uci set https-dns-proxy.@https-dns-proxy[3].group='nogroup'
 uci commit https-dns-proxy
 
 /etc/init.d/rpcd restart
+/etc/init.d/rpcd status
 /etc/init.d/https-dns-proxy enable
 /etc/init.d/https-dns-proxy restart
+/etc/init.d/https-dns-proxy status
 
-# dnsmasq #
-uci -q get dhcp.@dnsmasq[0] || uci add dhcp dnsmasq
+echo "# dnsmasq #"
+uci get dhcp.@dnsmasq[0] || uci add dhcp dnsmasq
 uci set dhcp.@dnsmasq[0].cachesize='2048'
 uci set dhcp.@dnsmasq[0].dnsforwardmax='2048'
 uci set dhcp.@dnsmasq[0].min_cache_ttl="600"
@@ -173,21 +183,23 @@ for vDOMAIN_ITEM in ${vDHCP_DOMAIN_LIST}; do
 done
 uci commit dhcp
 
-# firewall fix mtu #
+echo "# firewall fix mtu #"
 [ "$(uci get firewall.@zone[0].name 2>/dev/null)" = "lan" ] && {
     [ "$(uci get firewall.@zone[0].mtu_fix 2>/dev/null)" = "1" ] || uci set firewall.@zone[0].mtu_fix='1'
 }
 uci commit firewall
-service firewall restart
+/etc/init.d/firewall restart
+/etc/init.d/firewall status
 
-# network         #
-# packet steering #
-uci -q get network.globals.packet_steering > /dev/null || {
+echo "# network         #"
+echo "# packet steering #"
+uci get network.globals.packet_steering > /dev/null || {
     uci set network.globals='globals'
     uci set network.globals.packet_steering=1
     uci commit network
 }
 
-# ddns #
+echo "# ddns #"
 /etc/init.d/ddns disable
 /etc/init.d/ddns stop
+/etc/init.d/ddns status

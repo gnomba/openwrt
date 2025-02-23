@@ -1,4 +1,6 @@
-# https://firmware.routerich.ru/
+# https://firmware.routerich.ru/?version=23.05.5&target=mediatek%2Ffilogic&id=routerich_ax3000
+adb
+adb-enablemodem
 adblock
 atinout
 attendedsysupgrade-common
@@ -6,6 +8,7 @@ auc
 automount
 base-config-routerich
 base-files
+bash
 batctl-default
 block-mount
 bmon
@@ -26,6 +29,8 @@ collectd-mod-thermal
 comgt
 comgt-ncm
 confuse
+coreutils
+coreutils-sort
 curl
 dbus
 ddns-scripts
@@ -133,15 +138,15 @@ kmod-mtd-rw
 kmod-natflow
 kmod-nf-conntrack
 kmod-nf-conntrack-netlink
-kmod-nf-conntrack6
+-kmod-nf-conntrack6
 kmod-nf-flow
 kmod-nf-ipt
 kmod-nf-log
-kmod-nf-log6
+-kmod-nf-log6
 kmod-nf-nat
 kmod-nf-nathelper-extra
 kmod-nf-reject
-kmod-nf-reject6
+-kmod-nf-reject6
 kmod-nf-tproxy
 kmod-nfnetlink
 kmod-nfnetlink-queue
@@ -156,7 +161,7 @@ kmod-nls-cp437
 kmod-nls-iso8859-1
 kmod-nls-utf8
 kmod-oid-registry
-kmod-phy-aquantia
+-kmod-phy-aquantia
 kmod-ppp
 kmod-pppoe
 kmod-pppol2tp
@@ -168,7 +173,7 @@ kmod-slhc
 kmod-thermal
 kmod-tun
 kmod-udptunnel4
-kmod-udptunnel6
+-kmod-udptunnel6
 kmod-usb-acm
 kmod-usb-core
 kmod-usb-net
@@ -335,7 +340,7 @@ luci-lib-ip
 luci-lib-jsonc
 luci-lib-nixio
 luci-lib-uqr
-luci-light
+-luci-light
 luci-lua-runtime
 luci-mod-admin-full
 luci-mod-network
@@ -344,7 +349,7 @@ luci-mod-system
 luci-proto-3g
 luci-proto-batman-adv
 luci-proto-fm350
-luci-proto-ipv6
+-luci-proto-ipv6
 luci-proto-mbim
 luci-proto-ncm
 luci-proto-ppp
@@ -352,7 +357,7 @@ luci-proto-qmi
 luci-proto-wireguard
 luci-proto-xmm
 luci-ssl
-luci-theme-bootstrap
+-luci-theme-bootstrap
 luci-theme-routerich
 mc
 miniupnpd-nftables
@@ -386,10 +391,10 @@ natflow-hostacl
 netifd
 nftables-json
 nlbwmon
-nnn
+-nnn
 ntfs3-mount
-odhcp6c
-odhcpd-ipv6only
+-odhcp6c
+-odhcpd-ipv6only
 openwrt-keyring
 opkg
 ppp
@@ -406,6 +411,7 @@ rpcd
 rpcd-mod-file
 rpcd-mod-iwinfo
 rpcd-mod-luci
+rpcd-mod-rpcsys
 rpcd-mod-rrdns
 rpcd-mod-ucode
 rrdtool1
