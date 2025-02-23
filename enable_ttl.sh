@@ -4,7 +4,7 @@
 
 set -x
 
-vBOARD_ID="$(cat /etc/board.json | grep id | sed 's/\"/ /g;s/,/ /g' | awk '{print $3}')"
+vBOARD_ID="$(cat /etc/board.json | grep '"id"\:' | head -n 1 | sed 's/\"/ /g;s/,/ /g' | awk '{print $3}')"
 
 if [ "${vBOARD_ID}" == "routerich" ]; then 
     echo " --- DETECTED BOARD: routerich ---"

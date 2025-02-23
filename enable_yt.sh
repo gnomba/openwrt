@@ -15,7 +15,7 @@ vARCH="$(opkg print-architecture | tail -n 1 | awk '{print $2}')"
 vFILE="${vNAME}-${vVERSION}-${vBUILD}-${vCOMMIT}-${vARCH}-openwrt-23.05.ipk"
 vFILELUCI="luci-app-${vNAME}-${vVERSION}-${vBUILD}-${vCOMMIT}.ipk"
 
-vBOARD_ID="$(cat /etc/board.json | grep id | sed 's/\"/ /g;s/,/ /g' | awk '{print $3}')"
+vBOARD_ID="$(cat /etc/board.json | grep '"id"\:' | head -n 1 | sed 's/\"/ /g;s/,/ /g' | awk '{print $3}')"
 
 if [ "${vBOARD_ID}" == "routerich" ]; then
     echo " --- DETECTED BOARD: routerich ---"

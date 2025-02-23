@@ -56,7 +56,7 @@ igmpproxy
 ip-tiny
 -iperf3
 -ipset
--iptables-mod-ipopt
+iptables-mod-ipopt
 iw
 iwinfo
 jansson4
@@ -109,7 +109,7 @@ kmod-gre
 kmod-hwmon-core
 -kmod-ipt-conntrack
 -kmod-ipt-core
--kmod-ipt-ipopt
+kmod-ipt-ipopt
 -kmod-ipt-ipset
 -kmod-ipt-nat
 kmod-iptunnel
