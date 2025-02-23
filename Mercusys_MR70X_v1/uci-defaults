@@ -160,6 +160,11 @@ uci get network.globals.packet_steering > /dev/null || {
     uci commit network
 }
 
+echo "# ddns #"
+/etc/init.d/ddns disable
+/etc/init.d/ddns stop
+/etc/init.d/ddns status
+
 echo "# igmpproxy #"
 /etc/init.d/igmpproxy stop
 /etc/init.d/igmpproxy disable
