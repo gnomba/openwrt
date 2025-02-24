@@ -51,13 +51,25 @@ done
 for vDOMAIN_ITEM in ${vDOMAINS_LIST};do
     echo "###--- ${vDOMAIN_ITEM} ---###"
     vITEM_URL="${vDOMAINS_URL}/${vDOMAIN_ITEM}"
-    for vYT_ITEM in $(${vCURL} ${vITEM_URL} | grep -v "^#\|^$\|^include\:\|-ads\|ads-" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
+    for vYT_ITEM in $(${vCURL} ${vITEM_URL} | grep -v "^#\|^$\|^include\:\|-ads\|ads-\|@ads" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
         uci add_list youtubeUnblock.@section[0].sni_domains=${vYT_ITEM}
     done
 done
 
 uci commit ${vNAME}
 /etc/init.d/${vNAME} restart
+
+vVIA_COMSS_LIST="$(curl -s https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main/configure_zaprets.sh | grep "cfg01411c\.server=\'\/\*\." | sed "s/\'/ /g" | awk '{print $4}')"
+for vCOMSS_ITEM in ${vVIA_COMSS_LIST}; do
+    uci add_list dhcp.@dnsmasq[0].server="${vCOMSS_ITEM}"
+done
+vDHCP_DOMAIN_LIST="$(curl -s https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main/configure_zaprets.sh | grep 'nPermanentName' | grep -v '(' | sed "s/\"//g" | awk '{print $2}')"
+for vDOMAIN_ITEM in ${vDHCP_DOMAIN_LIST}; do
+    uci add dhcp domain
+    uci set dhcp.@domain[-1].name="${vDOMAIN_ITEM}"
+    uci set dhcp.@domain[-1].ip="94.131.119.85"
+done
+uci commit dhcp
 
 set +x
 

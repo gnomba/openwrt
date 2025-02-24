@@ -170,16 +170,9 @@ uci set dhcp.@dnsmasq[0].dnsforwardmax='2048'
 uci set dhcp.@dnsmasq[0].min_cache_ttl="600"
 uci set dhcp.@dnsmasq[0].max_cache_ttl="86400"
 uci set dhcp.@dnsmasq[0].nonegcache='1'
-vVIA_COMSS_LIST="comss.ru comss.one chatgpt.com oaistatic.com oaiusercontent.com openai.com microsoft.com windowsupdate.com bing.com supercell.com seeurlpcl.com supercellid.com
-supercellgames.com clashroyale.com brawlstars.com clash.com clashofclans.com x.ai grok.com"
+vVIA_COMSS_LIST="comss.ru comss.one"
 for vCOMSS_ITEM in ${vVIA_COMSS_LIST}; do
     uci add_list dhcp.@dnsmasq[0].server="/*.${vCOMSS_ITEM}/127.0.0.1#5056"
-done
-vDHCP_DOMAIN_LIST="chatgpt.com openai.com webrtc.chatgpt.com ios.chat.openai.com searchgpt.com"
-for vDOMAIN_ITEM in ${vDHCP_DOMAIN_LIST}; do
-    uci add dhcp domain
-    uci set dhcp.@domain[-1].name="${vDOMAIN_ITEM}"
-    uci set dhcp.@domain[-1].ip="94.131.119.85"
 done
 uci commit dhcp
 
@@ -200,6 +193,8 @@ uci get network.globals.packet_steering > /dev/null || {
 }
 
 echo "# ddns #"
+uci delete ddns.myddns_ipv6
+uci commit ddns
 /etc/init.d/ddns disable
 /etc/init.d/ddns stop
 /etc/init.d/ddns status
