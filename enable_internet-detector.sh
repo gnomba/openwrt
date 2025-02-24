@@ -15,7 +15,7 @@ else
     vVERLUCI="$(curl -s ${vBASE_URL} | grep "^opkg" | grep "/tmp/luci-app-internet-detector_" | sed "s/\_/ /g" | awk '{print $4}' | uniq)"
     vFILELUCI="luci-app-${vNAME}_${vVERLUCI}_all.ipk"
     vVERLANG="$(curl -s ${vBASE_URL} | grep "^opkg" | grep "/tmp/luci-i18n-internet-detector" | sed "s/\_/ /g" | awk '{print $4}' | uniq)"
-    vFILELUCILANG="luci-i18n-${vNAME}-ru_${vVERSION}_all.ipk"
+    vFILELUCILANG="luci-i18n-${vNAME}-ru_${vVERLANG}_all.ipk"
     vURL="https://github.com/gSpotx2f/packages-openwrt/raw/master/current"
 
     wget ${vURL}/${vFILE} -O /tmp/${vFILE}
