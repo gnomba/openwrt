@@ -8,10 +8,13 @@ vBOARD_ID="$(cat /etc/board.json | grep '"id"\:' | head -n 1 | sed 's/\"/ /g;s/,
 if [ "${vBOARD_ID}" == "routerich" ]; then 
     echo " --- DETECTED BOARD: routerich ---"
 else
+    vBASE_URL="https://github.com/gSpotx2f/luci-app-internet-detector"
     vNAME="internet-detector"
-    vVERSION="1.4.2-r1"
+    vVERSION="$(curl -s ${vBASE_URL} | grep "^opkg" | grep "/tmp/internet-detector_" | sed "s/\_/ /g" | awk '{print $4}' | uniq)"
     vFILE="${vNAME}_${vVERSION}_all.ipk"
-    vFILELUCI="luci-app-${vNAME}_${vVERSION}_all.ipk"
+    vVERLUCI="$(curl -s ${vBASE_URL} | grep "^opkg" | grep "/tmp/luci-app-internet-detector_" | sed "s/\_/ /g" | awk '{print $4}' | uniq)"
+    vFILELUCI="luci-app-${vNAME}_${vVERLUCI}_all.ipk"
+    vVERLANG="$(curl -s ${vBASE_URL} | grep "^opkg" | grep "/tmp/luci-i18n-internet-detector" | sed "s/\_/ /g" | awk '{print $4}' | uniq)"
     vFILELUCILANG="luci-i18n-${vNAME}-ru_${vVERSION}_all.ipk"
     vURL="https://github.com/gSpotx2f/packages-openwrt/raw/master/current"
 

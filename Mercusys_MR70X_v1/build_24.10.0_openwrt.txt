@@ -30,6 +30,7 @@ collectd-mod-thermal
 confuse
 coreutils
 coreutils-sort
+coreutils-uniq
 curl
 dbus
 ddns-scripts
