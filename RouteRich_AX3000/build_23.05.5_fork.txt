@@ -142,6 +142,7 @@ kmod-nf-conntrack-netlink
 -kmod-nf-conntrack6
 kmod-nf-flow
 kmod-nf-ipt
+-kmod-nf-ipt6
 kmod-nf-log
 -kmod-nf-log6
 kmod-nf-nat

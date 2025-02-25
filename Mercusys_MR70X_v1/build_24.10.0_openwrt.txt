@@ -57,7 +57,9 @@ igmpproxy
 ip-tiny
 -iperf3
 -ipset
+iptables-mod-conntrack-extra
 iptables-mod-ipopt
+iptables-zz-legacy
 iw
 iwinfo
 jansson4
@@ -139,7 +141,8 @@ kmod-nf-conntrack
 kmod-nf-conntrack-netlink
 -kmod-nf-conntrack6
 kmod-nf-flow
--kmod-nf-ipt
+kmod-nf-ipt
+-kmod-nf-ipt6
 kmod-nf-log
 -kmod-nf-log6
 kmod-nf-nat
@@ -216,6 +219,7 @@ libext2fs2
 libffi
 libgcc1
 libgmp10
+libip4tc2
 -libiperf3
 -libipset13
 libiwinfo-data
