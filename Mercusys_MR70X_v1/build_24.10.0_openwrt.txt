@@ -60,7 +60,7 @@ ip-tiny
 -ipset
 iptables-mod-conntrack-extra
 iptables-mod-ipopt
-iptables-nft
+-iptables-nft
 iptables-zz-legacy
 iw
 iwinfo
