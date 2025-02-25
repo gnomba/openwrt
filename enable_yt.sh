@@ -52,7 +52,7 @@ done
 for vDOMAIN_ITEM in ${vDOMAINS_LIST};do
     echo "###--- ${vDOMAIN_ITEM} ---###"
     vITEM_URL="${vDOMAINS_URL}/${vDOMAIN_ITEM}"
-    for vYT_ITEM in $(${vCURL} ${vITEM_URL} | grep -v "^#\|^$\|^include\:\|-ads\|ads-\|@ads" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
+    for vYT_ITEM in $(curl -s ${vITEM_URL} | grep -v "^#\|^$\|^include\:\|-ads\|ads-\|@ads" | sed "s/link\://g;s/ @.*$//g;s/full\://g"); do
         uci add_list youtubeUnblock.@section[0].sni_domains=${vYT_ITEM}
     done
 done
