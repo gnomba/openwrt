@@ -19,7 +19,7 @@ for vITEM in ${vLIST_OPTIONS}; do
     curl -s ${vURL}/${vITEM}.sh | sh
 done
 ```
-
+```
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ads.sh | sh
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ipv6.sh | sh
 
@@ -31,6 +31,10 @@ done
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_log-viewer.sh | sh
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_speedtest.sh | sh
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_temp-status.sh | sh
-- [ ] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_ttl.sh | sh
+- [?] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_ttl.sh | sh
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_yt.sh | sh
-
+```
+add fantastic-shmantastic
+https://github.com/fantastic-packages/packages/tree/gh-pages?tab=readme-ov-file#readme
+https://fantastic-packages.github.io/packages/releases/24.10/packages/mipsel_24kc/packages/fantastic-keyring_20240427-r1_all.ipk
+https://fantastic-packages.github.io/packages/releases/24.10/packages/mipsel_24kc/packages/fantastic-packages-feeds_20241201-r1_all.ipk
