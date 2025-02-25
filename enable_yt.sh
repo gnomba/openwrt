@@ -2,15 +2,16 @@
 
 set -x
 
-vCURL="$(which curl) -s"
-
 # youtubeUnblock #
 vNAME="youtubeUnblock"
-vRELEASE="v1.0.0"
-vBUILD="10" # TODO: add check version
-vCOMMIT="f37c3dd"
-vVERSION="$(echo ${vRELEASE} | sed 's/v//g;s/rc//g')"
-vURL="https://github.com/Waujito/${vNAME}/releases/download/${vRELEASE}"
+vURL="https://github.com/Waujito/${vNAME}/releases"
+vTEXT="$(curl -s ${vURL} | grep "luci-app-youtubeUnblock-" | grep download | sed 's/\// /g;s/-/ /g;s/\.ipk/ /g')"
+
+
+vRELEASE="$(echo ${vTEXT} | awk '{print $7}')"
+vBUILD="$(echo ${vTEXT} | awk '{print $12}')"
+vCOMMIT="$(echo ${vTEXT} | awk '{print $13}')"
+vVERSION="$(echo ${vTEXT} | awk '{print $1}')"
 vARCH="$(opkg print-architecture | tail -n 1 | awk '{print $2}')"
 vFILE="${vNAME}-${vVERSION}-${vBUILD}-${vCOMMIT}-${vARCH}-openwrt-23.05.ipk"
 vFILELUCI="luci-app-${vNAME}-${vVERSION}-${vBUILD}-${vCOMMIT}.ipk"
@@ -24,8 +25,8 @@ if [ "${vBOARD_ID}" == "routerich" ]; then
     opkg install luci-app-${vNAME}
 else
     echo " --- DETECTED BOARD: non-routerich ---"
-    wget ${vURL}/${vFILE} -O /tmp/${vFILE}
-    wget ${vURL}/${vFILELUCI} -O /tmp/${vFILELUCI}
+    wget ${vURL}/download/${vRELEASE}/${vFILE} -O /tmp/${vFILE}
+    wget ${vURL}/download/${vRELEASE}/${vFILELUCI} -O /tmp/${vFILELUCI}
     opkg install /tmp/${vFILE}
     opkg install /tmp/${vFILELUCI}
     rm -fv /tmp/*${vNAME}*
@@ -60,12 +61,12 @@ uci commit ${vNAME}
 /etc/init.d/${vNAME} restart
 /etc/init.d/https-dns-proxy restart
 
-vVIA_COMSS_LIST="$(curl -s https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main/configure_zaprets.sh | grep "cfg01411c\.server=\'\/\*\." | sed "s/\'/ /g" | awk '{print $4}')"
+vVIA_COMSS_LIST="$(curl -s https://raw.githubusercontent.com/CodeRoK7/RouterichAX3000_configs/refs/heads/main/configure_zaprets.sh | grep "cfg01411c\.server=\'\/\*\." | sed "s/\'/ /g" | awk '{print $4}')"
 for vCOMSS_ITEM in ${vVIA_COMSS_LIST}; do
     uci add_list dhcp.@dnsmasq[0].server="${vCOMSS_ITEM}"
 done
 while uci -q delete dhcp.@domain[0]; do :; done
-vDHCP_DOMAIN_LIST="$(curl -s https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main/configure_zaprets.sh | grep 'nPermanentName' | grep -v '(' | sed "s/\"//g" | awk '{print $2}')"
+vDHCP_DOMAIN_LIST="$(curl -s https://raw.githubusercontent.com/CodeRoK7/RouterichAX3000_configs/refs/heads/main/configure_zaprets.sh | grep 'nPermanentName' | grep -v '(' | sed "s/\"//g" | awk '{print $2}')"
 for vDOMAIN_ITEM in ${vDHCP_DOMAIN_LIST}; do
     uci add dhcp domain
     uci set dhcp.@domain[-1].name="${vDOMAIN_ITEM}"

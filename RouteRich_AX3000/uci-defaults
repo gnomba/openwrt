@@ -7,9 +7,9 @@ set -x
 ip a
 last_4_mac_eth0="$(ip a show eth0 | grep 'link/ether' | sed 's/ brd.*$//g' | awk -F':' '{print toupper($5$6)}')"
 echo "last_4_mac_eth0=${last_4_mac_eth0}"
-wlan_name_2g="RouteRich_${last_4_mac_eth0}"
+wlan_name_2g="RR-AX3000_${last_4_mac_eth0}"
 echo "wlan_name_2g='${wlan_name_2g}'"
-wlan_name_5g="RouteRich_${last_4_mac_eth0}_5G"
+wlan_name_5g="RR-AX3000_${last_4_mac_eth0}_5G"
 echo "wlan_name_5g=${wlan_name_5g}"
 wlan_password="1234567890"
 echo "wlan_password=${wlan_password}"
