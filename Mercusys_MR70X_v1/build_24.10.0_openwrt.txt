@@ -36,6 +36,7 @@ dbus
 ddns-scripts
 -default-settings
 dnsmasq-full
+drill
 dropbear
 e2fsprogs
 eip197-mini-firmware
@@ -226,6 +227,7 @@ libiwinfo-data
 libiwinfo20230701
 libjson-c5
 libjson-script20240329
+libldns
 libltdl7
 liblua5.1.5
 liblucihttp-lua
