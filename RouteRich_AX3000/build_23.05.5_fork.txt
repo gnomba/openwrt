@@ -60,7 +60,10 @@ internet-detector
 ip-tiny
 iperf3
 ipset
+iptables-mod-conntrack-extra
 iptables-mod-ipopt
+iptables-nft
+iptables-zz-legacy
 iw
 iwinfo
 jansson4
@@ -137,6 +140,7 @@ kmod-mt76-core
 kmod-mt7915e
 kmod-mt7981-firmware
 kmod-mtd-rw
+-kmod-nat46
 kmod-natflow
 kmod-nf-conntrack
 kmod-nf-conntrack-netlink

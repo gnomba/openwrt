@@ -60,6 +60,7 @@ ip-tiny
 -ipset
 iptables-mod-conntrack-extra
 iptables-mod-ipopt
+iptables-nft
 iptables-zz-legacy
 iw
 iwinfo
@@ -138,6 +139,7 @@ kmod-mt7915e
 kmod-mt7915-firmware
 kmod-mtd-rw
 -kmod-natflow
+-kmod-nat46
 kmod-nf-conntrack
 kmod-nf-conntrack-netlink
 -kmod-nf-conntrack6
