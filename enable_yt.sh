@@ -7,7 +7,6 @@ vNAME="youtubeUnblock"
 vURL="https://github.com/Waujito/${vNAME}/releases"
 vTEXT="$(curl -s ${vURL} | grep "luci-app-youtubeUnblock-" | grep download | sed 's/\// /g;s/-/ /g;s/\.ipk/ /g')"
 
-
 vRELEASE="$(echo ${vTEXT} | awk '{print $7}')"
 vBUILD="$(echo ${vTEXT} | awk '{print $12}')"
 vCOMMIT="$(echo ${vTEXT} | awk '{print $13}')"
@@ -20,16 +19,26 @@ vBOARD_ID="$(cat /etc/board.json | grep '"id"\:' | head -n 1 | sed 's/\"/ /g;s/,
 
 if [ "${vBOARD_ID}" == "routerich" ]; then
     echo " --- DETECTED BOARD: routerich ---"
-    opkg update
-    opkg install ${vNAME}
-    opkg install luci-app-${vNAME}
+    if [ "$(opkg list-installed | grep ${vNAME} | wc -l)" -lt "2" ]
+    then
+        opkg update
+        opkg install ${vNAME}
+        opkg install luci-app-${vNAME}
+    else
+        echo " --- ${vNAME} уже установлен ---"
+    fi
 else
     echo " --- DETECTED BOARD: non-routerich ---"
-    wget ${vURL}/download/${vRELEASE}/${vFILE} -O /tmp/${vFILE}
-    wget ${vURL}/download/${vRELEASE}/${vFILELUCI} -O /tmp/${vFILELUCI}
-    opkg install /tmp/${vFILE}
-    opkg install /tmp/${vFILELUCI}
-    rm -fv /tmp/*${vNAME}*
+    if [ "$(opkg list-installed | grep ${vNAME} | wc -l)" -lt "2" ]
+    then
+        wget ${vURL}/download/${vRELEASE}/${vFILE} -O /tmp/${vFILE}
+        wget ${vURL}/download/${vRELEASE}/${vFILELUCI} -O /tmp/${vFILELUCI}
+        opkg install /tmp/${vFILE}
+        opkg install /tmp/${vFILELUCI}
+        rm -fv /tmp/*${vNAME}*
+    else
+        echo " --- ${vNAME} уже установлен ---"
+    fi
 fi
 
 vDOMAINS_URL="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data"
