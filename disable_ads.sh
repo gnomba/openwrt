@@ -25,6 +25,8 @@ if [ "${vADBLOCK_CHK}" == "adblock" ]; then
         echo "# ${vADS_ITEM} #"
         curl -s ${vDOMAINS_URL}/${vADS_ITEM} | grep '@ads' | grep -v 'regexp' | sed "s/link\://g;s/ @.*$//g;s/full\://g" >> ${vADBLOCK_BLACK}
     done
+
+    /etc/init.d/adblock restart
 else
     echo "+-----------------------------------------------------------+"
     echo "| 'adblock' не установлен                                   |"
@@ -33,7 +35,5 @@ else
     echo "| потом заново запустить ентот скрипт                       |"
     echo "+-----------------------------------------------------------+"
 fi
-
-/etc/init.d/adblock restart
 
 exit 0
