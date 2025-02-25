@@ -164,3 +164,6 @@ echo "# igmpproxy #"
 /etc/init.d/igmpproxy stop
 /etc/init.d/igmpproxy disable
 /etc/init.d/igmpproxy status
+
+echo "# iptables #"
+echo 'ip_tables' >> /etc/modules

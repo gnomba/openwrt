@@ -2,6 +2,9 @@
 # INFO: https://github.com/kenzok8/jell/tree/main/luci-app-ttl
 # INFO: https://github.com/routerich/packages.routerich/tree/23.05.5/routerich
 
+# opkg list-installed | grep ttl
+# opkg remove luci-i18n-ttl-ru luci-app-ttl
+
 set -x
 
 vBOARD_ID="$(cat /etc/board.json | grep '"id"\:' | head -n 1 | sed 's/\"/ /g;s/,/ /g' | awk '{print $3}')"
