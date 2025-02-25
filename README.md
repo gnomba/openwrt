@@ -1,5 +1,6 @@
 # openwrt
 
+```
 vURL="https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main"
 vLIST_OPTIONS="
 enable_yt
@@ -17,6 +18,7 @@ disable_ads"
 for vITEM in ${vLIST_OPTIONS}; do
     curl -s ${vURL}/${vITEM}.sh | sh
 done
+```
 
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ads.sh | sh
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ipv6.sh | sh
