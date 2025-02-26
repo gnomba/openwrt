@@ -55,6 +55,10 @@ else
         /etc/init.d/cpu-perf stop
         /etc/init.d/internet-detector enable
         /etc/init.d/internet-detector start
+
+        echo " ###"
+        echo " ### NEED reboot ###"
+        echo " ###"
     fi
 fi
 
