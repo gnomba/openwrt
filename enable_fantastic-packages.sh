@@ -1,0 +1,36 @@
+#!/bin/sh
+# INFO: https://github.com/fantastic-packages/packages/tree/gh-pages?tab=readme-ov-file#readme
+
+set -x
+
+vNAME="fantastic"
+vBASE_URL="https://${vNAME}-packages.github.io/packages/releases"
+vALLOW_VER="("23.05" "24.10" "SNAPSHOT")"
+vALLOW_ARCH="("aarch64_cortex-a53" "aarch64_generic" "arm_cortex-a15_neon-vfpv4" "mips_24kc" "mipsel_24kc" "x86_64")"
+vOWRT_VER="$(cat /etc/banner | grep OpenWrt | sed 's/\.0.*$/ /g' | awk '{print $2}')"
+vARCH="$(opkg print-architecture | tail -n 1 | awk '{print $2}')"
+vWGET_CMD="wget -q --show-progress"
+
+if ! [[ "$vALLOW_VER[@]" =~ "$vOWRT_VER" ]]; then
+    echo " ###"
+    echo " ### NEED OpenWrt VERSION -> $vALLOW_VER ###"
+    echo " ###"
+else
+    if ! [[ "$vALLOW_ARCH[@]" =~ "$vARCH" ]]; then
+        echo " ###"
+        echo " ### NEED arch -> $vALLOW_ARCH ###"
+        echo " ###"
+    else
+        echo "ku-ku epta!!!"
+        vKEYRING_FILE="$(curl -s ${vBASE_URL}/${vOWRT_VER}/packages/${vARCH}/packages/ | grep ${vNAME}-keyring | sed "s/\"/ /g" | awk '{print $5}')"
+        vFEEDS_FILE="$(curl -s ${vBASE_URL}/${vOWRT_VER}/packages/${vARCH}/packages/ | grep ${vNAME}-packages-feeds | sed "s/\"/ /g" | awk '{print $5}')"
+        ${vWGET_CMD} ${vBASE_URL}/${vOWRT_VER}/packages/${vARCH}/packages/${vKEYRING_FILE} -O /tmp/${vKEYRING_FILE}
+        ${vWGET_CMD} ${vBASE_URL}/${vOWRT_VER}/packages/${vARCH}/packages/${vFEEDS_FILE} -O /tmp/${vFEEDS_FILE}
+        opkg install /tmp/${vKEYRING_FILE}
+        opkg install /tmp/${vFEEDS_FILE}
+        rm -fv /tmp/*${vNAME}*
+        opkg update
+    fi
+fi
+
+exit 0

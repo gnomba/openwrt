@@ -20,6 +20,7 @@ for vITEM in ${vLIST_OPTIONS}; do
 done
 ```
 ```
+- [ ] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_fantastic-packages.sh | sh
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ads.sh | sh
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ipv6.sh | sh
 
@@ -28,6 +29,7 @@ done
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_dnsleaktest.sh | sh
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_internet-detector.sh | sh
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_ipinfo.sh | sh
+
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_log-viewer.sh | sh
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_speedtest.sh | sh
 - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_temp-status.sh | sh
