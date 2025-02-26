@@ -10,6 +10,7 @@ enable_speedtest
 enable_log-viewer
 enable_ipinfo
 enable_internet-detector
+enable_fantastic-packages
 enable_dnsleaktest
 enable_cpu-status
 enable_cpu-perf
@@ -19,24 +20,16 @@ for vITEM in ${vLIST_OPTIONS}; do
     curl -s ${vURL}/${vITEM}.sh | sh
 done
 ```
-```
-- [ ] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_fantastic-packages.sh | sh
-- [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ads.sh | sh
-- [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ipv6.sh | sh
-
-- [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_cpu-perf.sh | sh
-- [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_cpu-status.sh | sh
-- [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_dnsleaktest.sh | sh
-- [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_internet-detector.sh | sh
-- [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_ipinfo.sh | sh
-
-- [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_log-viewer.sh | sh
-- [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_speedtest.sh | sh
-- [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_temp-status.sh | sh
-- [?] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_ttl.sh | sh
-- [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_yt.sh | sh
-```
-add fantastic-shmantastic
-https://github.com/fantastic-packages/packages/tree/gh-pages?tab=readme-ov-file#readme
-https://fantastic-packages.github.io/packages/releases/24.10/packages/mipsel_24kc/packages/fantastic-keyring_20240427-r1_all.ipk
-https://fantastic-packages.github.io/packages/releases/24.10/packages/mipsel_24kc/packages/fantastic-packages-feeds_20241201-r1_all.ipk
+ - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ads.sh | sh
+ - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ipv6.sh | sh
+ - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_cpu-perf.sh | sh
+ - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_cpu-status.sh | sh
+ - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_dnsleaktest.sh | sh
+ - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_internet-detector.sh | sh
+ - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_ipinfo.sh | sh
+ - [ ] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_fantastic-packages.sh | sh
+ - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_log-viewer.sh | sh
+ - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_speedtest.sh | sh
+ - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_temp-status.sh | sh
+ - [ ] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_ttl.sh | sh
+ - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_yt.sh | sh
