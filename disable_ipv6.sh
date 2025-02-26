@@ -22,14 +22,14 @@ echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 
 vSERVICE_FILE="/etc/init.d/disable_ipv6"
 
-echo -e "#!/bin/sh /etc/rc.common\n\n" > ${vSERVICE_FILE}
-echo -e "START=11\n\n" >> ${vSERVICE_FILE}
-echo -e "start() {\n" >> ${vSERVICE_FILE}
-echo -e "    sysctl -wq \\\n" >> ${vSERVICE_FILE}
-echo -e "    net.ipv6.conf.all.disable_ipv6=1 \\\n" >> ${vSERVICE_FILE}
-echo -e "    net.ipv6.conf.default.disable_ipv6=1 \\n" >> ${vSERVICE_FILE}
-echo -e "    net.ipv6.conf.lo.disable_ipv6=1\n" >> ${vSERVICE_FILE}
-echo -e "}\n\n" >> ${vSERVICE_FILE}
+echo -e "#!/bin/sh /etc/rc.common\n" > ${vSERVICE_FILE}
+echo -e "START=11\n" >> ${vSERVICE_FILE}
+echo -e "start() {" >> ${vSERVICE_FILE}
+echo -e "    sysctl -wq \\" >> ${vSERVICE_FILE}
+echo -e "    net.ipv6.conf.all.disable_ipv6=1 \\" >> ${vSERVICE_FILE}
+echo -e "    net.ipv6.conf.default.disable_ipv6=1 \\" >> ${vSERVICE_FILE}
+echo -e "    net.ipv6.conf.lo.disable_ipv6=1" >> ${vSERVICE_FILE}
+echo -e "}\n" >> ${vSERVICE_FILE}
 echo "exit 0" >> ${vSERVICE_FILE}
 
 chmod +x ${vSERVICE_FILE}
