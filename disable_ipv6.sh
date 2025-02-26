@@ -15,24 +15,27 @@
 
 set -x
 
+vNAME="disable_ipv6"
+vSERVICE_FILE="/etc/init.d/${vNAME}"
+
 uci delete network.wan6
 uci commit network
 
-echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
-
-vSERVICE_FILE="/etc/init.d/disable_ipv6"
+echo 1 > /proc/sys/net/ipv6/conf/all/${vNAME}
 
 echo -e "#!/bin/sh /etc/rc.common\n" > ${vSERVICE_FILE}
 echo -e "START=11\n" >> ${vSERVICE_FILE}
 echo -e "start() {" >> ${vSERVICE_FILE}
 echo -e "    sysctl -wq \\" >> ${vSERVICE_FILE}
-echo -e "    net.ipv6.conf.all.disable_ipv6=1 \\" >> ${vSERVICE_FILE}
-echo -e "    net.ipv6.conf.default.disable_ipv6=1 \\" >> ${vSERVICE_FILE}
-echo -e "    net.ipv6.conf.lo.disable_ipv6=1" >> ${vSERVICE_FILE}
+echo -e "    net.ipv6.conf.all.${vNAME}=1 \\" >> ${vSERVICE_FILE}
+echo -e "    net.ipv6.conf.default.${vNAME}=1 \\" >> ${vSERVICE_FILE}
+echo -e "    net.ipv6.conf.lo.${vNAME}=1" >> ${vSERVICE_FILE}
 echo -e "}\n" >> ${vSERVICE_FILE}
 #echo "exit 0" >> ${vSERVICE_FILE}
 
 chmod +x ${vSERVICE_FILE}
+service ${vNAME} enable
+service ${vNAME} start
 
 /etc/init.d/network restart
 
