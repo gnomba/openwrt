@@ -51,11 +51,15 @@ else
         done
         
         /etc/init.d/rpcd reload
+
         /etc/init.d/cpu-perf disable
         /etc/init.d/cpu-perf stop
+        uci set cpu-perf.config.enabled='0'
+        
         /etc/init.d/internet-detector enable
         /etc/init.d/internet-detector start
-
+        uci set internet-detector.internet.mod_public_ip_provider='google'
+        
         echo " ###"
         echo " ### NEED reboot ###"
         echo " ###"
