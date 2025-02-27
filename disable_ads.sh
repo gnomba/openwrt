@@ -3,10 +3,10 @@
 set -x
 
 vADBLOCK_BLACK="/etc/adblock/adblock.blacklist"
-vADBLOCK_CHK="$(opkg list-installed | grep '^adblock' | awk '{print $1}')"
+vADBLOCK_CHK="$(opkg list-installed | grep '^adblock' | awk '{print $1}') | wc -l"
 #echo "vADBLOCK_CHK='${vADBLOCK_CHK}'"
 
-if [ "${vADBLOCK_CHK}" == "adblock" ]; then
+if [ "${vADBLOCK_CHK}" -eq "1" ]; then
     vDOMAINS_URL="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data"
     #echo "vDOMAINS_URL=${vDOMAINS_URL}"
     vDOMAINS_LIST="clearbitjs-ads tappx-ads inner-active-ads youku-ads unity-ads sohu-ads supersonic-ads qihoo360-ads kugou-ads
