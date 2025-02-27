@@ -3,7 +3,7 @@
 set -x
 
 vADBLOCK_BLACK="/etc/adblock/adblock.blacklist"
-vADBLOCK_CHK="$(opkg list-installed | grep '^adblock' | awk '{print $1}') | wc -l"
+vADBLOCK_CHK="$(opkg list-installed | grep '^adblock' | awk '{print $1}' | wc -l)"
 #echo "vADBLOCK_CHK='${vADBLOCK_CHK}'"
 
 if [ "${vADBLOCK_CHK}" -eq "1" ]; then
