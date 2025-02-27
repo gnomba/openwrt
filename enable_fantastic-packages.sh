@@ -47,7 +47,7 @@ else
         opkg update
         
         for vPKG in ${vALLOW_PKGS};do
-            if [ "$(opkg list-installed | grep "${vPKG}" | wc -l)" -eq "1" ]; then
+            if [ "$(opkg list-installed | grep "${vPKG}" | wc -l)" -eq "2" ]; then
                 echo " ###"
                 echo " ### ${vPKG} already installed ###"
                 echo " ###"
