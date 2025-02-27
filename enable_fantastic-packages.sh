@@ -16,7 +16,7 @@ luci-app-log-viewer luci-i18n-log-viewer-ru
 luci-app-temp-status luci-i18n-temp-status-ru
 "
 
-vOWRT_VER="$(cat /etc/banner | grep OpenWrt | sed 's/\.0.*$/ /g' | awk '{print $2}')"
+vOWRT_VER="$(cat /etc/banner | grep OpenWrt | sed 's/\./ /g;s/\, .*$//g' | awk '{print $2"."$3}')"
 vARCH="$(opkg print-architecture | tail -n 1 | awk '{print $2}')"
 vWGET_CMD="wget -q --show-progress"
 
