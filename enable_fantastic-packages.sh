@@ -47,7 +47,13 @@ else
         opkg update
         
         for vPKG in ${vALLOW_PKGS};do
-            opkg install ${vPKG}
+            if [ "$(opkg list-installed | grep "${vNAME}" | wc -l)" -eq "1" ]; then
+                echo " ###"
+                echo " ### ${vPKG} already installed ###"
+                echo " ###"
+            else
+                opkg install ${vPKG}
+            fi
         done
         
         /etc/init.d/rpcd reload
