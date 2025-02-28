@@ -5,7 +5,7 @@ set -x
 # youtubeUnblock #
 vNAME="youtubeUnblock"
 vURL="https://github.com/Waujito/${vNAME}/releases"
-vWGET_CMD="wget -q --show-progress"
+vWGET_CMD="wget -q --show-progress -c"
 vTEXT="$(curl -s ${vURL} | grep "luci-app-youtubeUnblock-" | grep download | sed 's/\// /g;s/-/ /g;s/\.ipk/ /g')"
 
 vRELEASE="$(echo ${vTEXT} | awk '{print $7}')"
@@ -50,6 +50,7 @@ vDOMAINS_CUSTOM="googleapis.com play.google.com googleusercontent.com gstatic.co
 filmix.day rutracker.org rutracker.net rutracker.cc rutor.info rutor.is nnmclub.to pscp.tv upaste.me dmitry-tv.ddns.net dmi3y-tv.ru"
 #echo "vDOMAINS_CUSTOM=${vDOMAINS_CUSTOM}"
 
+uci set youtubeUnblock.youtubeUnblock.silent='0'
 uci set youtubeUnblock.youtubeUnblock.no_ipv6='1'
 uci set youtubeUnblock.@section[0].sni_domains=''
 uci set youtubeUnblock.@section[0].all_domains='0'

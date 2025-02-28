@@ -7,7 +7,7 @@
 
 set -x
 
-vWGET_CMD="wget -q --show-progress"
+vWGET_CMD="wget -q --show-progress -c"
 vBOARD_ID="$(cat /etc/board.json | grep '"id"\:' | head -n 1 | sed 's/\"/ /g;s/,/ /g' | awk '{print $3}')"
 
 if [ "${vBOARD_ID}" == "routerich" ]; then 

@@ -18,7 +18,7 @@ luci-app-temp-status luci-i18n-temp-status-ru
 
 vOWRT_VER="$(cat /etc/banner | grep OpenWrt | sed 's/\./ /g;s/\, .*$//g' | awk '{print $2"."$3}')"
 vARCH="$(opkg print-architecture | tail -n 1 | awk '{print $2}')"
-vWGET_CMD="wget -q --show-progress"
+vWGET_CMD="wget -q --show-progress -c"
 
 if ! [[ "$vALLOW_VER[@]" =~ "$vOWRT_VER" ]]; then
     echo " ###"
