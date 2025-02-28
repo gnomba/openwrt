@@ -1,8 +1,4 @@
-# wan mbim #
-uci set network.wan=interface
-uci set network.wan.device='wan'
-uci set network.wan.proto='mbim'
-uci set network.wan.device='/dev/cdc-wdm0'
+# WAN MBIM #
 ### варианты APN мобильных операторов
 # Билайн: internet.beeline.ru или home.beeline.ru
 # ВТБ Мобайл: vtb
@@ -14,6 +10,10 @@ uci set network.wan.device='/dev/cdc-wdm0'
 # Т-Мобайл: m.tinkoff.ru
 # Т2: internet.tele2.ru
 # Йота: yota.ru или internet.yota
+uci set network.wan=interface
+uci set network.wan.device='wan'
+uci set network.wan.proto='mbim'
+uci set network.wan.device='/dev/cdc-wdm0'
 uci set network.wan.apn='<APN-вашего-мобильного-оператор>'
 uci set network.wan.auth='both'
 uci set network.wan.pdptype='ipv4'
@@ -24,8 +24,17 @@ uci commit system
 uci set 3ginfo.@3ginfo[0].network='wan'
 uci set 3ginfo.@3ginfo[0].device='/dev/ttyUSB1'
 uci commit 3ginfo
+uci set modeminfo.@general[0].index='1'
+uci set modeminfo.@general[0].delay='30'
+uci set modeminfo.@modeminfo[0].device='/dev/ttyUSB1'
+uci commit modeminfo
+uci set modemband.@modemband[0].iface='wan'
+uci set modemband.@modemband[0].set_port='/dev/ttyUSB1'
+uci commit modemband
+uci set atinout.general.atc_port='/dev/ttyUSB1'
+uci commit atinout
 
-# wan pppoe #
+# WAN PPPOE #
 uci set network.wan=interface
 uci set network.wan.device='wan'
 uci set network.wan.proto='pppoe'
@@ -36,7 +45,7 @@ uci commit network
 uci set system.led_wan_off.dev='wan'
 uci commit system
 
-# wan dhcp #
+# WAN DHCP #
 uci set network.wan=interface
 uci set network.wan.device='wan'
 uci set network.wan.proto='dhcp'
