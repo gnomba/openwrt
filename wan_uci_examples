@@ -43,6 +43,7 @@ uci set modemband.@modemband[0].set_port='/dev/ttyUSB1'
 uci commit modemband
 uci set atinout.general.atc_port='/dev/ttyUSB1'
 uci commit atinout
+# SMS USSD AT #
 uci set sms_tool_js.@sms_tool_js[0]=sms_tool_js
 uci set sms_tool_js.@sms_tool_js[0].storage='SM'
 uci set sms_tool_js.@sms_tool_js[0].mergesms='0'
