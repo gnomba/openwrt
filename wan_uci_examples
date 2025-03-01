@@ -1,15 +1,25 @@
 # WAN MBIM #
 ### варианты APN мобильных операторов
 # Билайн: internet.beeline.ru или home.beeline.ru
+# Вайнах Телеком: vtk
+# ВИН Мобайл(К-Телеком): internet
 # ВТБ Мобайл: vtb
 # ГПБ Мобайл: gpb
+# Летай(Таттелеком): internet.letai.ru
+# МГТС: intenet.mts.ru
 # Мегафон: internet
+# Миранда: internet.mm
+# МКС: mcs
+# МОТИВ: inet.ycc.ru
 # МТС: intenet.mts.ru
 # Ростелеком: internet.rtk.ru
 # СберМобайл: internet.sberbank-tele.com
 # Т-Мобайл: m.tinkoff.ru
+# Телетай: internet.beeline.ru или travel.lv
+# ТТК: internet.ttk.ru
 # Т2: internet.tele2.ru
 # Йота: yota.ru или internet.yota
+# Wifire(NetByNet): internet.nbn
 uci set network.wan=interface
 uci set network.wan.device='wan'
 uci set network.wan.proto='mbim'
