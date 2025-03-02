@@ -1,5 +1,8 @@
 #!/bin/sh
 # INFO: https://lsetc.ru/openwrt-otkljuchit-ipv6/
+
+set -x
+
 uci set network.lan.ipv6='0'
 uci set network.wan.ipv6='0'
 uci set dhcp.lan.dhcpv6='disabled'
@@ -12,8 +15,6 @@ uci delete network.wan6
 /etc/init.d/odhcpd stop
 uci commit
 /etc/init.d/network restart
-
-set -x
 
 vNAME="disable_ipv6"
 vSERVICE_FILE="/etc/init.d/${vNAME}"
