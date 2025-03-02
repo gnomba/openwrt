@@ -47,7 +47,7 @@ vDOMAINS_URL="https://raw.githubusercontent.com/v2fly/domain-list-community/refs
 vDOMAINS_LIST="youtube discord facebook instagram whatsapp twitter"
 #echo "vDOMAINS_LIST=${vDOMAINS_LIST}"
 vDOMAINS_CUSTOM="googleapis.com play.google.com googleusercontent.com gstatic.com l.google.com gvt1.com yt-video-upload.l.google.com meta.ai meta.com
-filmix.day rutracker.org rutracker.net rutracker.cc rutor.info rutor.is nnmclub.to pscp.tv upaste.me dmitry-tv.ddns.net dmi3y-tv.ru"
+filmix.day rutracker.org rutracker.net rutracker.cc rutor.info rutor.is nnmclub.to pscp.tv upaste.me dmitry-tv.ddns.net dmi3y-tv.ru 4pda.ru"
 #echo "vDOMAINS_CUSTOM=${vDOMAINS_CUSTOM}"
 
 uci set youtubeUnblock.youtubeUnblock.silent='0'

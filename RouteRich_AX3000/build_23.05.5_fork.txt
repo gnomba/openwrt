@@ -35,6 +35,7 @@ coreutils-uniq
 curl
 dbus
 ddns-scripts
+ddns-scripts-services
 -default-settings
 dnsmasq-full
 drill
