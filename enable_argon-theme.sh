@@ -6,7 +6,8 @@ vARGON_THM="luci-theme-argon"
 vARGON_CFG="luci-app-argon-config"
 vRR_THM="luci-theme-routerich"
 vWGET_CMD="wget -q --show-progress -c"
-vIMG_URL="https://itshaman.ru/images/16516.webp https://github.com/smallprogram/OpenWrtAction/blob/main/docs/pic/openwrt-logo.jpg"
+vIMG_URL="https://itshaman.ru/images/16516.webp"
+#https://github.com/smallprogram/OpenWrtAction/blob/main/docs/pic/openwrt-logo.jpg
 
 vRR_THM_CHK="$(opkg list-installed | grep "^${vRR_THM}" | awk '{print $1}' | wc -l)"
 if [ "${vRR_THM_CHK}" -eq "1" ]; then

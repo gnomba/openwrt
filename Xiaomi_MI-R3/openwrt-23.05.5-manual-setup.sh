@@ -1,9 +1,8 @@
 ### uci-defaults Xiaomi MI-R3 ###
-### openwrt-23.05.5-ramips-mt7620-xiaomi_miwifi-r3-squashfs-sysupgrade.bin ###
+### https://github.com/gnomba/openwrt/raw/refs/heads/main/Xiaomi_MI-R3/openwrt-23.05.5-ramips-mt7620-xiaomi_miwifi-r3-squashfs-sysupgrade.bin ###
 
 set -x
 
-#opkg remove --force-depends dnsmasq luci-proto-ipv6 odhcp6c odhcpd-ipv6only 
 opkg update
 opkg install curl libcurl4 libnghttp2-14
 opkg install wget-ssl libpcre2 zlib libopenssl3 libatomic1 librt
@@ -13,17 +12,33 @@ opkg install adblock luci-app-adblock luci-i18n-adblock-ru coreutils coreutils-s
 opkg install https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-ru libcares libev resolveip
 opkg install ddns-scripts ddns-scripts-services luci-app-ddns luci-i18n-ddns-ru
 opkg install ttyd luci-app-ttyd libcap libuv1 libwebsockets-full
+# for iptables yt
+#opkg install kmod-nfnetlink-queue kmod-ipt-nfqueue iptables-mod-nfqueue kmod-ipt-conntrack-extra iptables-mod-conntrack-extra
+# for nftables yt
+opkg install kmod-nft-queue kmod-nf-conntrack luci-app-nft-qos
+# ddns #
+uci delete ddns.myddns_ipv6
+uci commit ddns
+/etc/init.d/ddns disable
+/etc/init.d/ddns stop
 opkg install igmpproxy htop ttyd mc nano-full vim-full diffutils
+# igmpproxy #
+/etc/init.d/igmpproxy disable
+/etc/init.d/igmpproxy stop
 
-#opkg remove dnsmasq
-#echo 'nameserver 1.1.1.1' >> /etc/resolv.conf
-#opkg update
-#opkg install dnsmasq-full libnettle8 libgmp10 libnetfilter-conntrack3 libnfnetlink0 kmod-nf-conntrack-netlink kmod-nf-conntrack6 kmod-nf-log6 kmod-nf-reject6
+reboot
 
-curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_fantastic-packages.sh | sh
-curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_argon-theme.sh | sh
-curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ipv6.sh | sh
-
+vURL="https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main"
+vLIST="enable_fantastic-packages
+enable_argon-theme
+#disable_ipv6
+disable_ads
+enable_dnsleaktest
+enable_speedtest
+enable_yt"
+for vITEM in ${vLIST}; do
+    curl -s ${vURL}/${vITEM}.sh | sh
+done
 
 ip a | grep 'state\|ether'
 last_4_mac_brlan="$(ip a show br-lan | grep 'link/ether' | sed 's/ brd.*$//g' | awk -F':' '{print toupper($5$6)}')"
@@ -171,12 +186,3 @@ uci get network.globals.packet_steering > /dev/null || {
     uci commit network
 }
 
-echo "# ddns #"
-uci delete ddns.myddns_ipv6
-uci commit ddns
-/etc/init.d/ddns disable
-/etc/init.d/ddns stop
-
-echo "# igmpproxy #"
-/etc/init.d/igmpproxy disable
-/etc/init.d/igmpproxy stop
