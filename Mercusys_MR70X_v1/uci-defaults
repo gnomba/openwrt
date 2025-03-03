@@ -27,6 +27,8 @@ if [ -n "${root_password}" ]; then
   (echo "${root_password}"; sleep 1; echo "${root_password}") | passwd > /dev/null
 fi
 uci set ttyd.@ttyd[0].credential=root:"${root_password}"
+uci set ttyd.@ttyd[0].uid='0'
+uci set ttyd.@ttyd[0].gid='0'
 uci commit ttyd
 
 uci batch << EOI
