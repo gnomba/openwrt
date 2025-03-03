@@ -26,6 +26,8 @@ echo "lan_ip_address=${lan_ip_address}"
 if [ -n "${root_password}" ]; then
   (echo "${root_password}"; sleep 1; echo "${root_password}") | passwd > /dev/null
 fi
+uci set ttyd.@ttyd[0].credential=root:"${root_password}"
+uci commit ttyd
 
 uci batch << EOI
 # system #

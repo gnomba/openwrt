@@ -11,7 +11,7 @@ opkg install luci-i18n-base-ru luci-i18n-firewall-ru luci-i18n-opkg-ru
 opkg install adblock luci-app-adblock luci-i18n-adblock-ru coreutils coreutils-sort coreutils-uniq gawk libncurses6 terminfo libreadline8 rpcd-mod-rpcsys
 opkg install https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-ru libcares libev resolveip
 opkg install ddns-scripts ddns-scripts-services luci-app-ddns luci-i18n-ddns-ru
-opkg install ttyd luci-app-ttyd libcap libuv1 libwebsockets-full
+opkg install ttyd luci-app-ttyd luci-i18n-ttyd-ru libcap libuv1 libwebsockets-full
 # for iptables yt
 #opkg install kmod-nfnetlink-queue kmod-ipt-nfqueue iptables-mod-nfqueue kmod-ipt-conntrack-extra iptables-mod-conntrack-extra
 # for nftables yt
@@ -25,13 +25,15 @@ opkg install igmpproxy htop ttyd mc nano-full vim-full diffutils
 # igmpproxy #
 /etc/init.d/igmpproxy disable
 /etc/init.d/igmpproxy stop
+uci delete network.wan6
+uci commit network
 
 reboot
 
+opkg update
 vURL="https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main"
 vLIST="enable_fantastic-packages
 enable_argon-theme
-#disable_ipv6
 disable_ads
 enable_dnsleaktest
 enable_speedtest
@@ -62,6 +64,8 @@ echo "lan_ip_address=${lan_ip_address}"
 if [ -n "${root_password}" ]; then
   (echo "${root_password}"; sleep 1; echo "${root_password}") | passwd > /dev/null
 fi
+uci set ttyd.@ttyd[0].credential=root:"${root_password}"
+uci commit ttyd
 
 # system #
 uci set system.@system[0].hostname=${wlan_name_2g}
