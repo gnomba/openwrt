@@ -5,7 +5,6 @@ set -x
 
 #opkg remove --force-depends dnsmasq luci-proto-ipv6 odhcp6c odhcpd-ipv6only 
 opkg update
-opkg install dnsmasq-full libnettle8 libgmp10 libnetfilter-conntrack3 libnfnetlink0 kmod-nf-conntrack-netlink kmod-nf-conntrack6 kmod-nf-log6 kmod-nf-reject6
 opkg install curl libcurl4 libnghttp2-14
 opkg install wget-ssl libpcre2 zlib libopenssl3 libatomic1 librt
 opkg install zram-swap kmod-zram
@@ -14,7 +13,12 @@ opkg install adblock luci-app-adblock luci-i18n-adblock-ru coreutils coreutils-s
 opkg install https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-ru libcares libev resolveip
 opkg install ddns-scripts ddns-scripts-services luci-app-ddns luci-i18n-ddns-ru
 opkg install ttyd luci-app-ttyd libcap libuv1 libwebsockets-full
-opkg install igmpproxy htop ttyd
+opkg install igmpproxy htop ttyd mc nano-full vim-full diffutils
+
+#opkg remove dnsmasq
+#echo 'nameserver 1.1.1.1' >> /etc/resolv.conf
+#opkg update
+#opkg install dnsmasq-full libnettle8 libgmp10 libnetfilter-conntrack3 libnfnetlink0 kmod-nf-conntrack-netlink kmod-nf-conntrack6 kmod-nf-log6 kmod-nf-reject6
 
 curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_fantastic-packages.sh | sh
 curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_argon-theme.sh | sh
