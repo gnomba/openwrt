@@ -31,7 +31,9 @@ echo -e "set -gq mouse on\nset -gq history-limit 100000\nset -gq status-position
 /etc/init.d/igmpproxy stop
 uci delete network.wan6
 uci commit network
+uci commit
 
+# need 1st reboot #
 reboot
 
 opkg update
@@ -41,7 +43,8 @@ enable_argon-theme
 disable_ads
 enable_dnsleaktest
 enable_speedtest
-enable_yt"
+enable_yt
+disable_ipv6"
 for vITEM in ${vLIST}; do
     curl -s ${vURL}/${vITEM}.sh | sh
 done
@@ -84,13 +87,13 @@ uci commit system
 
 # system led #
 # нада разобраться со шморгалкой :-)
-#add system led
-#set system.@led[0].name='wan-on'
-#set system.@led[0].sysfs='green:power'
-#set system.@led[0].trigger='netdev'
-#set system.@led[0].dev='wan'
-#set system.@led[0].mode='link'
-#commit system
+uci add system led
+uci set system.@led[0].name='wan-on'
+uci set system.@led[0].sysfs='blue:status'
+uci set system.@led[0].trigger='netdev'
+uci set system.@led[0].dev='wan'
+uci set system.@led[0].mode='link'
+uci commit system
 
 # wireless #
 # 5GHz #
@@ -196,3 +199,10 @@ uci get network.globals.packet_steering > /dev/null || {
     uci commit network
 }
 
+uci commit
+
+# need 2nd reboot #
+reboot
+
+/etc/init.d/https-dns-proxy restart
+/etc/init.d/adblock restart
