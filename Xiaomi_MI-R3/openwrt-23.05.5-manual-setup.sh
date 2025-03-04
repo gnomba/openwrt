@@ -16,7 +16,7 @@ opkg install collectd collectd-mod-cpu collectd-mod-interface collectd-mod-iwinf
 # for iptables yt
 #opkg install kmod-nfnetlink-queue kmod-ipt-nfqueue iptables-mod-nfqueue kmod-ipt-conntrack-extra iptables-mod-conntrack-extra
 # for nftables yt
-opkg install kmod-nft-queue kmod-nf-conntrack luci-app-nft-qos
+opkg install kmod-nft-queue kmod-nf-conntrack
 # ddns #
 uci delete ddns.myddns_ipv6
 uci commit ddns
