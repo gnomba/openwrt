@@ -13,6 +13,7 @@ opkg install https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-
 opkg install ddns-scripts ddns-scripts-services luci-app-ddns luci-i18n-ddns-ru
 opkg install ttyd luci-app-ttyd luci-i18n-ttyd-ru libcap libuv1 libwebsockets-full
 opkg install collectd collectd-mod-cpu collectd-mod-interface collectd-mod-iwinfo collectd-mod-load collectd-mod-memory collectd-mod-network collectd-mod-rrdtool collectd-mod-sensors collectd-mod-thermal
+opkg install attendedsysupgrade-common luci-app-attendedsysupgrade luci-i18n-attendedsysupgrade-ru auc
 # for iptables yt
 #opkg install kmod-nfnetlink-queue kmod-ipt-nfqueue iptables-mod-nfqueue kmod-ipt-conntrack-extra iptables-mod-conntrack-extra
 # for nftables yt
