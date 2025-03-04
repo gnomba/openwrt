@@ -7,7 +7,7 @@ opkg update
 opkg install curl libcurl4 libnghttp2-14
 opkg install wget-ssl libpcre2 zlib libopenssl3 libatomic1 librt
 opkg install zram-swap kmod-zram
-opkg install luci-i18n-base-ru luci-i18n-firewall-ru luci-i18n-opkg-ru
+opkg install luci-i18n-base-ru luci-i18n-firewall-ru luci-i18n-opkg-ru luci-app-wizard
 opkg install adblock luci-app-adblock luci-i18n-adblock-ru coreutils coreutils-sort coreutils-uniq gawk libncurses6 terminfo libreadline8 rpcd-mod-rpcsys
 opkg install https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-ru libcares libev resolveip
 opkg install ddns-scripts ddns-scripts-services luci-app-ddns luci-i18n-ddns-ru
@@ -91,7 +91,7 @@ uci add system led
 uci set system.@led[0].name='wan-on'
 uci set system.@led[0].sysfs='blue:status'
 uci set system.@led[0].trigger='netdev'
-uci set system.@led[0].dev='wan'
+uci set system.@led[0].dev='eth0.2' # wan port
 uci set system.@led[0].mode='link'
 uci commit system
 

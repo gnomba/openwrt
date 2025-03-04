@@ -366,7 +366,8 @@ luci-proto-qmi
 luci-proto-wireguard
 luci-proto-xmm
 luci-ssl
--luci-theme-bootstrap
+luci-theme-bootstrap
+-luci-theme-material
 luci-theme-routerich
 mc
 -miniupnpd-nftables

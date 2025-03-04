@@ -311,7 +311,7 @@ luci-app-statistics
 luci-app-ttyd
 -luci-app-upnp
 -luci-app-vsftpd
--luci-app-wizard
+luci-app-wizard
 luci-base
 luci-compat
 luci-i18n-attendedsysupgrade-ru
@@ -358,8 +358,8 @@ luci-proto-ppp
 luci-proto-wireguard
 -luci-proto-xmm
 luci-ssl
--luci-theme-bootstrap
-luci-theme-material
+luci-theme-bootstrap
+-luci-theme-material
 -mc
 -miniupnpd-nftables
 -modemband
