@@ -22,7 +22,9 @@ uci delete ddns.myddns_ipv6
 uci commit ddns
 /etc/init.d/ddns disable
 /etc/init.d/ddns stop
-opkg install igmpproxy htop ttyd mc nano-full vim-full diffutils tmux unzip bsdtar
+opkg install igmpproxy htop ttyd mc nano-full vim-full diffutils tmux unzip
+# tmux #
+echo -e "set -gq mouse on\nset -gq history-limit 100000\nset -gq status-position top" > /root/.tmux.conf
 # igmpproxy #
 /etc/init.d/igmpproxy disable
 /etc/init.d/igmpproxy stop

@@ -43,7 +43,7 @@ echo "###"
 echo "### Unpack argon-icons-custom.zip"
 echo "###"
 
-${vWGET_CMD} -O ${vTMP_FILE} ${vCUSTOM_LOGO_URL} && echo A | unzip ${vTMP_FILE} -d /www/luci-static/argon/ && rm -fv ${vTMP_FILE}
+${vWGET_CMD} -O ${vTMP_FILE} ${vCUSTOM_LOGO_URL} && echo A | unzip ${vTMP_FILE} -d /www/luci-static/argon/ && cp -fv /www/luci-static/argon/icon/favicon-16x16.png /www/luci-static/bootstrap/favicon.png && rm -fv ${vTMP_FILE}
 
 uci commit argon
 

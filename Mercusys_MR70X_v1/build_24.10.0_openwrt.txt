@@ -239,7 +239,7 @@ liblucihttp0
 liblzo2
 libmbedtls21
 -libmbim
-libminiupnpc
+-libminiupnpc
 libmnl0
 libnatpmp1
 libncurses6
@@ -309,7 +309,7 @@ luci-app-opkg
 -luci-app-smstools3
 luci-app-statistics
 luci-app-ttyd
-luci-app-upnp
+-luci-app-upnp
 -luci-app-vsftpd
 -luci-app-wizard
 luci-base
@@ -334,7 +334,7 @@ luci-i18n-opkg-ru
 -luci-i18n-smstools3-ru
 luci-i18n-statistics-ru
 luci-i18n-ttyd-ru
-luci-i18n-upnp-ru
+-luci-i18n-upnp-ru
 -luci-i18n-vsftpd-ru
 luci-lib-base
 luci-lib-ip
@@ -361,7 +361,7 @@ luci-ssl
 -luci-theme-bootstrap
 luci-theme-material
 -mc
-miniupnpd-nftables
+-miniupnpd-nftables
 -modemband
 -modeminfo
 -modeminfo-qmi

@@ -240,7 +240,7 @@ liblucihttp0
 liblzo2
 libmbedtls12
 libmbim
-libminiupnpc
+-libminiupnpc
 libmnl0
 libnatpmp1
 libncurses6
@@ -313,7 +313,7 @@ luci-app-statistics
 luci-app-temp-status
 luci-app-ttl
 luci-app-ttyd
-luci-app-upnp
+-luci-app-upnp
 luci-app-vsftpd
 luci-app-wizard
 -luci-app-youtubeUnblock
@@ -342,7 +342,7 @@ luci-i18n-statistics-ru
 luci-i18n-temp-status-ru
 luci-i18n-ttl-ru
 luci-i18n-ttyd-ru
-luci-i18n-upnp-ru
+-luci-i18n-upnp-ru
 luci-i18n-vsftpd-ru
 luci-lib-base
 luci-lib-ip
@@ -369,7 +369,7 @@ luci-ssl
 -luci-theme-bootstrap
 luci-theme-routerich
 mc
-miniupnpd-nftables
+-miniupnpd-nftables
 modemband
 modeminfo
 modeminfo-qmi
