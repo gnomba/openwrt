@@ -22,7 +22,7 @@ uci delete ddns.myddns_ipv6
 uci commit ddns
 /etc/init.d/ddns disable
 /etc/init.d/ddns stop
-opkg install igmpproxy htop ttyd mc nano-full vim-full diffutils
+opkg install igmpproxy htop ttyd mc nano-full vim-full diffutils tmux unzip bsdtar
 # igmpproxy #
 /etc/init.d/igmpproxy disable
 /etc/init.d/igmpproxy stop

@@ -6,8 +6,10 @@ vARGON_THM="luci-theme-argon"
 vARGON_CFG="luci-app-argon-config"
 vRR_THM="luci-theme-routerich"
 vWGET_CMD="wget -q --show-progress -c"
-vIMG_URL="https://itshaman.ru/images/16516.webp"
+vCUSTOM_LOGO_URL="https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/argon-icons-custom.zip"
+#https://itshaman.ru/images/16516.webp
 #https://github.com/smallprogram/OpenWrtAction/blob/main/docs/pic/openwrt-logo.jpg
+vTMP_FILE="/tmp/tmp.zip"
 
 vRR_THM_CHK="$(opkg list-installed | grep "^${vRR_THM}" | awk '{print $1}' | wc -l)"
 if [ "${vRR_THM_CHK}" -eq "1" ]; then
@@ -36,9 +38,14 @@ uci set argon.@global[0].transparency='0'
 uci set argon.@global[0].transparency_dark='0'
 uci set argon.@global[0].mode='dark'
 uci set argon.@global[0].online_wallpaper='unsplash'
-for vIMG in ${vIMG_URL}; do
-    ${vWGET_CMD} ${vIMG} -P /www/luci-static/argon/background
-done
+
+echo "###"
+echo "### Unpack argon-icons-custom.zip"
+echo "###"
+
+${vWGET_CMD} -O ${vTMP_FILE} ${vCUSTOM_LOGO_URL} && unzip ${vTMP_FILE} -d /www/luci-static/argon/ && rm -fv ${vTMP_FILE}
+ ${vCUSTOM_LOGO_URL}
+
 uci commit argon
 
 /etc/init.d/rpcd restart
