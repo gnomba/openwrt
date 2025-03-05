@@ -108,6 +108,8 @@ uci set wireless.default_radio0.ssid=${wlan_name_5g}
 uci set wireless.default_radio0.mode=${wlan_mode}
 uci set wireless.default_radio0.encryption=${wlan_encryption}
 uci set wireless.default_radio0.key=${wlan_password}
+uci set wireless.default_radio0.dtim_period='3'
+uci set wireless.default_radio0.wpa_group_rekey='86400'
 # 2.4GHz #
 uci set wireless.radio1.disabled='0'
 uci set wireless.radio1.country='RU'
@@ -121,6 +123,8 @@ uci set wireless.default_radio1.ssid=${wlan_name_2g}
 uci set wireless.default_radio1.mode=${wlan_mode}
 uci set wireless.default_radio1.encryption=${wlan_encryption}
 uci set wireless.default_radio1.key=${wlan_password}
+uci set wireless.default_radio1.dtim_period='3'
+uci set wireless.default_radio1.wpa_group_rekey='86400'
 uci commit wireless
 
 # network #

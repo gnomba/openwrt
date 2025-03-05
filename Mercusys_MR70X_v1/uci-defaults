@@ -63,6 +63,8 @@ set wireless.default_radio0.ssid='${wlan_name_2g}'
 set wireless.default_radio0.mode='${wlan_mode}'
 set wireless.default_radio0.encryption='${wlan_encryption}'
 set wireless.default_radio0.key='${wlan_password}'
+set wireless.default_radio0.dtim_period='3'
+set wireless.default_radio0.wpa_group_rekey='86400'
 # 5GHz #
 set wireless.radio1.disabled='0'
 set wireless.radio1.country='RU'
@@ -75,6 +77,8 @@ set wireless.default_radio1.ssid='${wlan_name_5g}'
 set wireless.default_radio1.mode='${wlan_mode}'
 set wireless.default_radio1.encryption='${wlan_encryption}'
 set wireless.default_radio1.key='${wlan_password}'
+set wireless.default_radio1.dtim_period='3'
+set wireless.default_radio1.wpa_group_rekey='86400'
 commit wireless
 
 # network #
