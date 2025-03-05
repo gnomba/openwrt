@@ -32,7 +32,7 @@ else
         echo " ### NEED arch -> $vALLOW_ARCH ###"
         echo " ###"
     else
-        if [ "$(opkg list-installed | grep "^${vNAME}" | wc -l)" -lt "2" ]; then
+        if [ "$(opkg list-installed | grep "${vNAME}" | wc -l)" -lt "2" ]; then
             vKEYRING_FILE="$(curl -s ${vBASE_URL}/${vOWRT_VER}/packages/${vARCH}/packages/ | grep ${vNAME}-keyring | sed "s/\"/ /g" | awk '{print $5}')"
             vFEEDS_FILE="$(curl -s ${vBASE_URL}/${vOWRT_VER}/packages/${vARCH}/packages/ | grep ${vNAME}-packages-feeds | sed "s/\"/ /g" | awk '{print $5}')"
             ${vWGET_CMD} ${vBASE_URL}/${vOWRT_VER}/packages/${vARCH}/packages/${vKEYRING_FILE} -O /tmp/${vKEYRING_FILE}
@@ -49,7 +49,7 @@ else
         opkg update
         
         for vPKG in ${vALLOW_PKGS};do
-            if [ "$(opkg list-installed | grep "${vPKG}" | wc -l)" -eq "2" ]; then
+            if [ "$(opkg list-installed | grep "^${vPKG}" | wc -l)" -eq "1" ]; then
                 echo " ###"
                 echo " ### ${vPKG} already installed ###"
                 echo " ###"
@@ -60,14 +60,14 @@ else
         
         /etc/init.d/rpcd reload
 
+        uci set cpu-perf.config.enabled='0'
         /etc/init.d/cpu-perf disable
         /etc/init.d/cpu-perf stop
-        uci set cpu-perf.config.enabled='0'
         uci commit cpu-perf
-        
+
+        uci set internet-detector.internet.mod_public_ip_provider='google'
         /etc/init.d/internet-detector enable
         /etc/init.d/internet-detector start
-        uci set internet-detector.internet.mod_public_ip_provider='google'
         uci commit internet-detector
 
         uci set change-mac.@change-mac[0].mac_type_specific='24:0F:5E'
