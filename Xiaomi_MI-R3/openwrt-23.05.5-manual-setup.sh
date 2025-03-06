@@ -3,7 +3,7 @@
 
 set -x
 
-opkg update
+opkg update; for vPKG in "$(opkg list-upgradable | awk '{print $1}')"; do opkg install ${vPKG}; done
 opkg install curl libcurl4 libnghttp2-14
 opkg install wget-ssl libpcre2 zlib libopenssl3 libatomic1 librt
 opkg install zram-swap kmod-zram
@@ -14,6 +14,20 @@ opkg install ddns-scripts ddns-scripts-services luci-app-ddns luci-i18n-ddns-ru
 opkg install ttyd luci-app-ttyd luci-i18n-ttyd-ru libcap libuv1 libwebsockets-full
 opkg install collectd collectd-mod-cpu collectd-mod-interface collectd-mod-iwinfo collectd-mod-load collectd-mod-memory collectd-mod-network collectd-mod-rrdtool collectd-mod-sensors collectd-mod-thermal
 opkg install attendedsysupgrade-common luci-app-attendedsysupgrade luci-i18n-attendedsysupgrade-ru auc
+
+curl -s https://openwrt.132lan.ru/packages/23.05/packages/add.sh | sh
+vMODEM="adb adb-enablemodem atinout comgt comgt-ncm fm350-modem kmod-usb-acm kmod-usb-core kmod-usb-net kmod-usb-net-cdc-ether kmod-usb-net-cdc-mbim kmod-usb-net-cdc-ncm kmod-usb-net-huawei-cdc-ncm
+kmod-usb-net-qmi-wwan kmod-usb-net-rndis kmod-usb-serial kmod-usb-serial-option kmod-usb-serial-qualcomm kmod-usb-serial-wwan kmod-usb-wdm libmbim libqmi luci-app-atinout luci-app-modeminfo
+luci-app-smstools3 luci-i18n-atinout-ru luci-i18n-modeminfo-ru luci-i18n-smstools3-ru luci-proto-3g luci-proto-fm350 luci-proto-mbim luci-proto-ncm luci-proto-ppp luci-proto-qmi luci-proto-xmm
+modeminfo modeminfo-qmi modeminfo-serial-dell modeminfo-serial-fibocom modeminfo-serial-gosun modeminfo-serial-huawei modeminfo-serial-meig modeminfo-serial-mikrotik modeminfo-serial-quectel
+modeminfo-serial-sierra modeminfo-serial-simcom modeminfo-serial-styx modeminfo-serial-telit modeminfo-serial-thales modeminfo-serial-tw modeminfo-serial-xmm modeminfo-serial-yuge modeminfo-serial-zte
+ppp qmi-utils sms-tool smstools3 umbim uqmi wwan xmm-modem"
+for vITEM_MODEM in ${vMODEM}; do
+    opkg install ${vITEM_MODEM}
+done
+# luci-app-3ginfo-lite luci-i18n-3ginfo-lite-ru modemband luci-app-modemband luci-app-sms-tool-js luci-i18n-sms-tool-js-ru 
+/etc/init.d/rpcd restart
+
 # for iptables yt
 #opkg install kmod-nfnetlink-queue kmod-ipt-nfqueue iptables-mod-nfqueue kmod-ipt-conntrack-extra iptables-mod-conntrack-extra
 # for nftables yt
@@ -23,7 +37,7 @@ uci delete ddns.myddns_ipv6
 uci commit ddns
 /etc/init.d/ddns disable
 /etc/init.d/ddns stop
-opkg install igmpproxy htop ttyd mc nano-full vim-full diffutils tmux unzip
+opkg install igmpproxy htop ttyd mc nano-full vim-full diffutils tmux unzip kmod-mtd-rw
 # tmux #
 echo -e "set -gq mouse on\nset -gq history-limit 100000\nset -gq status-position top" > /root/.tmux.conf
 # igmpproxy #
