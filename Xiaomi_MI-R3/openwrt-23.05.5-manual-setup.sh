@@ -15,7 +15,9 @@ opkg install ttyd luci-app-ttyd luci-i18n-ttyd-ru libcap libuv1 libwebsockets-fu
 opkg install collectd collectd-mod-cpu collectd-mod-interface collectd-mod-iwinfo collectd-mod-load collectd-mod-memory collectd-mod-network collectd-mod-rrdtool collectd-mod-sensors collectd-mod-thermal
 opkg install attendedsysupgrade-common luci-app-attendedsysupgrade luci-i18n-attendedsysupgrade-ru auc
 
-curl -s https://openwrt.132lan.ru/packages/23.05/packages/add.sh | sh
+. /etc/openwrt_release
+vBRANCH=${DISTRIB_RELEASE%.*}
+curl -s https://openwrt.132lan.ru/packages/${vBRANCH}/packages/add.sh | sh
 vMODEM="adb adb-enablemodem atinout comgt comgt-ncm fm350-modem kmod-usb-acm kmod-usb-core kmod-usb-net kmod-usb-net-cdc-ether kmod-usb-net-cdc-mbim kmod-usb-net-cdc-ncm kmod-usb-net-huawei-cdc-ncm
 kmod-usb-net-qmi-wwan kmod-usb-net-rndis kmod-usb-serial kmod-usb-serial-option kmod-usb-serial-qualcomm kmod-usb-serial-wwan kmod-usb-wdm libmbim libqmi luci-app-atinout luci-app-modeminfo
 luci-app-smstools3 luci-i18n-atinout-ru luci-i18n-modeminfo-ru luci-i18n-smstools3-ru luci-proto-3g luci-proto-fm350 luci-proto-mbim luci-proto-ncm luci-proto-ppp luci-proto-qmi luci-proto-xmm
