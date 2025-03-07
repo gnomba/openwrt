@@ -1,6 +1,7 @@
 #!/bin/sh
 # INFO: https://github.com/kenzok8/jell/tree/main/luci-app-ttl
 # INFO: https://github.com/routerich/packages.routerich/tree/23.05.5/routerich
+# INFO: https://4pda.to/forum/index.php?showtopic=689378&st=82000#entry122252968
 
 # opkg list-installed | grep ttl
 # opkg remove luci-i18n-ttl-ru luci-app-ttl
