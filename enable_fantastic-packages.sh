@@ -18,7 +18,8 @@ luci-app-change-mac
 luci-app-wizard
 "
 
-vOWRT_VER="$(cat /etc/banner | grep OpenWrt | sed 's/\./ /g;s/\, .*$//g' | awk '{print $2"."$3}')"
+. /etc/openwrt_release
+vOWRT_VER="${DISTRIB_RELEASE%.*}"
 vARCH="$(opkg print-architecture | tail -n 1 | awk '{print $2}')"
 vWGET_CMD="wget -q --show-progress -c"
 

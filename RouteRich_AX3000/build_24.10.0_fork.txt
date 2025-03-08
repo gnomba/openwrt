@@ -1,4 +1,4 @@
-# https://firmware.routerich.ru/?version=23.05.5&target=mediatek%2Ffilogic&id=routerich_ax3000
+# https://firmware.routerich.ru/?version=24.10.0&target=mediatek%2Ffilogic&id=routerich_ax3000
 adb
 adb-enablemodem
 adblock
@@ -6,7 +6,7 @@ atinout
 attendedsysupgrade-common
 auc
 automount
-base-config-routerich
+-base-config-routerich
 base-files
 bash
 batctl-default
@@ -88,6 +88,7 @@ kmod-crypto-deflate
 kmod-crypto-des
 kmod-crypto-ecb
 kmod-crypto-gcm
+kmod-crypto-geniv
 kmod-crypto-gf128
 kmod-crypto-ghash
 kmod-crypto-hash
@@ -105,11 +106,12 @@ kmod-crypto-rng
 kmod-crypto-seqiv
 kmod-crypto-sha1
 kmod-crypto-sha256
+kmod-crypto-sha3
 kmod-crypto-sha512
 kmod-crypto-user
 kmod-fs-exfat
 kmod-fs-ext4
-kmod-fs-ksmbd-oot
+kmod-fs-ksmbd
 kmod-fs-netfs
 kmod-fs-ntfs3
 kmod-fs-smbfs-common
@@ -149,6 +151,7 @@ kmod-nf-conntrack
 kmod-nf-conntrack-netlink
 -kmod-nf-conntrack6
 kmod-nf-flow
+kmod-nf-flow-netlink
 kmod-nf-ipt
 -kmod-nf-ipt6
 kmod-nf-log
@@ -169,6 +172,7 @@ kmod-nft-tproxy
 kmod-nls-base
 kmod-nls-cp437
 kmod-nls-iso8859-1
+kmod-nls-ucs2-utils
 kmod-nls-utf8
 kmod-oid-registry
 -kmod-phy-aquantia
@@ -212,7 +216,7 @@ ksmbd-server
 libatomic1
 libattr
 libblkid1
-libblobmsg-json20230523
+libblobmsg-json20240329
 libc
 libcap
 libcap-ng
@@ -220,7 +224,7 @@ libcares
 libcomerr0
 libcurl4
 libdbus
-libelf1
+libe2p2
 libev
 libevent2-core7
 libexpat
@@ -233,7 +237,7 @@ libipset13
 libiwinfo-data
 libiwinfo20230701
 libjson-c5
-libjson-script20230523
+libjson-script20240329
 libldns
 libltdl7
 liblua5.1.5
@@ -242,7 +246,7 @@ liblucihttp-ucode
 liblucihttp0
 liblz4-1
 liblzo2
-libmbedtls12
+libmbedtls21
 libmbim
 -libminiupnpc
 libmnl0
@@ -272,13 +276,14 @@ libspeedtestcpp
 libss2
 libstdcpp6
 libsysfs2
-libubox20230523
+libubox20240329
 libubus-lua
-libubus20230605
+libubus20250102
 libuci-lua
-libuci20130104
+libuci20250120
 libuclient20201210
 libucode20230711
+libudebug
 libusb-1.0-0
 libustream-mbedtls20201210
 libuuid1
@@ -297,6 +302,7 @@ luci-app-3ginfo-lite
 luci-app-access-control
 luci-app-adblock
 luci-app-atinout
+luci-app-autoreboot
 luci-app-ddns
 luci-app-filebrowser-go
 luci-app-filemanager
@@ -304,13 +310,13 @@ luci-app-firewall
 luci-app-https-dns-proxy
 luci-app-internet-detector
 luci-app-ksmbd
-luci-app-log
+luci-app-log-viewer
 luci-app-modemband
 luci-app-modeminfo
 luci-app-mwan3
 luci-app-natflow-users
 luci-app-nlbwmon
-luci-app-opkg
+luci-app-package-manager
 luci-app-sms-tool-js
 luci-app-smstools3
 luci-app-statistics
@@ -340,7 +346,7 @@ luci-i18n-log-ru
 luci-i18n-modeminfo-ru
 luci-i18n-mwan3-ru
 luci-i18n-nlbwmon-ru
-luci-i18n-opkg-ru
+luci-i18n-package-manager-ru
 luci-i18n-sms-tool-js-ru
 luci-i18n-smstools3-ru
 luci-i18n-statistics-ru
@@ -395,7 +401,8 @@ modeminfo-serial-tw
 modeminfo-serial-xmm
 modeminfo-serial-yuge
 modeminfo-serial-zte
-mt7981-wo-firmware
+mt76-test
+mt76-vendor
 mtd
 musl-fts
 mwan3
@@ -403,6 +410,7 @@ nano-full
 natflow
 natflow-auth
 natflow-hostacl
+netfilter-flowtable
 netifd
 nftables-json
 nlbwmon
@@ -466,6 +474,7 @@ urllogger
 urngd
 usign
 vsftpd
+wifi-scripts
 wireguard-tools
 wireless-regdb
 -wget-nossl
