@@ -18,9 +18,10 @@ luci-app-change-mac
 luci-app-wizard
 "
 
+sed -i "s/-00/\.0/g" /etc/openwrt_release; cat /etc/openwrt_release
 . /etc/openwrt_release
-vOWRT_VER="${DISTRIB_RELEASE%-*}"
-vARCH="$(opkg print-architecture | tail -n 1 | awk '{print $2}')"
+vOWRT_VER="${DISTRIB_RELEASE%.*}"
+vARCH="${DISTRIB_ARCH}"
 vWGET_CMD="wget -q --show-progress -c"
 
 if ! [[ "$vALLOW_VER[@]" =~ "$vOWRT_VER" ]]; then
