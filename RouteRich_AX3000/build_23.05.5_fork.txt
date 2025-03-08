@@ -408,6 +408,7 @@ nftables-json
 nlbwmon
 -nnn
 ntfs3-mount
+odhcpd
 -odhcp6c
 -odhcpd-ipv6only
 openwrt-keyring
