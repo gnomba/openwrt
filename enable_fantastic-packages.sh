@@ -19,7 +19,7 @@ luci-app-wizard
 "
 
 . /etc/openwrt_release
-vOWRT_VER="${DISTRIB_RELEASE%.*}"
+vOWRT_VER="${DISTRIB_RELEASE%-*}"
 vARCH="$(opkg print-architecture | tail -n 1 | awk '{print $2}')"
 vWGET_CMD="wget -q --show-progress -c"
 
