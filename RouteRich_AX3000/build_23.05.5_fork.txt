@@ -47,7 +47,7 @@ ffprobe
 file
 filebrowser
 firewall4
-fitblk
+-fitblk
 fm350-modem
 fstools
 fwtool
@@ -331,7 +331,7 @@ luci-i18n-atinout-ru
 luci-i18n-base-ru
 luci-i18n-ddns-ru
 luci-i18n-filebrowser-go-ru
-luci-i18n-filemanager-ru
+-luci-i18n-filemanager-ru
 luci-i18n-firewall-ru
 luci-i18n-https-dns-proxy-ru
 luci-i18n-internet-detector-ru
