@@ -318,7 +318,7 @@ luci-app-mwan3
 luci-app-natflow-users
 luci-app-nlbwmon
 luci-app-package-manager
-luci-app-sms-tool-js
+-luci-app-sms-tool-js
 luci-app-smstools3
 luci-app-statistics
 luci-app-temp-status
@@ -348,7 +348,7 @@ luci-i18n-modeminfo-ru
 luci-i18n-mwan3-ru
 luci-i18n-nlbwmon-ru
 luci-i18n-package-manager-ru
-luci-i18n-sms-tool-js-ru
+-luci-i18n-sms-tool-js-ru
 luci-i18n-smstools3-ru
 luci-i18n-statistics-ru
 luci-i18n-temp-status-ru
