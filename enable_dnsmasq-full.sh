@@ -9,10 +9,17 @@ if [ "$(opkg list-installed | grep "^${vNAME}" | wc -l)" -eq "1" ]; then
     echo " ### ${vNAME} already installed ###"
     echo " ###"
 else
+    echo "nameserver 1.1.1.1" >> /etc/resolv.conf
     opkg update
-    cd /tmp/ && opkg download ${vNAME}
-    opkg remove dnsmasq && opkg install ${vNAME} --cache /tmp/
-    [ -f /etc/config/dhcp-opkg ] && cp /etc/config/dhcp /etc/config/dhcp-old && mv /etc/config/dhcp-opkg /etc/config/dhcp
+    opkg install libgmp10
+    cd /tmp/
+    opkg download ${vNAME}
+    opkg remove dnsmasq
+    opkg install ${vNAME} --cache /tmp
+    #[ -f /etc/config/dhcp-opkg ] && cp -fv /etc/config/dhcp /etc/config/dhcp-old && mv -fv /etc/config/dhcp-opkg /etc/config/dhcp
+    /etc/init.d/dnsmasq enable
+    /etc/init.d/dnsmasq start
+    sed -i "s/^nameserver 1\.1\.1\.1.*$//" /etc/resolv.conf
 fi
 
 set +x
