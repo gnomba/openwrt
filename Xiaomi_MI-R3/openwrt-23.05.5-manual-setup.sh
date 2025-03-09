@@ -4,6 +4,11 @@
 set -x
 
 opkg update; for vPKG in "$(opkg list-upgradable | awk '{print $1}')"; do opkg install ${vPKG}; done
+
+# need 1st reboot #
+reboot
+
+opkg update
 opkg install curl libcurl4 libnghttp2-14
 opkg install wget-ssl libpcre2 zlib libopenssl3 libatomic1 librt
 opkg install zram-swap kmod-zram
@@ -34,17 +39,19 @@ uci delete network.wan6
 uci commit network
 uci commit
 
-# need 1st reboot #
+# need 2nd reboot #
 reboot
 
 opkg update
 vURL="https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main"
 vLIST="enable_fantastic-packages
+enable_dnsmasq-full
 enable_argon-theme
-disable_ads
+enable_modems
 enable_dnsleaktest
 enable_speedtest
 enable_yt
+disable_ads
 disable_ipv6"
 for vITEM in ${vLIST}; do
     curl -s ${vURL}/${vITEM}.sh | sh
