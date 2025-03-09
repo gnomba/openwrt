@@ -27,6 +27,7 @@ collectd-mod-rrdtool
 collectd-mod-sensors
 collectd-mod-thermal
 comgt
+comgt-directip
 comgt-ncm
 confuse
 coreutils
@@ -48,7 +49,7 @@ file
 filebrowser
 firewall4
 fitblk
-fm350-modem
+-fm350-modem
 fstools
 fwtool
 gawk
@@ -310,7 +311,7 @@ luci-app-firewall
 luci-app-https-dns-proxy
 luci-app-internet-detector
 luci-app-ksmbd
-luci-app-log-viewer
+-luci-app-log-viewer
 luci-app-modemband
 luci-app-modeminfo
 luci-app-mwan3
@@ -342,7 +343,7 @@ luci-i18n-firewall-ru
 luci-i18n-https-dns-proxy-ru
 luci-i18n-internet-detector-ru
 luci-i18n-ksmbd-ru
-luci-i18n-log-ru
+-luci-i18n-log-ru
 luci-i18n-modeminfo-ru
 luci-i18n-mwan3-ru
 luci-i18n-nlbwmon-ru
@@ -368,7 +369,7 @@ luci-mod-status
 luci-mod-system
 luci-proto-3g
 luci-proto-batman-adv
-luci-proto-fm350
+-luci-proto-fm350
 -luci-proto-ipv6
 luci-proto-mbim
 luci-proto-ncm
@@ -394,6 +395,7 @@ modeminfo-serial-mikrotik
 modeminfo-serial-quectel
 modeminfo-serial-sierra
 modeminfo-serial-simcom
+-modeminfo-serial-simcom-a7xxx
 modeminfo-serial-styx
 modeminfo-serial-telit
 modeminfo-serial-thales
