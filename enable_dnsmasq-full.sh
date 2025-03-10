@@ -19,6 +19,7 @@ else
     #[ -f /etc/config/dhcp-opkg ] && cp -fv /etc/config/dhcp /etc/config/dhcp-old && mv -fv /etc/config/dhcp-opkg /etc/config/dhcp
     /etc/init.d/dnsmasq enable
     /etc/init.d/dnsmasq start
+    /etc/init.d/network restart
     sed -i "s/^nameserver 1\.1\.1\.1.*$//" /etc/resolv.conf
 fi
 
