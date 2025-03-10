@@ -18,7 +18,6 @@ modeminfo-serial-thales modeminfo-serial-tw modeminfo-serial-xmm modeminfo-seria
 for vITEM_MODEM in ${vMODEM}; do
     opkg install ${vITEM_MODEM}
 done
-# -modemband -luci-app-modemband
 ### for mhi pci ###
 # kmod-mhi-bus kmod-mhi-net kmod-mhi-pci-generic kmod-mhi-wwan-ctrl kmod-mhi-wwan-mbim kmod-qrtr-mhi
 
