@@ -14,12 +14,21 @@ kmod-usb-net-huawei-cdc-ncm kmod-usb-net-qmi-wwan kmod-usb-net-rndis kmod-usb-se
 luci-app-atinout luci-app-modeminfo luci-app-smstools3 luci-i18n-atinout-ru luci-i18n-modeminfo-ru luci-i18n-smstools3-ru luci-proto-3g luci-proto-mbim luci-proto-ncm luci-proto-ppp
 luci-proto-qmi luci-proto-xmm modeminfo modeminfo-qmi modeminfo-serial-dell modeminfo-serial-fibocom modeminfo-serial-gosun modeminfo-serial-huawei modeminfo-serial-meig
 modeminfo-serial-mikrotik modeminfo-serial-quectel modeminfo-serial-sierra modeminfo-serial-simcom modeminfo-serial-simcom-a7xxx modeminfo-serial-styx modeminfo-serial-telit
-modeminfo-serial-thales modeminfo-serial-tw modeminfo-serial-xmm modeminfo-serial-yuge modeminfo-serial-zte ppp qmi-utils sms-tool smstools3 umbim uqmi wwan xmm-modem"
+modeminfo-serial-thales modeminfo-serial-tw modeminfo-serial-xmm modeminfo-serial-yuge modeminfo-serial-zte ppp qmi-utils sms-tool smstools3 umbim uqmi wwan xmm-modem
+internet-detector-mod-modem-restart"
 for vITEM_MODEM in ${vMODEM}; do
     opkg install ${vITEM_MODEM}
 done
 ### for mhi pci ###
 # kmod-mhi-bus kmod-mhi-net kmod-mhi-pci-generic kmod-mhi-wwan-ctrl kmod-mhi-wwan-mbim kmod-qrtr-mhi
+uci set internet-detector.internet.mod_modem_restart_enabled='1'
+uci set internet-detector.internet.mod_modem_restart_dead_period='600'
+uci set internet-detector.internet.mod_modem_restart_iface='wan'
+uci set internet-detector.internet.mod_reboot_enabled='1'
+uci set internet-detector.internet.mod_reboot_dead_period='900'
+uci set internet-detector.internet.mod_reboot_force_reboot_delay='300'
+uci commit internet-detector
+uci commit
 
 #2
 vWGET_CMD="wget -q --show-progress -c"
@@ -58,6 +67,8 @@ fi
 
 rm -rfv ${vTMP_DIR2}
 
+/etc/init.d/internet-detector restart
+/etc/init.d/network restart
 /etc/init.d/rpcd restart
 
 exit 0
