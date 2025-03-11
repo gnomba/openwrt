@@ -35,17 +35,26 @@ for vITEM in ${vLIST_FILES2}; do
 done
 
 #3
-grep -q IceG_repo /etc/opkg/customfeeds.conf || echo 'src/gz IceG_repo https://github.com/4IceG/Modem-extras/raw/main/myrepo' >> /etc/opkg/customfeeds.conf
-wget https://github.com/4IceG/Modem-extras/raw/main/myrepo/IceG-repo.pub -O /tmp/IceG-repo.pub
-opkg-key add /tmp/IceG-repo.pub
-opkg update
+vBOARD_ID="$(cat /etc/board.json | grep '"id"\:' | head -n 1 | sed 's/\"/ /g;s/,/ /g' | awk '{print $3}')"
 
-# luci-app-sms-tool-js luci-i18n-sms-tool-js-ru
-opkg install luci-app-3ginfo-lite modemband luci-app-modemband 
+if [ "${vBOARD_ID}" == "routerich" ]; then
+    echo "+---------------------------+"
+    echo "| DETECTED BOARD: routerich |"
+    echo "| NO install IceG-repo      |"
+    echo "+---------------------------+"
+else
+    grep -q IceG_repo /etc/opkg/customfeeds.conf || echo 'src/gz IceG_repo https://github.com/4IceG/Modem-extras/raw/main/myrepo' >> /etc/opkg/customfeeds.conf
+    wget https://github.com/4IceG/Modem-extras/raw/main/myrepo/IceG-repo.pub -O /tmp/IceG-repo.pub
+    opkg-key add /tmp/IceG-repo.pub
+    opkg update
 
-#uci set 3ginfo.@3ginfo[0].language='en'
-#uci commit 3ginfo
-#uci commit
+    # luci-app-sms-tool-js luci-i18n-sms-tool-js-ru
+    opkg install luci-app-3ginfo-lite modemband luci-app-modemband 
+
+    #uci set 3ginfo.@3ginfo[0].language='en'
+    #uci commit 3ginfo
+    #uci commit
+fi
 
 rm -rfv ${vTMP_DIR2}
 

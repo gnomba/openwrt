@@ -4,6 +4,7 @@
 vURL="https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main"
 vLIST_OPTIONS="enable_fantastic-packages
 enable_argon-theme
+enable_modems
 enable_dnsleaktest
 enable_speedtest
 enable_yt
