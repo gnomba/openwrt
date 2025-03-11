@@ -38,6 +38,7 @@ dbus
 ddns-scripts
 ddns-scripts-services
 -default-settings
+diffutils
 dnsmasq-full
 drill
 dropbear
@@ -52,6 +53,7 @@ firewall4
 -fm350-modem
 fstools
 fwtool
+gammu
 gawk
 getrandom
 glib2
@@ -468,6 +470,7 @@ urandom-seed
 urllogger
 urngd
 usign
+vim-full
 vsftpd
 wireguard-tools
 wireless-regdb
