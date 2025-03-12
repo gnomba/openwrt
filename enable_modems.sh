@@ -56,6 +56,14 @@ else
     #uci commit
 fi
 
+# INFO: https://github.com/4IceG/luci-app-sms-tool
+#vRELEASE="1.9.6-20230501"
+#vURL="https://github.com/4IceG/luci-app-sms-tool/releases/download/${vRELEASE}"
+#vFILE="luci-app-sms-tool_${vRELEASE}_all.ipk"
+#wget ${vURL}/${vFILE} -O /tmp/${vFILE}
+#opkg install /tmp/${vFILE} && rm -fv /tmp/${vFILE}
+
+
 rm -rfv ${vTMP_DIR2}
 
 #uci set internet-detector.internet.mod_modem_restart_enabled='1'
