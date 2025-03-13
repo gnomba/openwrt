@@ -4,14 +4,14 @@
 #3 INFO: https://github.com/4IceG/luci-app-3ginfo-lite
 set -x
 
-vBOARD_ID="$(cat /etc/board.json | grep '"id"\:' | head -n 1 | sed 's/\"/ /g;s/,/ /g' | awk '{print $3}')"
+##vBOARD_ID="$(cat /etc/board.json | grep '"id"\:' | head -n 1 | sed 's/\"/ /g;s/,/ /g' | awk '{print $3}')"
 
-if [ "${vBOARD_ID}" == "routerich" ]; then
-    echo "+---------------------------+"
-    echo "| DETECTED BOARD: routerich |"
-    echo "| NO install IceG-repo      |"
-    echo "+---------------------------+"
-else
+##if [ "${vBOARD_ID}" == "routerich" ]; then
+##    echo "+---------------------------+"
+##    echo "| DETECTED BOARD: routerich |"
+##    echo "| NO install IceG-repo      |"
+##    echo "+---------------------------+"
+##else
     #1
     . /etc/openwrt_release
     vBRANCH=${DISTRIB_RELEASE%.*}
@@ -30,17 +30,19 @@ else
     # kmod-mhi-bus kmod-mhi-net kmod-mhi-pci-generic kmod-mhi-wwan-ctrl kmod-mhi-wwan-mbim kmod-qrtr-mhi
 
     #2
-    vWGET_CMD="wget -q --show-progress -c"
-    vNAME2="3ginfo"
-    vBASE_URL2="https://github.com/4IceG/luci-app-${vNAME2}/releases"
-    vTMP_DIR2="/tmp/${vNAME2}"
-    vLIST_FILES2="$(curl -s ${vBASE_URL2} | grep "download" | grep qmisignal | grep -v "2017" | awk -F"\"" '{print $2}')"
+    #-#vWGET_CMD="wget -q --show-progress -c"
+    #-#vNAME2="3ginfo"
+    #-#vBASE_URL2="https://github.com/4IceG/luci-app-${vNAME2}/releases"
+    #-#vTMP_DIR2="/tmp/${vNAME2}"
+    #-#vLIST_FILES2="$(curl -s ${vBASE_URL2} | grep "download" | grep qmisignal | grep -v "2017" | awk -F"\"" '{print $2}')"
 
-    mkdir -pv ${vTMP_DIR2}
+    #-#mkdir -pv ${vTMP_DIR2}
 
-    for vITEM in ${vLIST_FILES2}; do
-        ${vWGET_CMD} https://github.com${vITEM} -P ${vTMP_DIR2}
-    done
+    #-#for vITEM in ${vLIST_FILES2}; do
+    #-#    ${vWGET_CMD} https://github.com${vITEM} -P ${vTMP_DIR2}
+    #-#done
+
+    #-#rm -rfv ${vTMP_DIR2}
 
     #3
     grep -q IceG_repo /etc/opkg/customfeeds.conf || echo 'src/gz IceG_repo https://github.com/4IceG/Modem-extras/raw/main/myrepo' >> /etc/opkg/customfeeds.conf
@@ -54,7 +56,7 @@ else
     #uci set 3ginfo.@3ginfo[0].language='en'
     #uci commit 3ginfo
     #uci commit
-fi
+#fi
 
 # INFO: https://github.com/4IceG/luci-app-sms-tool
 #vRELEASE="1.9.6-20230501"
@@ -62,9 +64,6 @@ fi
 #vFILE="luci-app-sms-tool_${vRELEASE}_all.ipk"
 #wget ${vURL}/${vFILE} -O /tmp/${vFILE}
 #opkg install /tmp/${vFILE} && rm -fv /tmp/${vFILE}
-
-
-rm -rfv ${vTMP_DIR2}
 
 #uci set internet-detector.internet.mod_modem_restart_enabled='1'
 #uci set internet-detector.internet.mod_modem_restart_dead_period='600'
