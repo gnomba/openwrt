@@ -19,6 +19,7 @@ opkg install ddns-scripts ddns-scripts-services luci-app-ddns luci-i18n-ddns-ru
 opkg install ttyd luci-app-ttyd luci-i18n-ttyd-ru libcap libuv1 libwebsockets-full
 opkg install collectd collectd-mod-cpu collectd-mod-interface collectd-mod-iwinfo collectd-mod-load collectd-mod-memory collectd-mod-network collectd-mod-rrdtool collectd-mod-sensors collectd-mod-thermal
 opkg install attendedsysupgrade-common luci-app-attendedsysupgrade luci-i18n-attendedsysupgrade-ru auc
+opkg install luci-app-commands luci-i18n-commands-ru
 
 # for iptables yt
 #opkg install kmod-nfnetlink-queue kmod-ipt-nfqueue iptables-mod-nfqueue kmod-ipt-conntrack-extra iptables-mod-conntrack-extra
@@ -29,7 +30,7 @@ uci delete ddns.myddns_ipv6
 uci commit ddns
 /etc/init.d/ddns disable
 /etc/init.d/ddns stop
-opkg install igmpproxy htop ttyd mc nano-full vim-full diffutils tmux unzip kmod-mtd-rw gammu
+opkg install igmpproxy htop ttyd mc nano-full vim-full diffutils tmux unzip kmod-mtd-rw gammu usbutils pciutils
 # tmux #
 echo -e "set -gq mouse on\nset -gq history-limit 100000\nset -gq status-position top" > /root/.tmux.conf
 # igmpproxy #

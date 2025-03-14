@@ -306,6 +306,7 @@ luci-app-access-control
 luci-app-adblock
 luci-app-atinout
 luci-app-autoreboot
+luci-app-commands
 luci-app-ddns
 luci-app-filebrowser-go
 luci-app-filemanager
@@ -337,6 +338,7 @@ luci-i18n-3ginfo-lite-ru
 luci-i18n-access-control-ru
 luci-i18n-adblock-ru
 luci-i18n-atinout-ru
+luci-i18n-commands-ru
 luci-i18n-base-ru
 luci-i18n-ddns-ru
 luci-i18n-filebrowser-go-ru
@@ -425,6 +427,7 @@ ntfs3-mount
 -odhcpd-ipv6only
 openwrt-keyring
 opkg
+pciutils
 ppp
 ppp-mod-pppoe
 ppp-mod-pppol2tp
@@ -477,6 +480,7 @@ uqmi
 urandom-seed
 urllogger
 urngd
+usbutils
 usign
 vim-full
 vsftpd

@@ -22,7 +22,8 @@ set -x
     luci-app-atinout luci-app-modeminfo luci-app-smstools3 luci-i18n-atinout-ru luci-i18n-modeminfo-ru luci-i18n-smstools3-ru luci-proto-3g luci-proto-mbim luci-proto-ncm luci-proto-ppp
     luci-proto-qmi luci-proto-xmm modeminfo modeminfo-qmi modeminfo-serial-dell modeminfo-serial-fibocom modeminfo-serial-gosun modeminfo-serial-huawei modeminfo-serial-meig
     modeminfo-serial-mikrotik modeminfo-serial-quectel modeminfo-serial-sierra modeminfo-serial-simcom modeminfo-serial-simcom-a7xxx modeminfo-serial-styx modeminfo-serial-telit
-    modeminfo-serial-thales modeminfo-serial-tw modeminfo-serial-xmm modeminfo-serial-yuge modeminfo-serial-zte ppp qmi-utils sms-tool smstools3 umbim uqmi wwan xmm-modem"
+    modeminfo-serial-thales modeminfo-serial-tw modeminfo-serial-xmm modeminfo-serial-yuge modeminfo-serial-zte ppp qmi-utils sms-tool smstools3 umbim uqmi wwan xmm-modem
+    modemmanager modemmanager-rpcd luci-proto-modemmanager"
     for vITEM_MODEM in ${vMODEM}; do
         opkg install ${vITEM_MODEM}
     done
@@ -94,5 +95,48 @@ uci commit
 /etc/init.d/internet-detector restart
 /etc/init.d/network restart
 /etc/init.d/rpcd restart
+
+vUSSD_FILE="/usr/sbin/ussd"
+vUSSD="#!/bin/sh
+
+vMMCLI_CMD=\"mmcli -m any -v\"
+
+ARG1=\$1
+ARG2=\$2
+
+command -v mmcli >/dev/null 2>&1 || { echo \"ModemManager не установлен...\"; exit 1; }
+
+case "\$ARG1" in
+        status)
+                \${vMMCLI_CMD} --3gpp-ussd-status
+                ;;
+        cancel)
+                \${vMMCLI_CMD} --3gpp-ussd-cancel
+                ;;
+        resp)
+                \${vMMCLI_CMD} --3gpp-ussd-respond=\$ARG2
+                ;;
+        help)
+                echo
+                echo \"Пример: ussd *100#\"
+                echo \"Ответит - ваш баланс равен 100 рублей\"
+                echo
+                echo \"Если ваш запрос ussd просит ответита, введите:\"
+                echo \"ussd resp 1\"
+                echo \"Будет означать что вы ответили цифрой 1\"
+                echo
+                echo \"ussd status\"
+                echo \"Показывает есть ли у вас ussd запросы требующие ответа\"
+                echo
+                echo \"ussd cancel\"
+                echo \"Отменит запрос требующий ответа\"
+                echo
+                ;;
+        *)
+                \${vMMCLI_CMD} --3gpp-ussd-initiate=\$ARG1
+                ;;
+esac"
+echo "${vUSSD}" > ${vUSSD_FILE}
+chmod 755 ${vUSSD_FILE}
 
 exit 0
