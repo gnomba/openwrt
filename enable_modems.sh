@@ -22,8 +22,8 @@ set -x
     luci-app-atinout luci-app-modeminfo luci-app-smstools3 luci-i18n-atinout-ru luci-i18n-modeminfo-ru luci-i18n-smstools3-ru luci-proto-3g luci-proto-mbim luci-proto-ncm luci-proto-ppp
     luci-proto-qmi luci-proto-xmm modeminfo modeminfo-qmi modeminfo-serial-dell modeminfo-serial-fibocom modeminfo-serial-gosun modeminfo-serial-huawei modeminfo-serial-meig
     modeminfo-serial-mikrotik modeminfo-serial-quectel modeminfo-serial-sierra modeminfo-serial-simcom modeminfo-serial-simcom-a7xxx modeminfo-serial-styx modeminfo-serial-telit
-    modeminfo-serial-thales modeminfo-serial-tw modeminfo-serial-xmm modeminfo-serial-yuge modeminfo-serial-zte ppp qmi-utils sms-tool smstools3 umbim uqmi wwan xmm-modem
-    modemmanager modemmanager-rpcd luci-proto-modemmanager"
+    modeminfo-serial-thales modeminfo-serial-tw modeminfo-serial-xmm modeminfo-serial-yuge modeminfo-serial-zte ppp qmi-utils sms-tool smstools3 umbim uqmi wwan xmm-modem"
+    #modemmanager modemmanager-rpcd luci-proto-modemmanager
     for vITEM_MODEM in ${vMODEM}; do
         opkg install ${vITEM_MODEM}
     done
@@ -99,7 +99,8 @@ uci commit
 vUSSD_FILE="/usr/sbin/ussd"
 vUSSD="#!/bin/sh
 
-vMMCLI_CMD=\"mmcli -m any -v\"
+vMODEM=\"any\"
+vMMCLI_CMD=\"mmcli -m \${vMODEM} -v\"
 
 ARG1=\$1
 ARG2=\$2
