@@ -56,14 +56,14 @@ set -x
     opkg install luci-app-3ginfo-lite modemband luci-app-modemband
 
     uci set 3ginfo.@3ginfo[0].network='wan'
-    uci set 3ginfo.@3ginfo[0].device='/dev/ttyUSB1'
+    uci set 3ginfo.@3ginfo[0].device='/dev/ttyUSB0'
     uci commit 3ginfo
     uci set modemband.@modemband[0].iface='wan'
-    uci set modemband.@modemband[0].set_port='/dev/ttyUSB1'
+    uci set modemband.@modemband[0].set_port='/dev/ttyUSB0'
     uci commit modemband
     uci set smstools3.@sms[0]=sms
     uci set smstools3.@sms[0].storage='persistent'
-    uci set smstools3.@sms[0].device='/dev/ttyUSB1'
+    uci set smstools3.@sms[0].device='/dev/ttyUSB0'
     uci set smstools3.@sms[0].loglevel='5'
     uci set smstools3.@sms[0].net_check='0'
     uci set smstools3.@sms[0].decode_utf='1'
