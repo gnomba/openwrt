@@ -3,7 +3,8 @@
 
 set -x
 
-opkg update; for vPKG in "$(opkg list-upgradable | awk '{print $1}')"; do opkg install ${vPKG}; done
+echo "nameserver 1.1.1.1" >> /etc/resolv.conf
+opkg update --no-check-certificate; for vPKG in "$(opkg list-upgradable | awk '{print $1}')"; do opkg install ${vPKG}; done
 
 # need 1st reboot #
 reboot
@@ -46,7 +47,6 @@ reboot
 opkg update
 vURL="https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main"
 vLIST="enable_fantastic-packages
-enable_dnsmasq-full
 enable_argon-theme
 enable_modems
 enable_dnsleaktest
