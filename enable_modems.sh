@@ -96,48 +96,22 @@ uci commit
 /etc/init.d/network restart
 /etc/init.d/rpcd restart
 
+vWGET_CMD="wget -q --show-progress -c"
+vBASE_URL="https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main"
+
+vUSSD_URL="${vBASE_URL}/ussd"
 vUSSD_FILE="/usr/sbin/ussd"
-vUSSD="#!/bin/sh
-
-vMODEM=\"any\"
-vMMCLI_CMD=\"mmcli -m \${vMODEM} -v\"
-
-ARG1=\$1
-ARG2=\$2
-
-command -v mmcli >/dev/null 2>&1 || { echo \"ModemManager не установлен...\"; exit 1; }
-
-case "\$ARG1" in
-        status)
-                \${vMMCLI_CMD} --3gpp-ussd-status
-                ;;
-        cancel)
-                \${vMMCLI_CMD} --3gpp-ussd-cancel
-                ;;
-        resp)
-                \${vMMCLI_CMD} --3gpp-ussd-respond=\$ARG2
-                ;;
-        help)
-                echo
-                echo \"Пример: ussd *100#\"
-                echo \"Ответит - ваш баланс равен 100 рублей\"
-                echo
-                echo \"Если ваш запрос ussd просит ответита, введите:\"
-                echo \"ussd resp 1\"
-                echo \"Будет означать что вы ответили цифрой 1\"
-                echo
-                echo \"ussd status\"
-                echo \"Показывает есть ли у вас ussd запросы требующие ответа\"
-                echo
-                echo \"ussd cancel\"
-                echo \"Отменит запрос требующий ответа\"
-                echo
-                ;;
-        *)
-                \${vMMCLI_CMD} --3gpp-ussd-initiate=\$ARG1
-                ;;
-esac"
-echo "${vUSSD}" > ${vUSSD_FILE}
+${vWGET_CMD} ${vUSSD_URL} -O ${vUSSD_FILE}
 chmod 755 ${vUSSD_FILE}
+
+vUSSD2_SH_URL="${vBASE_URL}/ussd.sh"
+vUSSD2_SH_FILE="/usr/sbin/ussd.sh"
+${vWGET_CMD} ${vUSSD2_SH_URL} -O ${vUSSD2_SH_FILE}
+chmod 755 ${vUSSD2_SH_FILE}
+
+vUSSD2_GCOM_URL="${vBASE_URL}/ussd.gcom"
+vUSSD2_GCOM_FILE="/etc/gcom/ussd.gcom"
+${vWGET_CMD} ${vUSSD2_GCOM_URL} -O ${vUSSD2_GCOM_FILE}
+chmod 644 ${vUSSD2_GCOM_FILE}
 
 exit 0

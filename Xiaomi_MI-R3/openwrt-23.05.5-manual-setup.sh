@@ -32,7 +32,7 @@ uci commit ddns
 /etc/init.d/ddns stop
 opkg install igmpproxy htop ttyd mc nano-full vim-full diffutils tmux unzip kmod-mtd-rw gammu usbutils pciutils
 # tmux #
-echo -e "set -gq mouse on\nset -gq history-limit 100000\nset -gq status-position top" > /root/.tmux.conf
+echo -e "set -gq mouse on\nset -gq history-limit 100000\nset -gq status-position top\nset-option -ga terminal-overrides ',*:enacs@:smacs@:rmacs@:acsc@'" > /root/.tmux.conf
 # igmpproxy #
 /etc/init.d/igmpproxy disable
 /etc/init.d/igmpproxy stop

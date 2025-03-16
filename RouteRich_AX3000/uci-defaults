@@ -203,6 +203,9 @@ uci commit ddns
 /etc/init.d/ddns disable
 /etc/init.d/ddns stop
 
+echo "# tmux #"
+echo -e "set -gq mouse on\nset -gq history-limit 100000\nset -gq status-position top\nset-option -ga terminal-overrides ',*:enacs@:smacs@:rmacs@:acsc@'" > /root/.tmux.conf
+
 echo "# igmpproxy #"
 /etc/init.d/igmpproxy disable
 /etc/init.d/igmpproxy stop
