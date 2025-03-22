@@ -32,14 +32,14 @@ uci commit network
 uci set system.led_wan_off.dev='wwan0'
 uci commit system
 uci set 3ginfo.@3ginfo[0].network='wan'
-uci set 3ginfo.@3ginfo[0].device='/dev/ttyUSB1'
+uci set 3ginfo.@3ginfo[0].device='/dev/ttyUSB0'
 uci commit 3ginfo
 uci set modeminfo.@general[0].index='1'
 uci set modeminfo.@general[0].delay='30'
-uci set modeminfo.@modeminfo[0].device='/dev/ttyUSB1'
+uci set modeminfo.@modeminfo[0].device='/dev/ttyUSB0'
 uci commit modeminfo
 uci set modemband.@modemband[0].iface='wan'
-uci set modemband.@modemband[0].set_port='/dev/ttyUSB1'
+uci set modemband.@modemband[0].set_port='/dev/ttyUSB0'
 uci commit modemband
 uci set atinout.general.atc_port='/dev/ttyUSB1'
 uci commit atinout
