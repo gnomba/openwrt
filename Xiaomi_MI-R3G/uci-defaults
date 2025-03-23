@@ -20,7 +20,7 @@ echo "wlan_encryption=${wlan_encryption}"
 
 root_password="${wlan_password}"
 echo "root_password=${root_password}"
-lan_ip_address="192.168.1.1"
+lan_ip_address="192.168.31.1"
 echo "lan_ip_address=${lan_ip_address}"
 
 if [ -n "${root_password}" ]; then
