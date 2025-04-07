@@ -3,8 +3,8 @@ adblock
 base-files
 ca-bundle
 curl
-ddns-scripts
-ddns-scripts-services
+-ddns-scripts
+-ddns-scripts-services
 dnsmasq
 dropbear
 firewall4
@@ -15,6 +15,8 @@ kmod-gpio-button-hotplug
 kmod-leds-gpio
 kmod-mt76x2
 kmod-nft-offload
+kmod-nft-queue
+kmod-nf-conntrack
 kmod-rt2800-soc
 kmod-switch-rtl8367b
 libc
@@ -23,13 +25,13 @@ libustream-mbedtls
 logd
 luci
 luci-app-adblock
-luci-app-ddns
+-luci-app-ddns
 luci-app-https-dns-proxy
 luci-base
 luci-compat
 luci-i18n-adblock-ru
 luci-i18n-base-ru
-luci-i18n-ddns-ru
+-luci-i18n-ddns-ru
 luci-i18n-https-dns-proxy-ru
 luci-i18n-opkg-ru
 -luci-proto-ipv6

@@ -189,11 +189,11 @@ uci get network.globals.packet_steering > /dev/null || {
     uci commit network
 }
 
-echo "# ddns #"
-uci delete ddns.myddns_ipv6
-uci commit ddns
-/etc/init.d/ddns disable
-/etc/init.d/ddns stop
+#echo "# ddns #"
+#uci delete ddns.myddns_ipv6
+#uci commit ddns
+#/etc/init.d/ddns disable
+#/etc/init.d/ddns stop
 
 #echo "# igmpproxy #"
 #/etc/init.d/igmpproxy disable
