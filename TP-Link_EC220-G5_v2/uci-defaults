@@ -195,6 +195,6 @@ uci commit ddns
 /etc/init.d/ddns disable
 /etc/init.d/ddns stop
 
-echo "# igmpproxy #"
-/etc/init.d/igmpproxy disable
-/etc/init.d/igmpproxy stop
+#echo "# igmpproxy #"
+#/etc/init.d/igmpproxy disable
+#/etc/init.d/igmpproxy stop

@@ -2,6 +2,7 @@
 adblock
 base-files
 ca-bundle
+curl
 ddns-scripts
 ddns-scripts-services
 dnsmasq
@@ -9,7 +10,7 @@ dropbear
 firewall4
 fstools
 https-dns-proxy
-igmpproxy
+-igmpproxy
 kmod-gpio-button-hotplug
 kmod-leds-gpio
 kmod-mt76x2
