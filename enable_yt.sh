@@ -5,7 +5,7 @@ set -x
 # youtubeUnblock #
 vNAME="youtubeUnblock"
 vURL="https://github.com/Waujito/${vNAME}/releases"
-vCURL_CMD="curl -L"
+vUCLIENT_FETCH_CMD="uclient-fetch --no-check-certificate"
 vTEXT="$(curl -s ${vURL} | grep "luci-app-youtubeUnblock-" | grep download | sed 's/\// /g;s/-/ /g;s/\.ipk/ /g')"
 
 vRELEASE="$(echo ${vTEXT} | awk '{print $7}')"
@@ -32,8 +32,8 @@ else
     echo " --- DETECTED BOARD: non-routerich ---"
     if [ "$(opkg list-installed | grep ${vNAME} | wc -l)" -lt "2" ]
     then
-        ${vCURL_CMD} ${vURL}/download/${vRELEASE}/${vFILE} > /tmp/${vFILE}
-        ${vCURL_CMD} ${vURL}/download/${vRELEASE}/${vFILELUCI} > /tmp/${vFILELUCI}
+        ${vUCLIENT_FETCH_CMD} -O /tmp/${vFILE} ${vURL}/download/${vRELEASE}/${vFILE}
+        ${vUCLIENT_FETCH_CMD} -O /tmp/${vFILELUCI} ${vURL}/download/${vRELEASE}/${vFILELUCI}
         opkg install /tmp/${vFILE}
         opkg install /tmp/${vFILELUCI}
         rm -fv /tmp/*${vNAME}*

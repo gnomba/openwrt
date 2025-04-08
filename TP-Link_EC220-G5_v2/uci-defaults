@@ -118,8 +118,8 @@ set network.lan.netmask='255.255.255.0'
 commit network
 
 # adblock #
-set adblock.global.adb_trigger='wan'
-commit adblock
+#set adblock.global.adb_trigger='wan'
+#commit adblock
 EOI
 
 echo "# https-dns-proxy #"
