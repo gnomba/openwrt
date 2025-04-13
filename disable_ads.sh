@@ -26,6 +26,7 @@ if [ "${vADBLOCK_CHK}" -eq "1" ]; then
         curl -s ${vDOMAINS_URL}/${vADS_ITEM} | grep '@ads' | grep -v 'regexp' | sed "s/link\://g;s/ @.*$//g;s/full\://g" >> ${vADBLOCK_BLACK}
     done
 
+    echo " ### restart adblock ###"
     /etc/init.d/adblock restart
 else
     echo "+-----------------------------------------------------------+"

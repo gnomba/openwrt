@@ -17,6 +17,7 @@ for vITEM in ${vLIST_OPTIONS}; do
     curl -s ${vURL}/${vITEM}.sh | sh
 done
 ```
+ ### curl ###
  - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_fantastic-packages.sh | sh
  - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_argon-theme.sh | sh
  - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_modems.sh | sh
@@ -25,6 +26,10 @@ done
  - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_yt.sh | sh
  - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ads.sh | sh
  - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ipv6.sh | sh
+
+ ### uclient-fetch ###
+ - [x] uclient-fetch --no-check-certificate -O /tmp/enable_yt.sh https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_yt.sh; sh /tmp/enable_yt.sh; rm -fv /tmp/enable_yt.sh
+ - [x] uclient-fetch --no-check-certificate -O /tmp/disable_ads.sh https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/disable_ads.sh; sh /tmp/disable_ads.sh; rm -fv /tmp/disable_ads.sh
 ```
 ------
 ```

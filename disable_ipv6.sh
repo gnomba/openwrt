@@ -35,9 +35,12 @@ echo -e "}\n" >> ${vSERVICE_FILE}
 #echo "exit 0" >> ${vSERVICE_FILE}
 
 chmod +x ${vSERVICE_FILE}
+echo " ### enable service ${vNAME} ###"
 service ${vNAME} enable
+echo " ### start service ${vNAME} ###"
 service ${vNAME} start
 
+echo " ### restart network ###"
 /etc/init.d/network restart
 
 exit 0
