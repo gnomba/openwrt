@@ -9,6 +9,7 @@ dnsmasq
 dropbear
 firewall4
 fstools
+htop
 https-dns-proxy
 -igmpproxy
 kmod-gpio-button-hotplug
