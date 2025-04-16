@@ -202,6 +202,7 @@ uci commit dhcp
     [ "$(uci get firewall.@zone[0].mtu_fix 2>/dev/null)" = "1" ] || uci set firewall.@zone[0].mtu_fix='1'
 }
 uci commit firewall
+uci set firewall.@defaults[0].flow_offloading='1'
 /etc/init.d/firewall restart
 
 # network         #
