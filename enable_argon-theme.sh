@@ -21,14 +21,17 @@ if [ "${vRR_THM_CHK}" -eq "1" ]; then
 fi
 
 echo "###"
-echo "### Install ${vARGON_THM}"
+echo "### Install ${vARGON_THM}_2.3.2-r20250207_all"
 echo "###"
-opkg install ${vARGON_THM}
+#opkg install ${vARGON_THM}
+opkg install https://github.com/jerrykuku/luci-theme-argon/releases/download/v2.3.2/luci-theme-argon_2.3.2-r20250207_all.ipk
 
 echo "###"
-echo "### Install ${vARGON_CFG}"
+echo "### Install ${vARGON_CFG}_0.9_all"
 echo "###"
-opkg install ${vARGON_CFG}
+#opkg install ${vARGON_CFG}
+touch /etc/uci-defaults/luci-argon-config
+opkg install https://github.com/jerrykuku/luci-app-argon-config/releases/download/v0.9/luci-app-argon-config_0.9_all.ipk
 
 uci set argon.@global[0].primary='#8386a6'
 uci set argon.@global[0].dark_primary='#2b594c'
