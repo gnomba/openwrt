@@ -3,6 +3,7 @@
 set -x
 
 vADBLOCK_BLACK="/etc/adblock/adblock.blacklist"
+vADBLOCK_BLOCK="/etc/adblock/adblock.blocklist"
 vADBLOCK_CHK="$(opkg list-installed | grep '^adblock' | awk '{print $1}' | wc -l)"
 #echo "vADBLOCK_CHK='${vADBLOCK_CHK}'"
 
@@ -26,6 +27,9 @@ if [ "${vADBLOCK_CHK}" -eq "1" ]; then
         curl -s ${vDOMAINS_URL}/${vADS_ITEM} | grep '@ads' | grep -v 'regexp' | sed "s/link\://g;s/ @.*$//g;s/full\://g" >> ${vADBLOCK_BLACK}
     done
 
+    uci set adblock.global.adb_sources='adguard' 'adguard_tracking' 'certpl'
+    cp -fv ${vADBLOCK_BLACK} ${vADBLOCK_BLOCK}
+    
     echo " ### restart adblock ###"
     /etc/init.d/adblock restart
 else
