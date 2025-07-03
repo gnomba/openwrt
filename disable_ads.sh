@@ -27,9 +27,14 @@ if [ "${vADBLOCK_CHK}" -eq "1" ]; then
         curl -s ${vDOMAINS_URL}/${vADS_ITEM} | grep '@ads' | grep -v 'regexp' | sed "s/link\://g;s/ @.*$//g;s/full\://g" >> ${vADBLOCK_BLACK}
     done
 
-    uci set adblock.global.adb_sources='adguard' 'adguard_tracking' 'certpl'
+    if [ "$(uci show adblock.global.adb_sources | wc -l)" -eq "1" ]; then
+        uci set adblock.global.adb_sources='adguard adguard_tracking certpl'
+    fi
+    if [ "$(uci show adblock.global.adb_feed | wc -l)" -eq "1" ]; then
+        uci set adblock.global.adb_feed='adguard adguard_tracking certpl'
+    fi
     cp -fv ${vADBLOCK_BLACK} ${vADBLOCK_BLOCK}
-    
+
     echo " ### restart adblock ###"
     /etc/init.d/adblock restart
 else
