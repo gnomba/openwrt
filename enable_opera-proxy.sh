@@ -9,20 +9,23 @@ vVER="$(curl -fs -o/dev/null -w %{redirect_url} https://github.com/Snawoot/${vNA
 vPROXY_IP="$(uci show network.lan.ipaddr | awk -F "\'" '{print $2}')"
 vPROXY_PORT="18080"
 vPROXY_DNS="https://1.1.1.1/dns-query"
-vPROXY_COUNTRY="AM" # AM,Americas - EU,Europe - AS,Asia
+vPROXY_COUNTRY="AM" # AM,Americas : EU,Europe : AS,Asia
+vPATH="/usr/bin/${vNAME}"
+vURL="https://github.com/Snawoot/${vNAME}/releases/download/v${vVER}"
+vFILE="${vNAME}.linux-${vARCH}"
 
 echo -e "Downloading binaries... \nVersion: ${vVER}"
-curl -LS https://github.com/Snawoot/${vNAME}/releases/download/v${vVER}/${vNAME}.linux-${vARCH} -o /usr/bin/${vNAME}
-chmod +x /usr/bin/${vNAME}
+curl -LS ${vURL}/${vFILE} -o ${vPATH}
+chmod +x ${vPATH}
 
 vSERVICE_FILE="/etc/init.d/${vNAME}"
 vSERVICE_DATA="#!/bin/sh /etc/rc.common
-# Copyright (C) 2011 OpenWrt.org
+# Version: ${vVER}
 
 USE_PROCD=1
 START=40
 STOP=89
-PROG=/usr/bin/${vNAME}
+PROG=${vPATH}
 start_service() {
         procd_open_instance
         procd_set_param command "\$PROG" -country ${vPROXY_COUNTRY} -bootstrap-dns ${vPROXY_DNS} -bind-address ${vPROXY_IP}:${vPROXY_PORT} -verbosity 50
