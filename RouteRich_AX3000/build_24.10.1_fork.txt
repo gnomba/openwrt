@@ -1,4 +1,4 @@
-# https://firmware.routerich.ru/?version=24.10.0&target=mediatek%2Ffilogic&id=routerich_ax3000
+# https://firmware.routerich.ru/?version=24.10.1&target=mediatek%2Ffilogic&id=routerich_ax3000
 adb
 adb-enablemodem
 adblock

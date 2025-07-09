@@ -424,7 +424,7 @@ speedtestcpp
 sysfsutils
 tc-tiny
 terminfo
--tmux
+tmux
 ttyd
 -ubi-utils
 uboot-envtools

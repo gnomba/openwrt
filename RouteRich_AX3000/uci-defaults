@@ -4,7 +4,7 @@ echo "# log potential errors: /tmp/setup.log"
 exec >/tmp/setup.log 2>&1
 
 set -x
-ip a
+ip a | grep 'state\|ether'
 last_4_mac_wan="$(ip a show wan | grep 'link/ether' | sed 's/ brd.*$//g' | awk -F':' '{print toupper($5$6)}')"
 echo "last_4_mac_wan=${last_4_mac_wan}"
 wlan_name_2g="RouteRich_${last_4_mac_wan}"
@@ -186,6 +186,7 @@ echo "# firewall fix mtu #"
 [ "$(uci get firewall.@zone[0].name 2>/dev/null)" = "lan" ] && {
     [ "$(uci get firewall.@zone[0].mtu_fix 2>/dev/null)" = "1" ] || uci set firewall.@zone[0].mtu_fix='1'
 }
+uci set firewall.@defaults[0].flow_offloading='1'
 uci commit firewall
 /etc/init.d/firewall restart
 

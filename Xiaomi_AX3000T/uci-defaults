@@ -57,6 +57,7 @@ set wireless.radio0.country='RU'
 set wireless.radio0.channel='auto'
 set wireless.radio0.band='2g'
 set wireless.radio0.htmode='HE40'
+set wireless.radio0.cell_density='0'
 set wireless.default_radio0.device='radio0'
 set wireless.default_radio0.network='lan'
 set wireless.default_radio0.ssid='${wlan_name_2g}'
@@ -71,6 +72,7 @@ set wireless.radio1.country='RU'
 set wireless.radio1.channel='auto'
 set wireless.radio1.band='5g'
 set wireless.radio1.htmode='HE160'
+set wireless.radio1.cell_density='0'
 set wireless.default_radio1.device='radio1'
 set wireless.default_radio1.network='lan'
 set wireless.default_radio1.ssid='${wlan_name_5g}'
@@ -147,8 +149,8 @@ echo "# firewall fix mtu #"
 [ "$(uci get firewall.@zone[0].name 2>/dev/null)" = "lan" ] && {
     [ "$(uci get firewall.@zone[0].mtu_fix 2>/dev/null)" = "1" ] || uci set firewall.@zone[0].mtu_fix='1'
 }
-uci commit firewall
 uci set firewall.@defaults[0].flow_offloading='1'
+uci commit firewall
 /etc/init.d/firewall restart
 
 echo "# network         #"
@@ -164,6 +166,9 @@ uci delete ddns.myddns_ipv6
 uci commit ddns
 /etc/init.d/ddns disable
 /etc/init.d/ddns stop
+
+echo "# tmux #"
+echo -e "set -gq mouse on\nset -gq history-limit 100000\nset -gq status-position top\nset-option -ga terminal-overrides ',*:enacs@:smacs@:rmacs@:acsc@'" > /root/.tmux.conf
 
 echo "# igmpproxy #"
 /etc/init.d/igmpproxy disable
