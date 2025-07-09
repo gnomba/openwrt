@@ -410,6 +410,7 @@ modeminfo-serial-yuge
 modeminfo-serial-zte
 mt76-test
 mt76-vendor
+mt7981-wo-firmware
 mtd
 musl-fts
 mwan3
