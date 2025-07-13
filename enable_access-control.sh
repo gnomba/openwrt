@@ -29,6 +29,7 @@ done
 /etc/init.d/firewall restart
 # disable ??? #
 
+echo -e "---\nСеть -> Access Control\nNetwork -> Access Control\n---"
 exit 0
 
 #### EXAMPLE
