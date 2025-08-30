@@ -2,6 +2,7 @@
 
 ```
 opkg update; for vPKG in "$(opkg list-upgradable | awk '{print $1}')"; do opkg install ${vPKG}; done
+(opkg update; for vPKG in "$(opkg list-upgradable | awk '{print $1}')"; do opkg install ${vPKG}; done; reboot)&
 
 vURL="https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main"
 vLIST_OPTIONS="enable_fantastic-packages
