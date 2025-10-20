@@ -7,7 +7,7 @@ set -x
 ip a | grep 'state\|ether'
 last_4_mac_wan="$(uci get network.@device[1].macaddr | awk -F':' '{print toupper($5$6)}')"
 echo "last_4_mac_wan=${last_4_mac_wan}"
-wlan_name_2g="Xiaomi-RD03_${last_4_mac_wan}_2G"
+wlan_name_2g="Xiaomi-RD03_${last_4_mac_wan}"
 echo "wlan_name_2g='${wlan_name_2g}'"
 wlan_name_5g="Xiaomi-RD03_${last_4_mac_wan}_5G"
 echo "wlan_name_5g=${wlan_name_5g}"
