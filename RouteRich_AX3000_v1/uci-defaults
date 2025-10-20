@@ -1,4 +1,4 @@
-### uci-defaults RouteRich AX3000 ###
+### uci-defaults RouteRich AX3000 v1 ###
 
 echo "# log potential errors: /tmp/setup.log"
 exec >/tmp/setup.log 2>&1
