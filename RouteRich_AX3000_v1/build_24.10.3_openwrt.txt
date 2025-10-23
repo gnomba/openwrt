@@ -201,7 +201,7 @@ kmod-udptunnel4
 -kmod-usb-wdm
 -kmod-usb-xhci-hcd
 -kmod-usb-xhci-mtk
--kmod-usb3
+kmod-usb3
 -kmod-usbmon
 kmod-wireguard
 kmod-zram
