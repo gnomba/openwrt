@@ -5,11 +5,11 @@ exec >/tmp/setup.log 2>&1
 
 set -x
 ip a | grep 'state\|ether'
-last_4_mac_wan="$(ip a show wan | grep 'link/ether' | sed 's/ brd.*$//g' | awk -F':' '{print toupper($5$6)}')"
-echo "last_4_mac_wan=${last_4_mac_wan}"
-wlan_name_2g="RouteRich_${last_4_mac_wan}"
+last_4_mac_eth1="$(ip a show eth1 | grep 'link/ether' | sed 's/ brd.*$//g' | awk -F':' '{print toupper($5$6)}')"
+echo "last_4_mac_eth1=${last_4_mac_eth1}"
+wlan_name_2g="RouteRich_${last_4_mac_eth1}"
 echo "wlan_name_2g='${wlan_name_2g}'"
-wlan_name_5g="RouteRich_${last_4_mac_wan}_5G"
+wlan_name_5g="RouteRich_${last_4_mac_eth1}_5G"
 echo "wlan_name_5g=${wlan_name_5g}"
 wlan_password="1234567890"
 echo "wlan_password=${wlan_password}"
@@ -50,12 +50,12 @@ set system.@led[-1].trigger='none'
 set system.@led[-1].default='0'
 add system led
 set system.@led[-1].name='wlan-2g'
-set system.@led[-1].sysfs='blue:wlan-24'
+set system.@led[-1].sysfs='blue:wlan-2ghz'
 set system.@led[-1].trigger='none'
 set system.@led[-1].default='0'
 add system led
 set system.@led[-1].name='wlan-5g'
-set system.@led[-1].sysfs='red:wlan-50'
+set system.@led[-1].sysfs='red:wlan-5ghz'
 set system.@led[-1].trigger='none'
 set system.@led[-1].default='0'
 set system.led_lan_1=led
