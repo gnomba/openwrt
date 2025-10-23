@@ -84,7 +84,7 @@ set -x
 #uci set internet-detector.internet.mod_modem_restart_enabled='1'
 #uci set internet-detector.internet.mod_modem_restart_dead_period='600'
 #uci set internet-detector.internet.mod_modem_restart_iface='wan'
-uci set internet-detector.internet.mod_public_ip_enabled='1'
+uci set internet-detector.internet.mod_public_ip_enabled='0'
 uci set internet-detector.internet.hosts=''
 uci set internet-detector.internet.hosts='77.88.8.1 8.8.8.8 1.1.1.1'
 uci set internet-detector.internet.mod_reboot_enabled='1'
