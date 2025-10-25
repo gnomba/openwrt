@@ -1,4 +1,4 @@
-# https://firmware-selector.openwrt.org/?version=24.10.3&target=ramips%2Fmt7621&id=mercusys_mr70x-v1
+# https://firmware-selector.openwrt.org/?version=24.10.4&target=ramips%2Fmt7621&id=mercusys_mr70x-v1
 -adb
 -adb-enablemodem
 adblock
