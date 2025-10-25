@@ -1,4 +1,4 @@
-# https://firmware-selector.openwrt.org/?version=24.10.3&target=mediatek%2Ffilogic&id=routerich_ax3000-v1
+# https://firmware-selector.openwrt.org/?version=24.10.4&target=mediatek%2Ffilogic&id=routerich_ax3000-v1
 -adb
 -adb-enablemodem
 adblock
