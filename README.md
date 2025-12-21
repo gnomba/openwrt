@@ -9,6 +9,7 @@ vLIST_OPTIONS="enable_fantastic-packages
 enable_argon-theme
 enable_modems
 enable_dnsleaktest
+enable_opera-proxy
 enable_speedtest
 enable_yt
 disable_ads
@@ -23,6 +24,7 @@ done
  - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_argon-theme.sh | sh
  - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_modems.sh | sh
  - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_dnsleaktest.sh | sh
+ - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_opera-proxy.sh | sh
  - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_speedtest.sh | sh
  - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_yt.sh | sh
  - [x] curl -s https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_access-control.sh | sh

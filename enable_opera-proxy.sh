@@ -9,10 +9,13 @@ vVER="$(curl -fs -o/dev/null -w %{redirect_url} https://github.com/Snawoot/${vNA
 vPROXY_IP="$(uci show network.lan.ipaddr | awk -F "\'" '{print $2}')"
 vPROXY_PORT="18080"
 vPROXY_DNS="https://1.1.1.1/dns-query"
-vPROXY_COUNTRY="AM" # AM,Americas : EU,Europe : AS,Asia
+vPROXY_COUNTRY="EU" # AM,Americas : EU,Europe : AS,Asia
 vPATH="/usr/bin/${vNAME}"
 vURL="https://github.com/Snawoot/${vNAME}/releases/download/v${vVER}"
 vFILE="${vNAME}.linux-${vARCH}"
+
+service ${vNAME} stop
+echo " ### Service '${vNAME}' : $(service ${vNAME} status)"
 
 echo -e "Downloading binaries... \nVersion: ${vVER}"
 curl -LS ${vURL}/${vFILE} -o ${vPATH}
