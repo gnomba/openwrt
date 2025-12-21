@@ -15,9 +15,11 @@ vURL="https://github.com/Snawoot/${vNAME}/releases/download/v${vVER}"
 vFILE="${vNAME}.linux-${vARCH}"
 
 service ${vNAME} stop
+echo " ###########################"
 echo " ### Service '${vNAME}' : $(service ${vNAME} status)"
+echo " ###########################"
 
-echo -e "Downloading binaries... \nVersion: ${vVER}"
+echo "Downloading binaries... Version: ${vVER}"
 curl -LS ${vURL}/${vFILE} -o ${vPATH}
 chmod +x ${vPATH}
 
