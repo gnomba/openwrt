@@ -422,6 +422,7 @@ rrdtool1
 -smstools3
 speedtestcpp
 sysfsutils
+tailscale
 tc-tiny
 terminfo
 tmux
@@ -463,5 +464,6 @@ wpad-openssl
 -wwan
 xl2tpd
 -xmm-modem
+zerotier
 zlib
 zram-swap
