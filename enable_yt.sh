@@ -53,6 +53,9 @@ rutracker.org rutracker.net rutracker.cc rutor.info rutor.is nnmclub.to pscp.tv 
 
 uci set youtubeUnblock.youtubeUnblock.silent='0'
 uci set youtubeUnblock.youtubeUnblock.no_ipv6='1'
+uci set youtubeUnblock.@section[0].fake_sni='1'
+uci set youtubeUnblock.@section[0].faking_strategy='tcp_check'
+uci set youtubeUnblock.@section[0].frag_sni_faked='1'
 uci set youtubeUnblock.@section[0].sni_domains=''
 uci set youtubeUnblock.@section[0].all_domains='0'
 uci set youtubeUnblock.@section[0].quic_drop='1'
