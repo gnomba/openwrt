@@ -422,7 +422,6 @@ rrdtool1
 -smstools3
 speedtestcpp
 sysfsutils
-tailscale
 tc-tiny
 terminfo
 tmux

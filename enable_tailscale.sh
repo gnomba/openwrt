@@ -9,13 +9,7 @@ vURL="https://github.com/asvow/${vNAME}/releases/download/v${vVER}"
 vFILE="${vNAME}_${vVER}_all.ipk"
 vPATH="/tmp"
 
-service tailscale stop
-echo " ###########################"
-echo " ### Service 'tailscale' : $(service tailscale status)"
-echo " ###########################"
-
 echo "Downloading binaries... Version: ${vVER}"
-opkg install tailscale
 opkg install ${vURL}/${vFILE}
 
 echo " ### enable service tailscale ###"

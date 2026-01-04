@@ -177,7 +177,3 @@ echo "# igmpproxy #"
 echo "# zerotier #"
 /etc/init.d/zerotier stop
 /etc/init.d/zerotier disable
-
-echo "# tailscale #"
-/etc/init.d/tailscale stop
-/etc/init.d/tailscale disable
