@@ -2,6 +2,7 @@
 -adb
 -adb-enablemodem
 adblock
+apk-mbedtls
 -atinout
 attendedsysupgrade-common
 -auc
