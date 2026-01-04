@@ -15,7 +15,6 @@ luci-app-ipinfo
 luci-app-log-viewer luci-i18n-log-viewer-ru
 luci-app-temp-status luci-i18n-temp-status-ru
 luci-app-change-mac
-luci-app-wizard
 "
 
 sed -i "s/-00/\.0/g" /etc/openwrt_release; cat /etc/openwrt_release
