@@ -15,10 +15,8 @@ echo " ### Service 'tailscale' : $(service tailscale status)"
 echo " ###########################"
 
 echo "Downloading binaries... Version: ${vVER}"
-curl -LS ${vURL}/${vFILE} -o ${vPATH}
 opkg install tailscale
-opkg install ${vPATH}/${vFILE}
-rm -fv ${vPATH}/${vFILE}
+opkg install ${vURL}/${vFILE}
 
 echo " ### enable service tailscale ###"
 service tailscale enable
