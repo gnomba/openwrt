@@ -77,7 +77,7 @@ case ${vOWRT_VER} in
     fi
     apk update
     for vPKG in ${vALLOW_PKGS};do
-        apk add ${vPKG}
+        apk add --allow-untrusted ${vPKG}
     done
     ;;
     *)
