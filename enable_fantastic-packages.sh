@@ -3,8 +3,7 @@
 
 set -x
 
-opkg update || apk update
-opkg install --force-checksum jq  || apk add --allow-untrusted jq
+(opkg update && opkg install --force-checksum jq wget-ssl) || (apk update && apk add --allow-untrusted jq wget-ssl)
 
 vRed='\033[1;31m'
 vGreen='\033[1;32m'
