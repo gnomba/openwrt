@@ -2,36 +2,46 @@
 
 set -x
 
+(opkg update && opkg install --force-checksum wget-ssl) || (apk update && apk add --allow-untrusted wget-ssl)
+
+vRed='\033[1;31m'
+vGreen='\033[1;32m'
+vYellow='\033[1;33m'
+vWhite='\033[1;37m'
+vColor_Off='\033[0m'
+
+vNAME="fantastic"
+. /etc/openwrt_release
+vOWRT_VER="${DISTRIB_RELEASE%.*}"
+vARCH="${DISTRIB_ARCH}"
+vWGET_CMD="wget -q --show-progress -c"
+
 vARGON_THM="luci-theme-argon"
 vARGON_CFG="luci-app-argon-config"
-vRR_THM="luci-theme-routerich"
-vWGET_CMD="wget -q --show-progress -c"
 vCUSTOM_LOGO_URL="https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/argon-icons-custom.zip"
 #https://itshaman.ru/images/16516.webp
 #https://github.com/smallprogram/OpenWrtAction/blob/main/docs/pic/openwrt-logo.jpg
 vTMP_FILE="/tmp/tmp.zip"
 
-vRR_THM_CHK="$(opkg list-installed | grep "^${vRR_THM}" | awk '{print $1}' | wc -l)"
-if [ "${vRR_THM_CHK}" -eq "1" ]; then
-    echo "###"
-    echo "### Remove ${vRR_THM}"
-    echo "###"
-    opkg remove ${vRR_THM}
-    rm -rfv  /www/luci-static/routerich
-fi
-
-echo "###"
-echo "### Install ${vARGON_THM}_2.3.2-r20250207_all"
-echo "###"
-#opkg install ${vARGON_THM}
-opkg install https://github.com/jerrykuku/luci-theme-argon/releases/download/v2.3.2/luci-theme-argon_2.3.2-r20250207_all.ipk
-
-echo "###"
-echo "### Install ${vARGON_CFG}_0.9_all"
-echo "###"
-#opkg install ${vARGON_CFG}
-touch /etc/uci-defaults/luci-argon-config
-opkg install https://github.com/jerrykuku/luci-app-argon-config/releases/download/v0.9/luci-app-argon-config_0.9_all.ipk
+case ${vOWRT_VER} in
+    23.05)
+    opkg install https://github.com/jerrykuku/luci-theme-argon/releases/download/v2.3.2/luci-theme-argon_2.3.2-r20250207_all.ipk
+    touch /etc/uci-defaults/luci-argon-config
+    opkg install https://github.com/jerrykuku/luci-app-argon-config/releases/download/v0.9/luci-app-argon-config_0.9_all.ipk
+    ;;
+    24.10)
+    opkg install https://github.com/jerrykuku/luci-theme-argon/releases/download/v2.3.2/luci-theme-argon_2.3.2-r20250207_all.ipk
+    touch /etc/uci-defaults/luci-argon-config
+    opkg install https://github.com/jerrykuku/luci-app-argon-config/releases/download/v0.9/luci-app-argon-config_0.9_all.ipk
+    ;;
+    25.12)
+    apk add --allow-untrusted ${vARGON_THM} ${vARGON_CFG}
+    ;;
+    *)
+    echo -e " ${vRed}[-] ${vWhite}Unknown version: ${vRed}${vOWRT_VER} ${vARCH} ${vYellow}\n     exit 1 ...${vColor_Off}"
+    exit 1
+    ;;
+esac
 
 uci set argon.@global[0].primary='#8386a6'
 uci set argon.@global[0].dark_primary='#2b594c'
