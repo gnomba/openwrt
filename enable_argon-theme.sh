@@ -25,16 +25,19 @@ vTMP_FILE="/tmp/tmp.zip"
 
 case ${vOWRT_VER} in
     23.05)
+    echo -e " ${vGreen}[+] ${vWhite}Version: ${vGreen}${vOWRT_VER} ${vARCH} ${vYellow}\n     continue ...${vColor_Off}"
     opkg install https://github.com/jerrykuku/luci-theme-argon/releases/download/v2.3.2/luci-theme-argon_2.3.2-r20250207_all.ipk
     touch /etc/uci-defaults/luci-argon-config
     opkg install https://github.com/jerrykuku/luci-app-argon-config/releases/download/v0.9/luci-app-argon-config_0.9_all.ipk
     ;;
     24.10)
+    echo -e " ${vGreen}[+] ${vWhite}Version: ${vGreen}${vOWRT_VER} ${vARCH} ${vYellow}\n     continue ...${vColor_Off}"
     opkg install https://github.com/jerrykuku/luci-theme-argon/releases/download/v2.3.2/luci-theme-argon_2.3.2-r20250207_all.ipk
     touch /etc/uci-defaults/luci-argon-config
     opkg install https://github.com/jerrykuku/luci-app-argon-config/releases/download/v0.9/luci-app-argon-config_0.9_all.ipk
     ;;
     25.12)
+    echo -e " ${vGreen}[+] ${vWhite}Version: ${vGreen}${vOWRT_VER} ${vARCH} ${vYellow}\n     continue ...${vColor_Off}"
     apk add --allow-untrusted ${vARGON_THM} ${vARGON_CFG}
     ;;
     *)
