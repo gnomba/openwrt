@@ -11,6 +11,7 @@ vALLOW_ARCH="("aarch64_cortex-a53" "aarch64_generic" "arm_cortex-a15_neon-vfpv4"
 vALLOW_PKGS="luci-app-cpu-perf luci-i18n-cpu-perf-ru
 luci-app-cpu-status luci-i18n-cpu-status-ru
 internet-detector luci-app-internet-detector luci-i18n-internet-detector-ru
+luci-app-netspeedtest
 luci-app-ipinfo
 luci-app-log-viewer luci-i18n-log-viewer-ru
 luci-app-temp-status luci-i18n-temp-status-ru
