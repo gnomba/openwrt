@@ -70,6 +70,7 @@ iptables-zz-legacy
 iw
 iwinfo
 jansson4
+jq
 jshn
 jsonfilter
 kernel
