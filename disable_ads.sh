@@ -34,6 +34,9 @@ fi
 if [ "$(uci show adblock.global.adb_feed | wc -l)" -eq "1" ]; then
     uci set adblock.global.adb_feed='adguard adguard_tracking certpl oisd_big oisd_nsfw'
 fi
+
+uci commit adblock
+
 cp -fv ${vADBLOCK_BLACK} ${vADBLOCK_BLOCK}
 
 rm -fv ${vADBLOCK_BLACK}
