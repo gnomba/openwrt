@@ -278,7 +278,7 @@ libuci20250120
 libuclient20201210
 libucode20230711
 libusb-1.0-0
-libustream-mbedtls
+libustream-openssl
 libuuid1
 libuv1
 libwebsockets-full
@@ -359,7 +359,7 @@ luci-proto-ppp
 -luci-proto-qmi
 luci-proto-wireguard
 -luci-proto-xmm
-luci-ssl
+luci-ssl-openssl
 luci-theme-bootstrap
 luci-theme-material
 -mc
@@ -409,7 +409,7 @@ ppp-mod-pptp
 procd
 procd-seccomp
 procd-ujail
-px5g-mbedtls
+-px5g-mbedtls
 -qmi-utils
 resolveip
 rpcd
