@@ -56,6 +56,7 @@ gawk
 getrandom
 glib2
 hostapd-common
+hostapd-openssl
 htop
 https-dns-proxy
 igmpproxy
