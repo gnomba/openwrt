@@ -26,13 +26,17 @@ for vAD_ITEM in ${vDOMAINS_LIST}; do
     curl -s ${vDOMAINS_URL}/${vAD_ITEM} | grep '@ads' | grep -v 'regexp' | sed "s/link\://g;s/ @.*$//g;s/full\://g" >> ${vADBLOCK_BLACK}
 done
 
+curl -s https://raw.githubusercontent.com/Turtlecute33/toolz/refs/heads/master/src/d3host.txt | grep -v '^#\|^$' | sed 's/^0.0.0.0 //g' >> ${vADBLOCK_BLACK}
+
 if [ "$(uci show adblock.global.adb_sources | wc -l)" -eq "1" ]; then
-    uci set adblock.global.adb_sources='adguard adguard_tracking certpl'
+    uci set adblock.global.adb_sources='adguard adguard_tracking certpl oisd_big oisd_nsfw'
 fi
 if [ "$(uci show adblock.global.adb_feed | wc -l)" -eq "1" ]; then
-    uci set adblock.global.adb_feed='adguard adguard_tracking certpl'
+    uci set adblock.global.adb_feed='adguard adguard_tracking certpl oisd_big oisd_nsfw'
 fi
 cp -fv ${vADBLOCK_BLACK} ${vADBLOCK_BLOCK}
+
+rm -fv ${vADBLOCK_BLACK}
 
 echo " ### restart adblock ###"
 /etc/init.d/adblock restart
