@@ -2,6 +2,8 @@
 
 set -x
 
+(opkg update && opkg install --force-checksum adblock luci-app-adblock luci-i18n-adblock-ru) || (apk update && apk add --allow-untrusted adblock luci-app-adblock luci-i18n-adblock-ru)
+
 vADBLOCK_BLACK="/etc/adblock/adblock.blacklist"
 vADBLOCK_BLOCK="/etc/adblock/adblock.blocklist"
 vADBLOCK_CHK="$(opkg list-installed | grep '^adblock' | awk '{print $1}' | wc -l)"
