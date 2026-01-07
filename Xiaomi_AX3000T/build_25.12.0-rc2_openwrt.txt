@@ -57,7 +57,7 @@ gawk
 getrandom
 glib2
 hostapd-common
-hostapd-openssl
+-hostapd-openssl
 htop
 https-dns-proxy
 igmpproxy
@@ -461,7 +461,7 @@ wireless-regdb
 -wget-nossl
 wget-ssl
 -wpad-basic-mbedtls
--wpad-openssl
+wpad-openssl
 -wsdd2
 -wwan
 xl2tpd

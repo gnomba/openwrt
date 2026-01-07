@@ -47,6 +47,7 @@ case ${vOWRT_VER} in
 esac
 
 uci set tailscale.settings.login_server='https://rc.routerich.ru/'
+uci commit tailscale
 
 echo " ### enable service tailscale ###"
 service tailscale enable
