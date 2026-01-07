@@ -55,4 +55,6 @@ service tailscale enable
 echo " ### start service tailscale ###"
 service tailscale start
 
+tailscale up --login-server=https://rc.routerich.ru --force-reauth
+
 exit 0
