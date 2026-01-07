@@ -46,6 +46,7 @@ case ${vOWRT_VER} in
     ;;
 esac
 
+uci set tailscale.settings.enabled='1'
 uci set tailscale.settings.login_server='https://rc.routerich.ru/'
 uci set tailscale.settings.flags='--login-server=https://rc.routerich.ru/'
 uci commit tailscale
@@ -55,6 +56,6 @@ service tailscale enable
 echo " ### start service tailscale ###"
 service tailscale start
 
-tailscale up --login-server=https://rc.routerich.ru --force-reauth
+sleep 15; tailscale up --login-server=https://rc.routerich.ru --force-reauth
 
 exit 0

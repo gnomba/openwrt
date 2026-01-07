@@ -8,30 +8,35 @@
 
 set -x
 
+vVALUE="64"
 vFILE="/etc/nftables.d/10-custom-filter-chains.nft"
-vTTL64="chain mangle_postrouting_ttl64 {
+vDATA="
+## Set ttl ${vVALUE}
+
+chain mangle_postrouting_ttl${vVALUE} {
 type filter hook postrouting priority 300; policy accept;
-counter ip ttl set 64
+counter ip ttl set ${vVALUE}
 }
 
-chain mangle_prerouting_ttl64 {
+chain mangle_prerouting_ttl${vVALUE} {
 type filter hook prerouting priority 300; policy accept;
-counter ip ttl set 64
-}"
+counter ip ttl set ${vVALUE}
+}
+"
 
-vCHECK="$(cat ${vFILE} | grep ttl64 | wc -l)"
+vCHECK="$(cat ${vFILE} | grep "_ttl${vVALUE}" | wc -l)"
 
-if [ "${vCHECK}" -eq "2" ];then
+if [ "${vCHECK}" -ge "2" ];then
     echo " ###"
-    echo " ### TTL = 64 ###"
+    echo " ### Enabled TTL = ${vVALUE} ###"
     echo " ###"
 else
     echo " ###"
-    echo " ### Set TTL to 64 ###"
+    echo " ### Set TTL to ${vVALUE} ###"
     echo " ###"
-    echo "${vTTL64}" >> ${vFILE}
+    echo "${vDATA}" >> ${vFILE}
     fw4 reload
-     ping -c 1 ya.ru | grep ttl
+    ping -c 5 ya.ru | grep ttl
 fi
 
 #vWGET_CMD="wget -q --show-progress -c"
@@ -61,4 +66,5 @@ set +x
 echo " # ${vFILE} #"
 cat ${vFILE} | grep -v "^#\|^$"
 echo " # ------------------------------------------- #"
+
 exit 0
