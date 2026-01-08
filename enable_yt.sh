@@ -4,6 +4,10 @@ set -x
 
 # youtubeUnblock #
 vNAME="youtubeUnblock"
+. /etc/openwrt_release
+vOWRT_VER="${DISTRIB_RELEASE%.*}"
+vARCH="${DISTRIB_ARCH}"
+
 vURL="https://github.com/Waujito/${vNAME}/releases"
 vUCLIENT_FETCH_CMD="uclient-fetch --no-check-certificate"
 vTEXT="$(curl -s ${vURL} | grep "luci-app-youtubeUnblock-" | grep download | sed 's/\// /g;s/-/ /g;s/\.ipk/ /g')"
@@ -12,7 +16,6 @@ vRELEASE="$(echo ${vTEXT} | awk '{print $7}')"
 vBUILD="$(echo ${vTEXT} | awk '{print $12}')"
 vCOMMIT="$(echo ${vTEXT} | awk '{print $13}')"
 vVERSION="$(echo ${vTEXT} | awk '{print $11}')"
-vARCH="$(opkg print-architecture | tail -n 1 | awk '{print $2}')"
 vFILE="${vNAME}-${vVERSION}-${vBUILD}-${vCOMMIT}-${vARCH}-openwrt-23.05.ipk"
 vFILELUCI="luci-app-${vNAME}-${vVERSION}-${vBUILD}-${vCOMMIT}.ipk"
 
