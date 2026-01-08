@@ -1,4 +1,4 @@
-# https://firmware-selector.openwrt.org/?version=24.10.4&target=mediatek%2Ffilogic&id=routerich_ax3000-v1
+# https://firmware-selector.openwrt.org/?version=24.10.5&target=mediatek%2Ffilogic&id=routerich_ax3000-v1
 -adb
 -adb-enablemodem
 adblock
@@ -56,6 +56,7 @@ gawk
 getrandom
 glib2
 hostapd-common
+-hostapd-openssl
 htop
 https-dns-proxy
 igmpproxy
@@ -182,28 +183,28 @@ kmod-thermal
 kmod-tun
 kmod-udptunnel4
 -kmod-udptunnel6
-kmod-usb-acm
-kmod-usb-core
-kmod-usb-net
-kmod-usb-net-cdc-ether
-kmod-usb-net-cdc-mbim
-kmod-usb-net-cdc-ncm
-kmod-usb-net-huawei-cdc-ncm
-kmod-usb-net-qmi-wwan
-kmod-usb-net-rndis
-kmod-usb-printer
-kmod-usb-serial
-kmod-usb-serial-option
-kmod-usb-serial-qualcomm
-kmod-usb-serial-wwan
-kmod-usb-storage
-kmod-usb-storage-extras
-kmod-usb-storage-uas
-kmod-usb-wdm
-kmod-usb-xhci-hcd
-kmod-usb-xhci-mtk
+-kmod-usb-acm
+-kmod-usb-core
+-kmod-usb-net
+-kmod-usb-net-cdc-ether
+-kmod-usb-net-cdc-mbim
+-kmod-usb-net-cdc-ncm
+-kmod-usb-net-huawei-cdc-ncm
+-kmod-usb-net-qmi-wwan
+-kmod-usb-net-rndis
+-kmod-usb-printer
+-kmod-usb-serial
+-kmod-usb-serial-option
+-kmod-usb-serial-qualcomm
+-kmod-usb-serial-wwan
+-kmod-usb-storage
+-kmod-usb-storage-extras
+-kmod-usb-storage-uas
+-kmod-usb-wdm
+-kmod-usb-xhci-hcd
+-kmod-usb-xhci-mtk
 kmod-usb3
-kmod-usbmon
+-kmod-usbmon
 kmod-wireguard
 kmod-zram
 -ksmbd-server
@@ -240,7 +241,7 @@ liblucihttp-ucode
 liblucihttp0
 liblzo2
 libmbedtls21
-libmbim
+-libmbim
 -libminiupnpc
 libmnl0
 libnatpmp1
@@ -259,7 +260,7 @@ libopenssl-legacy
 libopenssl3
 libpcre2
 libpthread
-libqmi
+-libqmi
 libqrtr-glib
 libreadline8
 librrd1
@@ -277,7 +278,7 @@ libuci20250120
 libuclient20201210
 libucode20230711
 libusb-1.0-0
-libustream-mbedtls
+libustream-openssl
 libuuid1
 libuv1
 libwebsockets-full
@@ -358,7 +359,7 @@ luci-proto-ppp
 -luci-proto-qmi
 luci-proto-wireguard
 -luci-proto-xmm
-luci-ssl
+luci-ssl-openssl
 luci-theme-bootstrap
 luci-theme-material
 -mc
@@ -408,7 +409,7 @@ ppp-mod-pptp
 procd
 procd-seccomp
 procd-ujail
-px5g-mbedtls
+-px5g-mbedtls
 -qmi-utils
 resolveip
 rpcd
@@ -464,5 +465,6 @@ wpad-openssl
 -wwan
 xl2tpd
 -xmm-modem
+zerotier
 zlib
 zram-swap
