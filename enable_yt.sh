@@ -47,11 +47,10 @@ fi
 
 vDOMAINS_URL="https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data"
 #echo "vDOMAINS_URL=${vDOMAINS_URL}"
-vDOMAINS_LIST="youtube google discord roblox facebook instagram whatsapp twitter"
+vDOMAINS_LIST="youtube google discord roblox facebook instagram whatsapp meta twitter"
 #echo "vDOMAINS_LIST=${vDOMAINS_LIST}"
-vDOMAINS_CUSTOM="googleapis.com play.google.com googleusercontent.com gstatic.com l.google.com gvt1.com yt-video-upload.l.google.com meta.ai meta.com
-filmix.my filmix.dog filmix.tv filmix.day baskino.se kinogo.ec hdrezka.pl hdrezka.net klonn-lordfilms.ru lordfilms.ru
-rutracker.org rutracker.net rutracker.cc rutor.info rutor.is nnmclub.to pscp.tv upaste.me dmitry-tv.ddns.net dmi3y-tv.ru 4pda.ru 4pda.to truthsocial.com"
+vDOMAINS_CUSTOM="filmix.my filmix.dog filmix.tv filmix.day baskino.se kinogo.ec hdrezka.pl hdrezka.net klonn-lordfilms.ru lordfilms.ru
+rutracker.org rutracker.net rutracker.cc rutor.info rutor.is nnmclub.to pscp.tv upaste.me dmitry-tv.ddns.net dmi3y-tv.ru dmi3y-tv6.ru 4pda.ru 4pda.to truthsocial.com"
 #echo "vDOMAINS_CUSTOM=${vDOMAINS_CUSTOM}"
 
 while uci -q delete youtubeUnblock.@section[0]; do :; done
@@ -67,7 +66,7 @@ uci set youtubeUnblock.@section[-1].sni_domains=''
 uci set youtubeUnblock.@section[-1].all_domains='0'
 uci set youtubeUnblock.@section[-1].quic_drop='1'
 for vYT_ITEM in ${vDOMAINS_CUSTOM}; do
-    uci add_list youtubeUnblock.@section[0].sni_domains=${vYT_ITEM}
+    uci add_list youtubeUnblock.@section[-1].sni_domains=${vYT_ITEM}
 done
 
 for vDOMAIN_ITEM in ${vDOMAINS_LIST};do
@@ -82,6 +81,8 @@ for vDOMAIN_ITEM in ${vDOMAINS_LIST};do
     uci set youtubeUnblock.@section[-1].quic_drop='1'
     vITEM_URL="${vDOMAINS_URL}/${vDOMAIN_ITEM}"
     for vYT_ITEM in $(curl -s ${vITEM_URL} | grep -v "^#\|^$\|^include\:\|-ads\|ads-\|@ads" | sed "s/link\://g;s/ @.*$//g;s/full\://g;s/ # .*$//g"); do
+        if [ "${vYT_ITEM}" == "google" ]; then uci add_list youtubeUnblock.@section[-1].sni_domains=play.google.com; fi
+        if [ "${vYT_ITEM}" == "youtube" ]; then uci add_list youtubeUnblock.@section[-1].sni_domains=yt-video-upload.l.google.com; fi
         uci add_list youtubeUnblock.@section[-1].sni_domains=${vYT_ITEM}
     done
 done
