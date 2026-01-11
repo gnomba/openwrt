@@ -58,4 +58,11 @@ service tailscale start
 
 sleep 15; tailscale up --login-server=https://rc.routerich.ru --force-reauth
 
+echo " --- FOR PPPOE WAN ---"
+echo "CHECK:"
+echo "ethtool -k pppoe-wan | grep rx-udp-gro-forwarding"
+echo "ON:"
+echo "ethtool -K pppoe-wan rx-udp-gro-forwarding on"
+echo "nano /etc/rc.local"
+
 exit 0
