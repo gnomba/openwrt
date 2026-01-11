@@ -87,8 +87,8 @@ for vDOMAIN_ITEM in ${vDOMAINS_LIST};do
     uci set youtubeUnblock.@section[-1].quic_drop='1'
     vITEM_URL="${vDOMAINS_URL}/${vDOMAIN_ITEM}"
     for vYT_ITEM in $(curl -s ${vITEM_URL} | grep -v "^#\|^$\|^include\:\|-ads\|ads-\|@ads" | sed "s/link\://g;s/ @.*$//g;s/full\://g;s/ # .*$//g"); do
-        if [ "${vDOMAIN_ITEM}" == "google" ]; then uci add_list youtubeUnblock.@section[-1].sni_domains=play.google.com; fi
-        if [ "${vDOMAIN_ITEM}" == "youtube" ]; then uci add_list youtubeUnblock.@section[-1].sni_domains=yt-video-upload.l.google.com; fi
+        if [ "${vYT_ITEM}" == "chrome" ]; then uci add_list youtubeUnblock.@section[-1].sni_domains=play.google.com; fi
+        if [ "${vYT_ITEM}" == "youtube" ]; then uci add_list youtubeUnblock.@section[-1].sni_domains=yt-video-upload.l.google.com; fi
         uci add_list youtubeUnblock.@section[-1].sni_domains=${vYT_ITEM}
     done
 done
