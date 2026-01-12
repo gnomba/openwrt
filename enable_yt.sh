@@ -97,21 +97,6 @@ uci commit ${vNAME}
 /etc/init.d/${vNAME} restart
 /etc/init.d/https-dns-proxy restart
 
-vVIA_COMSS_LIST="$(curl -s https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main/configure_zaprets.sh | grep "cfg01411c\.server=\'\/\*\." | sed "s/\'/ /g" | awk '{print $4}')"
-for vCOMSS_ITEM in ${vVIA_COMSS_LIST}; do
-    uci add_list dhcp.@dnsmasq[0].server="${vCOMSS_ITEM}"
-done
-while uci -q delete dhcp.@domain[0]; do :; done
-vDHCP_DOMAIN_LIST="$(curl -s https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main/configure_zaprets.sh | grep 'nPermanentName' | grep -v '(' | sed "s/\"//g" | awk '{print $2}')"
-for vDOMAIN_ITEM in ${vDHCP_DOMAIN_LIST}; do
-    uci add dhcp domain
-    uci set dhcp.@domain[-1].name="${vDOMAIN_ITEM}"
-    uci set dhcp.@domain[-1].ip="94.131.119.85"
-done
-uci commit dhcp
-/etc/init.d/dnsmasq restart
-uci commit
-
 set +x
 
 echo -e "---\nСлужбы -> youtubeUnblock\nServices -> youtubeUnblock\n---"

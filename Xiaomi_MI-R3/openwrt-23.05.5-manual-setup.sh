@@ -191,11 +191,20 @@ uci set dhcp.@dnsmasq[0].dnsforwardmax='2048'
 uci set dhcp.@dnsmasq[0].min_cache_ttl="600"
 uci set dhcp.@dnsmasq[0].max_cache_ttl="86400"
 uci set dhcp.@dnsmasq[0].nonegcache='1'
-vVIA_COMSS_LIST="comss.ru comss.one"
+vVIA_COMSS_LIST="comss.ru comss.one chatgpt.com oaistatic.com oaiusercontent.com openai.com microsoft.com windowsupdate.com bing.com supercell.com supercellid.com supercellgames.com clashroyale.com brawlstars.com clash.com clashofclans.com x.ai grok.com github.com forzamotorsport.net forzaracingchampionship.com forzarc.com gamepass.com orithegame.com renovacionxboxlive.com tellmewhygame.com xbox.co xbox.com xbox.eu xbox.org xbox360.co xbox360.com xbox360.eu xbox360.org xboxab.com xboxgamepass.com xboxgamestudios.com xboxlive.cn xboxlive.com xboxone.co xboxone.com xboxone.eu xboxplayanywhere.com xboxservices.com xboxstudios.com xbx.lv sentry.io usercentrics.eu recaptcha.net gstatic.com brawlstarsgame.com"
 for vCOMSS_ITEM in ${vVIA_COMSS_LIST}; do
     uci add_list dhcp.@dnsmasq[0].server="/*.${vCOMSS_ITEM}/127.0.0.1#5056"
 done
+while uci -q delete dhcp.@domain[0]; do :; done
+vDHCP_DOMAIN_LIST="chatgpt.com openai.com webrtc.chatgpt.com ios.chat.openai.com searchgpt.com"
+for vDOMAIN_ITEM in ${vDHCP_DOMAIN_LIST}; do
+    uci add dhcp domain
+    uci set dhcp.@domain[-1].name="${vDOMAIN_ITEM}"
+    uci set dhcp.@domain[-1].ip="94.131.119.85"
+done
 uci commit dhcp
+uci commit
+/etc/init.d/dnsmasq restart
 
 # firewall fix mtu #
 [ "$(uci get firewall.@zone[0].name 2>/dev/null)" = "lan" ] && {

@@ -32,6 +32,13 @@ echo -e "    net.ipv6.conf.all.${vNAME}=1 \\" >> ${vSERVICE_FILE}
 echo -e "    net.ipv6.conf.default.${vNAME}=1 \\" >> ${vSERVICE_FILE}
 echo -e "    net.ipv6.conf.lo.${vNAME}=1" >> ${vSERVICE_FILE}
 echo -e "}\n" >> ${vSERVICE_FILE}
+echo -e "stop() {" >> ${vSERVICE_FILE}
+echo -e "    sysctl -wq \\" >> ${vSERVICE_FILE}
+echo -e "    net.ipv6.conf.all.${vNAME}=0 \\" >> ${vSERVICE_FILE}
+echo -e "    net.ipv6.conf.default.${vNAME}=0 \\" >> ${vSERVICE_FILE}
+echo -e "    net.ipv6.conf.lo.${vNAME}=0" >> ${vSERVICE_FILE}
+echo -e "}\n" >> ${vSERVICE_FILE}
+
 #echo "exit 0" >> ${vSERVICE_FILE}
 
 chmod +x ${vSERVICE_FILE}

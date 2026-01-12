@@ -56,13 +56,14 @@ service tailscale enable
 echo " ### start service tailscale ###"
 service tailscale start
 
-sleep 15; tailscale up --login-server=https://rc.routerich.ru --force-reauth
+sleep 15; tailscale up --login-server=https://rc.routerich.ru/ --force-reauth
 
-echo " --- FOR PPPOE WAN ---"
-echo "CHECK:"
-echo "ethtool -k pppoe-wan | grep rx-udp-gro-forwarding"
-echo "ON:"
-echo "ethtool -K pppoe-wan rx-udp-gro-forwarding on"
-echo "nano /etc/rc.local"
-
+echo -e " ${vRed}--- FOR PPPOE WAN ---${vColor_Off}\n"
+NETDEV="$(ip -o route get 8.8.8.8 | cut -f 5 -d " ")"
+echo -e "${vWhite}INTERFACE: ${vGreen}${NETDEV}${vColor_Off}\n"
+echo -e "${vWhite}CHECK: ${vYellow}ethtool -k ${vGreen}${NETDEV}${vColor_Off} ${vYellow}| grep 'gro\|udp'${vColor_Off}\n"
+ethtool -k ${NETDEV} | grep 'gro\|udp'
+echo -e "${vWhite}ONBOOT: ${vYellow}nano /etc/rc.local || vi /etc/rc.local${vColor_Off}\n"
+echo -e "${vWhite}ON: ${vYellow}ethtool -K ${vGreen}${NETDEV}${vColor_Off} ${vYellow}rx-udp-gro-forwarding on rx-gro-list off${vColor_Off}\n"
+echo -e "${vWhite}OFF: ${vYellow}ethtool -K ${vGreen}${NETDEV}${vColor_Off} ${vYellow}rx-udp-gro-forwarding off rx-gro-list on${vColor_Off}\n"
 exit 0
