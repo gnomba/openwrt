@@ -6,7 +6,7 @@ set -x
 vNAME="opera-proxy"
 vARCH="arm64" # amd64,arm,arm64,mips,mips64,mips64le,mipsle
 vVER="$(curl -fs -o/dev/null -w %{redirect_url} https://github.com/Snawoot/${vNAME}/releases/latest | cut -b 54-)"
-vPROXY_IP="$(uci show network.lan.ipaddr | awk -F "\'" '{print $2}')"
+vPROXY_IP="$(uci get network.lan.ipaddr)"
 vPROXY_PORT="18080"
 vPROXY_DNS="https://9.9.9.9/dns-query"
 vPROXY_COUNTRY="EU" # AM,Americas : EU,Europe : AS,Asia
