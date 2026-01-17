@@ -98,39 +98,44 @@ while uci -q delete https-dns-proxy.@https-dns-proxy[0]; do :; done
 uci set https-dns-proxy.config.force_dns='1'
 uci set https-dns-proxy.config.canary_domains_icloud='1'
 uci set https-dns-proxy.config.canary_domains_mozilla='1'
+uci set https-dns-proxy.config.user='nobody'
+uci set https-dns-proxy.config.group='nogroup'
+uci set https-dns-proxy.config.listen_addr='127.0.0.1'
 uci add https-dns-proxy https-dns-proxy
-uci set https-dns-proxy.@https-dns-proxy[0].resolver_url='https://cloudflare-dns.com/dns-query'
-uci set https-dns-proxy.@https-dns-proxy[0].bootstrap_dns='1.1.1.1,1.0.0.1'
-uci set https-dns-proxy.@https-dns-proxy[0].listen_addr='127.0.0.1'
-uci set https-dns-proxy.@https-dns-proxy[0].listen_port='5053'
-uci set https-dns-proxy.@https-dns-proxy[0].user='nobody'
-uci set https-dns-proxy.@https-dns-proxy[0].group='nogroup'
+uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://dns.google/dns-query'
+uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='8.8.4.4,8.8.8.8'
+uci set https-dns-proxy.@https-dns-proxy[-1].listen_addr='127.0.0.1'
+uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5051'
 uci add https-dns-proxy https-dns-proxy
-uci set https-dns-proxy.@https-dns-proxy[1].resolver_url='https://dns.google/dns-query'
-uci set https-dns-proxy.@https-dns-proxy[1].bootstrap_dns='8.8.4.4,8.8.8.8'
-uci set https-dns-proxy.@https-dns-proxy[1].listen_addr='127.0.0.1'
-uci set https-dns-proxy.@https-dns-proxy[1].listen_port='5054'
-uci set https-dns-proxy.@https-dns-proxy[1].user='nobody'
-uci set https-dns-proxy.@https-dns-proxy[1].group='nogroup'
+uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://cloudflare-dns.com/dns-query'
+uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='1.1.1.2,1.0.0.2'
+uci set https-dns-proxy.@https-dns-proxy[-1].listen_addr='127.0.0.1'
+uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5052'
 uci add https-dns-proxy https-dns-proxy
-uci set https-dns-proxy.@https-dns-proxy[2].resolver_url='https://common.dot.dns.yandex.net/dns-query'
-uci set https-dns-proxy.@https-dns-proxy[2].bootstrap_dns='77.88.8.8,77.88.8.1'
-uci set https-dns-proxy.@https-dns-proxy[2].listen_addr='127.0.0.1'
-uci set https-dns-proxy.@https-dns-proxy[2].listen_port='5055'
-uci set https-dns-proxy.@https-dns-proxy[2].user='nobody'
-uci set https-dns-proxy.@https-dns-proxy[2].group='nogroup'
+uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://dns9.quad9.net/dns-query'
+uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='9.9.9.9,149.112.112.112'
+uci set https-dns-proxy.@https-dns-proxy[-1].listen_addr='127.0.0.1'
+uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5053'
 uci add https-dns-proxy https-dns-proxy
-uci set https-dns-proxy.@https-dns-proxy[3].resolver_url='https://router.comss.one/dns-query'
-uci set https-dns-proxy.@https-dns-proxy[3].bootstrap_dns='195.133.25.16,212.109.195.93,83.220.169.155'
-uci set https-dns-proxy.@https-dns-proxy[3].listen_addr='127.0.0.1'
-uci set https-dns-proxy.@https-dns-proxy[3].listen_port='5056'
-uci set https-dns-proxy.@https-dns-proxy[3].user='nobody'
-uci set https-dns-proxy.@https-dns-proxy[3].group='nogroup'
+uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://common.dot.dns.yandex.net/dns-query'
+uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='77.88.8.8,77.88.8.1'
+uci set https-dns-proxy.@https-dns-proxy[-1].listen_addr='127.0.0.1'
+uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5054'
+uci add https-dns-proxy https-dns-proxy
+uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://freedns.controld.com/p3'
+uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='76.76.2.0,76.76.10.0'
+uci set https-dns-proxy.@https-dns-proxy[-1].listen_addr='127.0.0.1'
+uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5055'
+uci add https-dns-proxy https-dns-proxy
+uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://router.comss.one/dns-query'
+uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='195.133.25.16,212.109.195.93,83.220.169.155'
+uci set https-dns-proxy.@https-dns-proxy[-1].listen_addr='127.0.0.1'
+uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5056'
 uci commit https-dns-proxy
 
-/etc/init.d/rpcd restart
-/etc/init.d/https-dns-proxy enable
-/etc/init.d/https-dns-proxy restart
+service rpcd restart
+service https-dns-proxy enable
+service https-dns-proxy restart
 
 echo "# dnsmasq #"
 uci get dhcp.@dnsmasq[0] || uci add dhcp dnsmasq
@@ -139,7 +144,7 @@ uci set dhcp.@dnsmasq[0].dnsforwardmax='2048'
 uci set dhcp.@dnsmasq[0].min_cache_ttl="600"
 uci set dhcp.@dnsmasq[0].max_cache_ttl="86400"
 uci set dhcp.@dnsmasq[0].nonegcache='1'
-vVIA_COMSS_LIST="comss.ru comss.one chatgpt.com oaistatic.com oaiusercontent.com openai.com microsoft.com windowsupdate.com bing.com supercell.com supercellid.com supercellgames.com clashroyale.com brawlstars.com clash.com clashofclans.com x.ai grok.com github.com forzamotorsport.net forzaracingchampionship.com forzarc.com gamepass.com orithegame.com renovacionxboxlive.com tellmewhygame.com xbox.co xbox.com xbox.eu xbox.org xbox360.co xbox360.com xbox360.eu xbox360.org xboxab.com xboxgamepass.com xboxgamestudios.com xboxlive.cn xboxlive.com xboxone.co xboxone.com xboxone.eu xboxplayanywhere.com xboxservices.com xboxstudios.com xbx.lv sentry.io usercentrics.eu recaptcha.net gstatic.com brawlstarsgame.com"
+vVIA_COMSS_LIST="comss.ru comss.one chatgpt.com oaistatic.com oaiusercontent.com openai.com microsoft.com windowsupdate.com bing.com supercell.com supercellid.com supercellgames.com clashroyale.com brawlstars.com clash.com clashofclans.com x.ai grok.com github.com githubusercontent.com forzamotorsport.net forzaracingchampionship.com forzarc.com gamepass.com orithegame.com renovacionxboxlive.com tellmewhygame.com xbox.co xbox.com xbox.eu xbox.org xbox360.co xbox360.com xbox360.eu xbox360.org xboxab.com xboxgamepass.com xboxgamestudios.com xboxlive.cn xboxlive.com xboxone.co xboxone.com xboxone.eu xboxplayanywhere.com xboxservices.com xboxstudios.com xbx.lv sentry.io usercentrics.eu recaptcha.net gstatic.com brawlstarsgame.com"
 for vCOMSS_ITEM in ${vVIA_COMSS_LIST}; do
     uci add_list dhcp.@dnsmasq[0].server="/*.${vCOMSS_ITEM}/127.0.0.1#5056"
 done
@@ -150,17 +155,26 @@ for vDOMAIN_ITEM in ${vDHCP_DOMAIN_LIST}; do
     uci set dhcp.@domain[-1].name="${vDOMAIN_ITEM}"
     uci set dhcp.@domain[-1].ip="94.131.119.85"
 done
+uci commit dnsmasq
 uci commit dhcp
 uci commit
-/etc/init.d/dnsmasq restart
+service dnsmasq restart
 
 echo "# firewall fix mtu #"
 [ "$(uci get firewall.@zone[0].name 2>/dev/null)" = "lan" ] && {
     [ "$(uci get firewall.@zone[0].mtu_fix 2>/dev/null)" = "1" ] || uci set firewall.@zone[0].mtu_fix='1'
 }
 uci set firewall.@defaults[0].flow_offloading='1'
+uci add firewall rule
+uci set firewall.dns_int="redirect"
+uci set firewall.dns_int.name="Intercept-DNS"
+uci set firewall.dns_int.src="lan"
+uci set firewall.dns_int.src_dport="53"
+uci set firewall.dns_int.proto="tcp udp"
+uci set firewall.dns_int.family="any"
+uci set firewall.dns_int.target="DNAT"
 uci commit firewall
-/etc/init.d/firewall restart
+service firewall restart
 
 echo "# network         #"
 echo "# packet steering #"
@@ -173,16 +187,12 @@ uci get network.globals.packet_steering > /dev/null || {
 echo "# ddns #"
 uci delete ddns.myddns_ipv6
 uci commit ddns
-/etc/init.d/ddns disable
-/etc/init.d/ddns stop
+service ddns disable
+service ddns stop
 
 echo "# tmux #"
 echo -e "set -gq mouse on\nset -gq history-limit 100000\nset -gq status-position top\nset-option -ga terminal-overrides ',*:enacs@:smacs@:rmacs@:acsc@'" > /root/.tmux.conf
 
 echo "# igmpproxy #"
-/etc/init.d/igmpproxy disable
-/etc/init.d/igmpproxy stop
-
-echo "# zerotier #"
-/etc/init.d/zerotier stop
-/etc/init.d/zerotier disable
+service igmpproxy disable
+service igmpproxy stop

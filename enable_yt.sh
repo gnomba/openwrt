@@ -53,6 +53,17 @@ vDOMAINS_CUSTOM="filmix.my filmix.dog filmix.tv filmix.day baskino.se kinogo.ec 
 rutracker.org rutracker.net rutracker.cc rutor.info rutor.is nnmclub.to pscp.tv upaste.me dmitry-tv.ddns.net dmi3y-tv.ru dmi3y-tv6.ru 4pda.ru 4pda.to truthsocial.com"
 #echo "vDOMAINS_CUSTOM=${vDOMAINS_CUSTOM}"
 
+### ===
+itdog_LIST="$(curl -s https://raw.githubusercontent.com/itdoginfo/allow-domains/refs/heads/main/Services/youtube.lst)"
+kkkkCampbell_LIST="fonts.gstatic.com i.ytimg.com jnn-pa.googleapis.com m.youtube.com redirector.googlevideo.com static.doubleclick.net suggestqueries.google.com
+wide-youtube.l.google.com youtube.googleapis.com youtubeembeddedplayer.googleapis.com youtubei.googleapis.com youtube-ui.l.google.com yt3.ggpht.com yt4.ggpht.com
+ytimg.l.google.com yt-video-upload.l.google.com youtu.be withyoutube.com youtube.com youtubeeducation.com youtubefanfest.com youtubegaming.com youtubekids.com
+youtubemobilesupport.com youtube-nocookie.com yt.be ytimg.com googlevideo.com"
+for vYT_ITEM in ${kkkkCampbell_LIST}; do
+    uci add_list youtubeUnblock.@section[-1].sni_domains=${vYT_ITEM}
+done
+### ===
+
 while uci -q delete youtubeUnblock.@section[0]; do :; done
 
 uci set youtubeUnblock.youtubeUnblock.silent='0'
