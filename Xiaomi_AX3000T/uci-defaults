@@ -43,11 +43,11 @@ set system.ntp.server='3.ru.pool.ntp.org 2.ru.pool.ntp.org 1.ru.pool.ntp.org 0.r
 # system led #
 # горит синим пока есть линк у 'WAN'
 add system led
-set system.@led[0].name='wan-on'
-set system.@led[0].sysfs='blue:status'
-set system.@led[0].trigger='netdev'
-set system.@led[0].dev='wan'
-set system.@led[0].mode='link'
+set system.@led[-1].name='wan-on'
+set system.@led[-1].sysfs='blue:status'
+set system.@led[-1].trigger='netdev'
+set system.@led[-1].dev='wan'
+set system.@led[-1].mode='link'
 commit system
 
 # wireless #
