@@ -13,6 +13,19 @@ vPROXY_COUNTRY="EU" # AM,Americas : EU,Europe : AS,Asia
 vPATH="/usr/bin/${vNAME}"
 vURL="https://github.com/Snawoot/${vNAME}/releases/download/v${vVER}"
 vFILE="${vNAME}.linux-${vARCH}"
+vOPKG_FILE="/etc/opkg.conf"
+vCURL_FILE="~/.curlrc"
+vWGET_FILE="~/.wgetrc"
+vOPKG_SET="#option http_proxy http://${vPROXY_IP}:${vPROXY_PORT}/
+#option https_proxy https://${vPROXY_IP}:${vPROXY_PORT}/"
+vCURL_SET="#proxy = http://${vPROXY_IP}:${vPROXY_PORT}" 
+vWGET_SET="#use_proxy = on
+#http_proxy = http://${vPROXY_IP}:${vPROXY_PORT}
+#https_proxy = http://${vPROXY_IP}:${vPROXY_PORT}" 
+
+echo "${vOPKG_SET}" >> ${vOPKG_FILE}
+echo "${vCURL_SET}" >> ${vCURL_FILE}
+echo "${vWGET_SET}" >> ${vWGET_FILE}
 
 service ${vNAME} stop
 echo " ###########################"

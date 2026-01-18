@@ -1,4 +1,5 @@
 #!/bin/sh
+# INFO: https://github.com/Waujito/youtubeUnblock/releases
 
 set -x
 
@@ -105,8 +106,8 @@ for vDOMAIN_ITEM in ${vDOMAINS_LIST};do
 done
 
 uci commit ${vNAME}
-/etc/init.d/${vNAME} restart
-/etc/init.d/https-dns-proxy restart
+service ${vNAME} restart
+service https-dns-proxy restart
 
 set +x
 
