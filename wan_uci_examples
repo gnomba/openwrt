@@ -28,6 +28,8 @@ uci set network.wan.apn='internet'
 uci set network.wan.auth='both'
 uci set network.wan.pdptype='ipv4'
 uci set network.wan.ipv6='0'
+uci set network.wan.peerdns='0'
+uci set network.wan.dns='8.8.4.4 1.1.1.2 9.9.9.9 77.88.8.8 76.76.2.0 195.133.25.16'
 uci commit network
 uci set system.led_wan_off.dev='wwan0'
 uci commit system
@@ -81,6 +83,8 @@ uci set network.wan.apn='internet'
 uci set network.wan.auth='both'
 uci set network.wan.pdptype='ipv4'
 uci set network.wan.ipv6='0'
+uci set network.wan.peerdns='0'
+uci set network.wan.dns='8.8.4.4 1.1.1.2 9.9.9.9 77.88.8.8 76.76.2.0 195.133.25.16'
 uci commit network
 uci set system.led_wan_off.dev='wwan0'
 uci commit system
@@ -117,6 +121,8 @@ uci set network.wan.iptype='ipv4'
 uci set network.wan.loglevel='ERR'
 uci set network.wan.delegate='0'
 uci set network.wan.ipv6='0'
+uci set network.wan.peerdns='0'
+uci set network.wan.dns='8.8.4.4 1.1.1.2 9.9.9.9 77.88.8.8 76.76.2.0 195.133.25.16'
 uci commit network
 uci set system.led_wan_off.dev='wwan0'
 uci commit system
@@ -151,6 +157,8 @@ uci set network.wan.apn='internet'
 uci set network.wan.auth='auto'
 uci set network.wan.pdptype='ip'
 uci set network.wan.ipv6='0'
+uci set network.wan.peerdns='0'
+uci set network.wan.dns='8.8.4.4 1.1.1.2 9.9.9.9 77.88.8.8 76.76.2.0 195.133.25.16'
 uci commit network
 uci set system.led_wan_off.dev='eth1'
 uci commit system
@@ -183,6 +191,8 @@ uci set network.wan.proto='pppoe'
 uci set network.wan.username='<ваш-логин>'
 uci set network.wan.password='<ваш-пароль>'
 uci set network.wan.ipv6='0'
+uci set network.wan.peerdns='0'
+uci set network.wan.dns='8.8.4.4 1.1.1.2 9.9.9.9 77.88.8.8 76.76.2.0 195.133.25.16'
 uci commit network
 uci set system.led_wan_off.dev='wan'
 uci commit system
@@ -197,13 +207,15 @@ uci set network.wan.proto='dhcp'
 ###  и раскомментируем строчку ниже
 #uci set network.wan.macaddr="01:23:45:67:89:AB"
 uci set network.wan.ipv6='0'
+uci set network.wan.peerdns='0'
+uci set network.wan.dns='8.8.4.4 1.1.1.2 9.9.9.9 77.88.8.8 76.76.2.0 195.133.25.16'
 uci commit network
 uci set system.led_wan_off.dev='wan'
 uci commit system
 uci commit
 
 # перезапускаем сеть
-/etc/init.d/network restart
+service network restart
 
 # и на всякий случай перегружаем
 reboot
