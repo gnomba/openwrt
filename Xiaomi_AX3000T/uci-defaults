@@ -1,4 +1,10 @@
 ### uci-defaults Xiaomi AX3000T ###
+sed -i '1s/.*/ ██████╗ ██████╗ ███████╗███╗   ██╗██╗    ██╗██████╗ ████████╗/' /etc/banner
+sed -i '2s/.*/██╔═══██╗██╔══██╗██╔════╝████╗  ██║██║    ██║██╔══██╗╚══██╔══╝/' /etc/banner
+sed -i '3s/.*/██║   ██║██████╔╝█████╗  ██╔██╗ ██║██║ █╗ ██║██████╔╝   ██║   /' /etc/banner
+sed -i '4s/.*/██║   ██║██╔═══╝ ██╔══╝  ██║╚██╗██║██║███╗██║██╔══██╗   ██║   /' /etc/banner
+sed -i '5s/.*/╚██████╔╝██║     ███████╗██║ ╚████║╚███╔███╔╝██║  ██║   ██║   /' /etc/banner
+sed -i '5a  ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚══╝╚══╝ ╚═╝  ╚═╝   ╚═╝   ' /etc/banner
 
 echo "# log potential errors: /tmp/setup.log"
 exec >/tmp/setup.log 2>&1
@@ -7,9 +13,9 @@ set -x
 ip a | grep 'state\|ether'
 last_4_mac_wan="$(uci get network.@device[1].macaddr | awk -F':' '{print toupper($5$6)}')"
 echo "last_4_mac_wan=${last_4_mac_wan}"
-wlan_name_2g="Xiaomi-RD03_${last_4_mac_wan}"
+wlan_name_2g="Xiaomi_${last_4_mac_wan}"
 echo "wlan_name_2g='${wlan_name_2g}'"
-wlan_name_5g="Xiaomi-RD03_${last_4_mac_wan}_5G"
+wlan_name_5g="Xiaomi_${last_4_mac_wan}_5G"
 echo "wlan_name_5g=${wlan_name_5g}"
 wlan_password="1234567890"
 echo "wlan_password=${wlan_password}"
