@@ -30,6 +30,7 @@ collectd-mod-thermal
 -comgt-ncm
 confuse
 coreutils
+coreutils-base64
 coreutils-sort
 coreutils-uniq
 curl
