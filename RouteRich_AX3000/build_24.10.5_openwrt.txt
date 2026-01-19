@@ -59,7 +59,7 @@ glib2
 hostapd-common
 -hostapd-openssl
 htop
-https-dns-proxy
+-https-dns-proxy
 igmpproxy
 ip-tiny
 -iperf3
@@ -119,6 +119,7 @@ kmod-crypto-user
 kmod-gpio-button-hotplug
 kmod-gre
 kmod-hwmon-core
+kmod-inet-diag
 -kmod-ipt-conntrack
 -kmod-ipt-core
 kmod-ipt-ipopt
@@ -300,7 +301,7 @@ luci-app-ddns
 -luci-app-filebrowser-go
 -luci-app-filemanager
 luci-app-firewall
-luci-app-https-dns-proxy
+-luci-app-https-dns-proxy
 -luci-app-ksmbd
 -luci-app-log
 -luci-app-modemband
@@ -326,7 +327,7 @@ luci-i18n-base-ru
 luci-i18n-ddns-ru
 -luci-i18n-filebrowser-go-ru
 luci-i18n-firewall-ru
-luci-i18n-https-dns-proxy-ru
+-luci-i18n-https-dns-proxy-ru
 -luci-i18n-ksmbd-ru
 -luci-i18n-log-ru
 -luci-i18n-modeminfo-ru
@@ -421,6 +422,7 @@ rpcd-mod-rpcsys
 rpcd-mod-rrdns
 rpcd-mod-ucode
 rrdtool1
+sing-box
 -sms-tool
 -smstools3
 speedtestcpp
