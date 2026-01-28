@@ -8,12 +8,15 @@ curl
 dnsmasq
 dropbear
 firewall4
+-firmware-ap
 fstools
 https-dns-proxy
 -igmpproxy
 kmod-gpio-button-hotplug
 kmod-leds-gpio
-kmod-mt76x2
+-kmod-mt76x2
+kmod-mt7615e
+kmod-mt7663
 kmod-nft-offload
 kmod-nft-queue
 kmod-nf-conntrack
