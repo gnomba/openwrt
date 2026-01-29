@@ -245,7 +245,9 @@ set_n5beta() {
 }
 
 set_ZB() {
-	echo "Имя функции: $FUNCNAME"
+	echo "+---------------------+"
+	echo "| Имя функции: $FUNCNAME |"
+	echo "+---------------------+"
 }
 
 start_test() {
@@ -258,5 +260,5 @@ install_packages
 set_dns_services
 #set_n5
 set_n5beta
-#set_ZB
+set_ZB
 start_test
