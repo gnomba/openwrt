@@ -2,17 +2,36 @@
 
 # STEP-00: настроить тырнетский на ролтоныче
 
-for i in box blocks stars hash banner; do
-	curl -s "https://tcpdata.com/ascii/ROUTERICH__mod?style=$i&border=false" | jq -r '.ascii'
-	echo " -----------------------------------------------------"
-done
+#for i in box blocks stars hash banner; do
+#	curl -s "https://tcpdata.com/ascii/Xiaomi?style=$i&border=false" | jq -r '.ascii'
+#	echo " -----------------------------------------------------"
+#done
+vDETECTED="$(dmesg | grep -i 'Machine model:' | awk '{print $5}')"
+is_rr() {
+	if [[ "${vDETECTED}" == "Routerich" ]]; then
+		local vMODEL="$(dmesg | grep -i 'Hardware name:' | awk -F: '{print $2}' | sed 's/ //')"
+		echo "┌──────────┐"
+		echo "│ DETECTED │ ${vMODEL}"
+		echo "└──────────┘"
+		curl -s "https://tcpdata.com/ascii/${vDETECTED}?style=banner&border=true" | jq -r '.ascii'
+		return 0
+	else
+		return 1
+	fi
+}
 
 set_banner() {
+	is_rr && return 0
+	local vETC_BANNER="/etc/banner"
+	local vFONT="ANSI Shadow" # 'Big' 'Big ASCII 12' 'Big Mono 9' 'Small Shadow' 'Banner3' 'Block' 'Doom'
+	local vMODEL="$(dmesg | grep -i 'Machine model:' | awk -F: '{print $2}' | sed 's/ //')"
 	. /etc/os-release
-	vETC_BANNER="/etc/banner"
-	vFONT="ANSI Shadow" # 'Big' 'Big ASCII 12' 'Big Mono 9' 'Small Shadow' 'Banner3' 'Block' 'Doom'
+	echo "┌──────────┐"
+	echo "│ DETECTED │ ${vMODEL}"
+	echo "└──────────┘"
+	curl -s "https://tcpdata.com/ascii/${vDETECTED}?style=banner&border=true" | jq -r '.ascii'
 	curl -s -X POST "https://elysiatools.com/en/api/tools/ascii-art-generator" -d "text=OpenWrt&font=${vFONT}" | jq -r '.data.result' > ${vETC_BANNER}
-	echo " Xiaomi Mi Router AX3000T [ROUTERICH mod]" >> ${vETC_BANNER}
+	echo " ${vMODEL} [ROUTERICH mod]" >> ${vETC_BANNER}
 	echo " -----------------------------------------------------" >> ${vETC_BANNER}
 	echo " ${NAME} ${VERSION}, ${BUILD_ID}" >> ${vETC_BANNER}
 	echo " -----------------------------------------------------" >> ${vETC_BANNER}
@@ -55,9 +74,10 @@ set_https_dns_proxy() {
 	uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='195.133.25.16,212.109.195.93,83.220.169.155'
 	uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5056'
 	uci commit https-dns-proxy
-	/etc/init.d/https-dns-proxy enable
-	/etc/init.d/https-dns-proxy reload
-	/etc/init.d/https-dns-proxy restart
+	uci commit
+	for vACTION in enable reload restart; do
+		service https-dns-proxy ${vACTION}
+	done
 }
 
 install_packages() {
@@ -206,13 +226,7 @@ set_dns_services() {
 	uci set doh-proxy.@doh-proxy[-1].listen_port='5056'
 	uci set doh-proxy.@doh-proxy[-1].user='nobody'
 	uci set doh-proxy.@doh-proxy[-1].group='nogroup'
-	/etc/init.d/doh-proxy enable
-	/etc/init.d/doh-proxy reload
-	/etc/init.d/doh-proxy restart
-
-	/etc/init.d/stubby enable
-	/etc/init.d/stubby reload
-	/etc/init.d/stubby restart
+	uci commit doh-proxy
 
 	if opkg list-installed | grep -q '^luci-app-dns-failsafe-proxy -'; then
 		SERVER='127.0.0.1#5359'
@@ -225,22 +239,30 @@ set_dns_services() {
 	fi
 	uci -q set dhcp.@dnsmasq[0].noresolv='1'
 	uci commit dhcp
-	/etc/init.d/dnsmasq restart
+	uci commit
+	# enable-restart dns services #
+	for i in sing-box stubby doh-proxy dns-failsafe-proxy dnsmasq; do
+  		service ${i} enable
+  		service ${i} reload
+  		service ${i} restart
+	done
 }
 
 set_n5() {
-	vURL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/wdoctrack/universal_config_new_podkop.sh"
-	vFILE="/tmp/universal_config_new_podkop.sh"
+	sleep 5
+	local vURL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/wdoctrack/universal_config_new_podkop.sh"
+	local vFILE="/tmp/universal_config_new_podkop.sh"
 	wget ${vURL} -O ${vFILE}
-	sed -i "s/findKey=\"RouteRich\"/findKey=\"OpenWrt\"/g" ${vFILE}
+	if ! is_rr; then sed -i "s/findKey=\"RouteRich\"/findKey=\"OpenWrt\"/g" ${vFILE}; fi
 	sh ${vFILE}
 }
 
 set_n5beta() {
-	vURL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/podkop0711/universal_config_new_podkop.sh"
-	vFILE="/tmp/universal_config_new_podkop.sh"
+	sleep 5
+	local vURL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/podkop0711/universal_config_new_podkop.sh"
+	local vFILE="/tmp/universal_config_new_podkop.sh"
 	wget ${vURL} -O ${vFILE}
-	sed -i "s/findKey=\"RouteRich\"/findKey=\"OpenWrt\"/g" ${vFILE}
+	if ! is_rr; then sed -i "s/findKey=\"RouteRich\"/findKey=\"OpenWrt\"/g" ${vFILE}; fi
 	sh ${vFILE}
 }
 
@@ -254,6 +276,7 @@ start_test() {
 	sh <(wget -qO- https://raw.githubusercontent.com/kkkkCampbell/master/refs/heads/test_config_script/test_config_script_nightly)
 }
 
+is_rr
 set_banner
 set_https_dns_proxy
 install_packages
