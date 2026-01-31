@@ -241,7 +241,7 @@ set_dnsmasq() {
 	uci -q set dhcp.@dnsmasq[0].cachesize='0' 2>/dev/null
 	uci -q set dhcp.@dnsmasq[0].nonegcache='1' 2>/dev/null
 	uci -q set dhcp.@dnsmasq[0].confdir='/tmp/dnsmasq.d' 2>/dev/null
-	vVIA_COMSS_LIST="comss.ru comss.one chatgpt.com oaistatic.com oaiusercontent.com openai.com microsoft.com windowsupdate.com bing.com supercell.com supercellid.com supercellgames.com clashroyale.com brawlstars.com clash.com clashofclans.com x.ai grok.com forzamotorsport.net forzaracingchampionship.com forzarc.com gamepass.com orithegame.com renovacionxboxlive.com tellmewhygame.com xbox.co xbox.com xbox.eu xbox.org xbox360.co xbox360.com xbox360.eu xbox360.org xboxab.com xboxgamepass.com xboxgamestudios.com xboxlive.cn xboxlive.com xboxone.co xboxone.com xboxone.eu xboxplayanywhere.com xboxservices.com xboxstudios.com xbx.lv sentry.io usercentrics.eu recaptcha.net gstatic.com brawlstarsgame.com"
+	vVIA_COMSS_LIST="comss.ru comss.one chatgpt.com oaistatic.com oaiusercontent.com openai.com microsoft.com windowsupdate.com bing.com supercell.com supercellid.com supercellgames.com clashroyale.com brawlstars.com clash.com clashofclans.com x.ai grok.com github.com forzamotorsport.net forzaracingchampionship.com forzarc.com gamepass.com orithegame.com renovacionxboxlive.com tellmewhygame.com xbox.co xbox.com xbox.eu xbox.org xbox360.co xbox360.com xbox360.eu xbox360.org xboxab.com xboxgamepass.com xboxgamestudios.com xboxlive.cn xboxlive.com xboxone.co xboxone.com xboxone.eu xboxplayanywhere.com xboxservices.com xboxstudios.com xbx.lv sentry.io usercentrics.eu recaptcha.net gstatic.com brawlstarsgame.com"
 	for vCOMSS_ITEM in ${vVIA_COMSS_LIST}; do
     	uci add_list dhcp.@dnsmasq[0].server="/*.${vCOMSS_ITEM}/127.0.0.1#5056"
 	done
@@ -523,3 +523,8 @@ set_adblock
 set_ddns
 set_tmux
 mark_rr_init
+
+echo -e "140.82.121.4    github.com\n185.199.108.133 raw.githubusercontent.com\n185.199.109.133 raw.githubusercontent.com\n185.199.110.133 raw.githubusercontent.com\n
+185.199.111.133 raw.githubusercontent.com\n185.199.108.153 fantastic-packages.github.io\n185.199.109.153 fantastic-packages.github.io\n185.199.110.153 fantastic-packages.github.io\n
+185.199.111.153 fantastic-packages.github.io\n185.163.119.85  mirror-03.infra.openwrt.org\n104.21.5.135    tcpdata.com\n172.67.133.126  tcpdata.com\n
+104.21.24.103   elysiatools.com\n172.67.218.47   elysiatools.com\n" >> /etc/hosts
