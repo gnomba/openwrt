@@ -9,7 +9,7 @@
 vDETECTED="$(dmesg | grep -i 'Machine model:' | awk '{print $5}')"
 is_rr() {
 	if [[ "${vDETECTED}" == "Routerich" ]]; then
-		local vMODEL="$(dmesg | grep -i 'Hardware name:' | awk -F: '{print $2}' | sed 's/ //')"
+		local vMODEL="$(dmesg | grep -i 'Machine model:' | awk -F: '{print $2}' | sed 's/ //')"
 		echo "┌──────────┐"
 		echo "│ DETECTED │ ${vMODEL}"
 		echo "└──────────┘"
@@ -38,46 +38,55 @@ set_banner() {
 }
 
 set_https_dns_proxy() {
-	while uci -q delete https-dns-proxy.@https-dns-proxy[0]; do :; done
-	uci set https-dns-proxy.config.force_dns='1'
-	uci set https-dns-proxy.config.canary_domains_icloud='1'
-	uci set https-dns-proxy.config.canary_domains_mozilla='1'
-	uci set https-dns-proxy.config.user='nobody'
-	uci set https-dns-proxy.config.group='nogroup'
-	uci set https-dns-proxy.config.listen_addr='127.0.0.1'
-	uci add https-dns-proxy https-dns-proxy
-	uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://dns.google/dns-query'
-	uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='8.8.4.4,8.8.8.8'
-	uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5050'
-	uci add https-dns-proxy https-dns-proxy
-	uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://dns.adguard-dns.com/dns-query'
-	uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='94.140.15.15,94.140.14.14'
-	uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5051'
-	uci add https-dns-proxy https-dns-proxy
-	uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://dns9.quad9.net/dns-query'
-	uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='9.9.9.9,149.112.112.112'
-	uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5052'
-	uci add https-dns-proxy https-dns-proxy
-	uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://cloudflare-dns.com/dns-query'
-	uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='1.1.1.2,1.0.0.2'
-	uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5053'
-	uci add https-dns-proxy https-dns-proxy
-	uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://common.dot.dns.yandex.net/dns-query'
-	uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='77.88.8.8,77.88.8.1'
-	uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5054'
-	uci add https-dns-proxy https-dns-proxy
-	uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://freedns.controld.com/p3'
-	uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='76.76.2.0,76.76.10.0'
-	uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5055'
-	uci add https-dns-proxy https-dns-proxy
-	uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://router.comss.one/dns-query'
-	uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='195.133.25.16,212.109.195.93,83.220.169.155'
-	uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5056'
-	uci commit https-dns-proxy
-	uci commit
-	for vACTION in enable reload restart; do
-		service https-dns-proxy ${vACTION}
-	done
+	if opkg list-installed | grep -q '^https-dns-proxy'; then
+		echo "+------------------------------------+"
+		echo "| Пакет 'https-dns-proxy' установлен |"
+		echo "+------------------------------------+"
+		while uci -q delete https-dns-proxy.@https-dns-proxy[0]; do :; done
+		uci set https-dns-proxy.config.force_dns='1'
+		uci set https-dns-proxy.config.canary_domains_icloud='1'
+		uci set https-dns-proxy.config.canary_domains_mozilla='1'
+		uci set https-dns-proxy.config.user='nobody'
+		uci set https-dns-proxy.config.group='nogroup'
+		uci set https-dns-proxy.config.listen_addr='127.0.0.1'
+		uci add https-dns-proxy https-dns-proxy
+		uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://dns.google/dns-query'
+		uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='8.8.4.4,8.8.8.8'
+		uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5050'
+		uci add https-dns-proxy https-dns-proxy
+		uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://dns.adguard-dns.com/dns-query'
+		uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='94.140.15.15,94.140.14.14'
+		uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5051'
+		uci add https-dns-proxy https-dns-proxy
+		uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://dns9.quad9.net/dns-query'
+		uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='9.9.9.9,149.112.112.112'
+		uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5052'
+		uci add https-dns-proxy https-dns-proxy
+		uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://cloudflare-dns.com/dns-query'
+		uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='1.1.1.2,1.0.0.2'
+		uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5053'
+		uci add https-dns-proxy https-dns-proxy
+		uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://common.dot.dns.yandex.net/dns-query'
+		uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='77.88.8.8,77.88.8.1'
+		uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5054'
+		uci add https-dns-proxy https-dns-proxy
+		uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://freedns.controld.com/p3'
+		uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='76.76.2.0,76.76.10.0'
+		uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5055'
+		uci add https-dns-proxy https-dns-proxy
+		uci set https-dns-proxy.@https-dns-proxy[-1].resolver_url='https://router.comss.one/dns-query'
+		uci set https-dns-proxy.@https-dns-proxy[-1].bootstrap_dns='195.133.25.16,212.109.195.93,83.220.169.155'
+		uci set https-dns-proxy.@https-dns-proxy[-1].listen_port='5056'
+		uci commit https-dns-proxy
+		uci commit
+		for vACTION in enable reload restart; do
+			service https-dns-proxy ${vACTION}
+		done
+	else
+		echo "+---------------------------------------+"
+		echo "| Пакет 'https-dns-proxy' не установлен |"
+		echo "+---------------------------------------+"
+	fi
 }
 
 install_packages() {
@@ -239,6 +248,11 @@ set_dns_services() {
 	fi
 	uci -q set dhcp.@dnsmasq[0].noresolv='1'
 	uci commit dhcp
+	# wdoc
+	uci set wdoc-singbox.main.enabled='1'
+	uci commit wdoc-singbox
+	uci set wdoc.main.enabled='1'
+	uci commit wdoc
 	uci commit
 	# enable-restart dns services #
 	for i in sing-box stubby doh-proxy dns-failsafe-proxy dnsmasq; do
