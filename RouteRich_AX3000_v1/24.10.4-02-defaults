@@ -1,0 +1,565 @@
+#!/bin/sh
+setup_log="/tmp/setup.log"
+echo "# log potential errors: $setup_log"
+exec >$setup_log 2>&1
+set -x
+
+copy_routerich_firmware() {
+	factory_mtd=/dev/$(cat /proc/mtd | grep -i factory | awk '{print $1}' | sed 's/://')
+	dd if=$factory_mtd of=/lib/firmware/mediatek/mt7981_eeprom_mt7976_dbdc.bin bs=1 count=32 conv=notrunc >/dev/null 2>&1
+}
+
+add_repository() {
+	rrver=$(ubus call system board | jsonfilter -e '@.release.version')
+	sed -i "s|src/gz openwrt_core https://downloads.openwrt.org/releases/$rrver/targets/mediatek/filogic/packages|src/gz routerich_core https://github.com/routerich/packages.routerich/raw/$rrver/core|" /etc/opkg/distfeeds.conf
+	if ! grep -q "src/gz routerich https://github.com/routerich/packages.routerich/raw/$rrver/routerich" /etc/opkg/distfeeds.conf; then
+		echo "src/gz routerich https://github.com/routerich/packages.routerich/raw/$rrver/routerich" >> /etc/opkg/distfeeds.conf
+	fi
+	sed -i '/^src\/gz routerich http/d' /etc/opkg/customfeeds.conf
+}
+
+is_rr_inited() {
+	[ -f /etc/config/.rr-init ]
+}
+
+add_rr_version() {
+	if opkg list-installed | grep -q '^luci-app-attendedsysupgrade -'; then
+		v="ASU"
+	elif [ -s /etc/routerich_release ]; then
+		v="$(cat /etc/routerich_release)"
+	else
+		return 0
+	fi
+
+	if ! grep -qF "$v" /etc/openwrt_release; then
+		sed -i "s|\(DISTRIB_DESCRIPTION='[^']*\)'|\1 $v'|" /etc/openwrt_release
+	fi
+
+	if ! grep -qF "$v" /usr/lib/os-release; then
+		sed -i "s|\(OPENWRT_RELEASE=\"[^\"]*\)\"|\1 $v\"|" /usr/lib/os-release
+	fi
+}
+
+set_wan() {
+	BOARD_NAME=$(ubus call system board | jsonfilter -e '@.board_name')
+	case "$BOARD_NAME" in
+		routerich,ax3000)
+			WANDEV="wan"
+			;;
+		routerich,ax3000-v1)
+			WANDEV="eth1"
+			;;
+		*)
+			WANDEV="wan"
+			;;
+	esac
+	MAC=$(cat /sys/class/net/$WANDEV/address)
+	FOUND=""
+	for s in $(uci show network | grep "=device" | sed -E 's/([^=]+)=device.*/\1/'); do
+		name=$(uci -q get $s.name)
+		if [ "$name" = "$WANDEV" ]; then
+			FOUND="$s"
+			break
+		fi
+	done
+	if [ -n "$FOUND" ]; then
+		CURRENT_MAC=$(uci -q get $FOUND.macaddr)
+		if [ -z "$CURRENT_MAC" ]; then
+			uci -q set $FOUND.macaddr="$MAC"
+		fi
+	else
+		uci add network device >/dev/null
+		uci -q set network.@device[-1].name="$WANDEV"
+		uci -q set network.@device[-1].macaddr="$MAC"
+	fi
+	uci commit network
+	uci -q set wizard.default.hw_mac="$MAC"
+	uci -q set wizard.default.hw_wan="$WANDEV"
+	uci commit wizard
+	echo "$(echo "$MAC" | awk -F: '{print toupper($5$6)}')" > /tmp/last_4_mac_wan.txt
+}
+
+set_packet_steering() {
+	is_rr_inited && return
+	uci -q set network.globals.packet_steering='2'
+	uci commit network
+}
+
+set_hw_offloading() {
+	is_rr_inited && return
+	uci -q del firewall.@defaults[0].syn_flood 2>/dev/null
+	uci -q set firewall.@defaults[0].synflood_protect='1'
+	uci -q set firewall.@defaults[0].flow_offloading='1'
+	uci -q set firewall.@defaults[0].flow_offloading_hw='1'
+	uci commit firewall
+}
+
+set_offload_delay() {
+	sed -i 's/meta l4proto { tcp, udp } flow offload @ft;/meta l4proto { tcp, udp } ct original packets ge 30 flow offload @ft;/' /usr/share/firewall4/templates/ruleset.uc
+}
+
+set_firewall() {
+	for s in $(uci show firewall | grep '=zone' | sed -E 's/([^=]+)=.*/\1/'); do
+		name=$(uci -q get $s.name)
+		[ "$name" = "wan" ] || continue
+		current="$(uci -q get $s.network)"
+
+		for proto in pppoe l2tp pptp; do
+			found=0
+			for n in $current; do
+				[ "$n" = "$proto" ] && found=1
+			done
+			[ $found -eq 0 ] && uci add_list $s.network="$proto"
+		done
+	done
+	uci commit firewall
+}
+
+set_upnp() {
+	is_rr_inited && return
+	uci -q set upnpd.config.enabled='1'
+	uci -q set upnpd.config.enable_natpmp='1'
+	uci -q set upnpd.config.enable_upnp='1'
+	uci -q set upnpd.config.secure_mode='1'
+	uci -q set upnpd.config.log_output='0'
+	uci -q set upnpd.config.igdv1='1'
+	uci -q set upnpd.config.ipv6_disable='1'
+	uci commit upnpd
+}
+
+set_luci_nas() {
+	cat <<EOF > /usr/share/luci/menu.d/luci-nas.json
+{
+	"admin/nas": {
+		"title": "NAS",
+		"order": 44
+	}
+}
+EOF
+}
+
+set_ntp() {
+	is_rr_inited && return
+	uci -q del system.ntp.server 2>/dev/null
+	uci add_list system.ntp.server="89.109.251.21" 2>/dev/null
+	uci add_list system.ntp.server="194.190.168.1" 2>/dev/null
+	uci add_list system.ntp.server="93.90.103.9" 2>/dev/null
+	uci add_list system.ntp.server="185.211.244.47" 2>/dev/null
+	uci add_list system.ntp.server="93.95.98.77" 2>/dev/null
+	uci add_list system.ntp.server="90.188.9.144" 2>/dev/null
+	uci commit system
+}
+
+set_system() {
+	is_rr_inited && return
+	current_hostname=$(uci get system.@system[0].hostname)
+    h0sTname="RouteRich_$(cat /tmp/last_4_mac_wan.txt)"
+    passw0rd="1234567890"
+	if [ "$current_hostname" = "OpenWrt" ]; then
+		uci -q set system.@system[0].hostname="$h0sTname" 2>/dev/null
+		uci -q set system.@system[0].timezone='MSK-3' 2>/dev/null
+		uci -q set system.@system[0].zonename='Europe/Moscow' 2>/dev/null
+        uci -q set system.@system[0].log_size='128' 2>/dev/null
+	    uci -q set system.@system[0].zram_comp_algo='lz4' 2>/dev/null
+		uci commit system
+		/etc/init.d/system reload 2>/dev/null
+        uci set network.lan.ipaddr='192.168.1.1'
+	    uci set network.lan.netmask='255.255.255.0'
+	    uci commit network
+	    if [ -n "${passw0rd}" ]; then
+	    	(echo "${passw0rd}"; sleep 1; echo "${passw0rd}") | passwd > /dev/null
+	    fi
+	    /etc/init.d/network restart 2>/dev/null
+	fi
+}
+
+set_wifi() {
+	[ ! -f /etc/config/wireless ] && return
+	current_ssid0=$(uci get wireless.default_radio0.ssid)
+	current_ssid1=$(uci get wireless.default_radio1.ssid)
+    wlan_name_2g="RouteRich_$(cat /tmp/last_4_mac_wan.txt)"
+    wlan_name_5g="${wlan_name_2g}_5G"
+    passw0rd="1234567890"
+	if [ "$current_ssid0" = "OpenWrt" ]; then
+		uci -q set wireless.radio0.disabled='0' 2>/dev/null
+		uci -q set wireless.radio0.country='RU' 2>/dev/null
+		uci -q set wireless.radio0.channel='auto' 2>/dev/null
+		uci -q set wireless.radio0.band='2g' 2>/dev/null
+		uci -q set wireless.radio0.htmode='HE40' 2>/dev/null
+		uci -q set wireless.radio0.cell_density='0' 2>/dev/null
+		uci -q set wireless.default_radio0.device='radio0' 2>/dev/null
+		uci -q set wireless.default_radio0.network='lan' 2>/dev/null
+		uci -q set wireless.default_radio0.ssid="${wlan_name_2g}" 2>/dev/null
+		uci -q set wireless.default_radio0.mode='ap' 2>/dev/null
+		uci -q set wireless.default_radio0.encryption='psk2' 2>/dev/null
+		uci -q set wireless.default_radio0.key="$passw0rd" 2>/dev/null
+		uci -q set wireless.default_radio0.dtim_period='3' 2>/dev/null
+		uci -q set wireless.default_radio0.wpa_group_rekey='86400' 2>/dev/null
+	fi
+	if [ "$current_ssid1" = "OpenWrt" ]; then
+		uci -q set wireless.radio1.disabled='0' 2>/dev/null
+		uci -q set wireless.radio1.country='RU' 2>/dev/null
+		uci -q set wireless.radio1.channel='36' 2>/dev/null
+		uci -q set wireless.radio1.band='5g' 2>/dev/null
+		uci -q set wireless.radio1.htmode='HE160' 2>/dev/null
+		uci -q set wireless.radio1.cell_density='0' 2>/dev/null
+		uci -q set wireless.default_radio1.device='radio1' 2>/dev/null
+		uci -q set wireless.default_radio1.network='lan' 2>/dev/null
+		uci -q set wireless.default_radio1.ssid="${wlan_name_5g}" 2>/dev/null
+		uci -q set wireless.default_radio1.mode='ap' 2>/dev/null
+		uci -q set wireless.default_radio1.encryption='psk2' 2>/dev/null
+		uci -q set wireless.default_radio1.key="$passw0rd" 2>/dev/null
+		uci -q set wireless.default_radio1.dtim_period='3' 2>/dev/null
+		uci -q set wireless.default_radio1.wpa_group_rekey='86400' 2>/dev/null
+	fi
+	uci commit wireless
+	wifi
+}
+
+wifi_fix() {
+	[ ! -f /etc/config/wireless ] && return
+	sed -i 's/platform\/18000000/platform\/soc\/18000000/' /etc/config/wireless
+	for section in $(uci show wireless | grep OpenWrt | awk -F '[.=]' '{print $2}'); do
+		uci -q delete wireless.$section
+		radio=$(echo "$section" | sed 's/default_//')
+		uci -q delete wireless.$radio
+	done
+	uci commit wireless
+	wifi
+}
+
+set_dnsmasq() {
+	is_rr_inited && return
+	uci -q del dhcp.@dnsmasq[0].filterwin2k 2>/dev/null
+	uci -q del dhcp.@dnsmasq[0].filter_a 2>/dev/null
+	uci -q del dhcp.@dnsmasq[0].filter_aaaa 2>/dev/null
+	uci -q set dhcp.@dnsmasq[0].cachesize='0' 2>/dev/null
+	uci -q set dhcp.@dnsmasq[0].nonegcache='1' 2>/dev/null
+	uci -q set dhcp.@dnsmasq[0].confdir='/tmp/dnsmasq.d' 2>/dev/null
+	uci commit dhcp
+}
+
+set_ttyd () {
+	uci -q set ttyd.@ttyd[-1].debug='0'
+	uci commit ttyd
+}
+
+set_ksmbd() {
+	is_rr_inited && return
+	MEM_KB=$(awk '/MemTotal/ { print $2 }' /proc/meminfo)
+	uci -q set ksmbd.@globals[0].description='RouteRich Share'
+	uci commit ksmbd
+	buf_size=$( [ "$MEM_KB" -gt 480000 ] && echo "8MB" || ( [ "$MEM_KB" -gt 230000 ] && echo "4MB" || echo "2MB" ) )
+	cat <<EOF >/etc/ksmbd/ksmbd.conf.template
+[global]
+	netbios name = |NAME|
+	server string = |DESCRIPTION|
+	workgroup = |WORKGROUP|
+	interfaces = |INTERFACES|
+	bind interfaces only = yes
+	ipc timeout = 20
+	deadtime = 15
+	map to guest = Bad User
+	smb2 max read = $buf_size
+	smb2 max write = $buf_size
+	smb2 max trans = $buf_size
+	cache read buffers = yes
+	cache trans buffers = yes
+EOF
+	sed -i 's/^\s*enable-reflector\s*=\s*no/enable-reflector=yes/' /etc/avahi/avahi-daemon.conf
+}
+
+set_pptp() {
+	is_rr_inited && return
+	sed -i 's/^mppe/#mppe/' /etc/ppp/options.pptp
+	echo nomppe >> /etc/ppp/options.pptp
+}
+
+set_doh() {
+	is_rr_inited && return
+	if opkg list-installed | grep -q '^https-dns-proxy -'; then
+		uci -q del https-dns-proxy.config.canary_domains_mozilla 2>/dev/null
+		uci -q del https-dns-proxy.config.canary_domains_icloud 2>/dev/null
+		uci -q set https-dns-proxy.config.force_dns='0' 2>/dev/null
+		while uci -q delete https-dns-proxy.@https-dns-proxy[0]; do :; done
+		id="$(uci add https-dns-proxy https-dns-proxy)"
+		uci -q set https-dns-proxy.$id.bootstrap_dns="94.140.14.14,94.140.15.15" 2>/dev/null
+		uci -q set https-dns-proxy.$id.resolver_url="https://dns.adguard-dns.com/dns-query" 2>/dev/null
+		uci commit https-dns-proxy
+		# /etc/init.d/https-dns-proxy disable >/dev/null 2>&1
+		# /etc/init.d/https-dns-proxy stop >/dev/null 2>&1
+	fi
+}
+
+set_dot() {
+	is_rr_inited && return
+	if opkg list-installed | grep -q '^stubby -'; then
+		uci -q del stubby.global.trigger
+		uci add_list stubby.global.trigger='wan'
+		uci add_list stubby.global.trigger='wan6'
+		uci add_list stubby.global.trigger='pppoe'
+		uci add_list stubby.global.trigger='l2tp'
+		uci add_list stubby.global.trigger='pptp'
+		uci add_list stubby.global.trigger='modem'
+		uci add_list stubby.global.trigger='wwan'
+		uci add_list stubby.global.trigger='wwan0'
+		uci -q set stubby.global.log_level='3'
+		uci -q set stubby.global.round_robin_upstreams='0'
+		while uci show stubby | grep -q 'stubby.@resolver'; do
+			uci -q del stubby.@resolver[0]
+		done
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='94.140.14.14'
+		uci -q set stubby.@resolver[-1].tls_auth_name='dns.adguard.com'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='94.140.15.15'
+		uci -q set stubby.@resolver[-1].tls_auth_name='dns.adguard.com'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='2a10:50c0::ad1:ff'
+		uci -q set stubby.@resolver[-1].tls_auth_name='dns.adguard.com'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='2a10:50c0::ad2:ff'
+		uci -q set stubby.@resolver[-1].tls_auth_name='dns.adguard.com'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='8.8.8.8'
+		uci -q set stubby.@resolver[-1].tls_auth_name='dns.google'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='1.1.1.1'
+		uci -q set stubby.@resolver[-1].tls_auth_name='cloudflare-dns.com'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='2001:4860:4860::8888'
+		uci -q set stubby.@resolver[-1].tls_auth_name='dns.google'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='2606:4700:4700::1111'
+		uci -q set stubby.@resolver[-1].tls_auth_name='cloudflare-dns.com'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='8.8.4.4'
+		uci -q set stubby.@resolver[-1].tls_auth_name='dns.google'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='1.0.0.1'
+		uci -q set stubby.@resolver[-1].tls_auth_name='cloudflare-dns.com'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='2001:4860:4860::8844'
+		uci -q set stubby.@resolver[-1].tls_auth_name='dns.google'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='2606:4700:4700::1001'
+		uci -q set stubby.@resolver[-1].tls_auth_name='cloudflare-dns.com'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='9.9.9.9'
+		uci -q set stubby.@resolver[-1].tls_auth_name='dns.quad9.net'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='149.112.112.112'
+		uci -q set stubby.@resolver[-1].tls_auth_name='dns.quad9.net'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='2620:fe::fe'
+		uci -q set stubby.@resolver[-1].tls_auth_name='dns.quad9.net'
+		uci add stubby resolver >/dev/null 2>&1
+		uci -q set stubby.@resolver[-1].address='2620:fe::9'
+		uci -q set stubby.@resolver[-1].tls_auth_name='dns.quad9.net'
+		uci commit stubby
+	fi
+}
+
+set_dfp() {
+	is_rr_inited && return
+	if opkg list-installed | grep -q '^luci-app-dns-failsafe-proxy -'; then
+		SERVER='127.0.0.1#5359'
+	else
+		SERVER='127.0.0.1#5453'
+	fi
+	if ! uci get dhcp.@dnsmasq[0].server 2>/dev/null | grep -qw "$SERVER"; then
+		uci add_list dhcp.@dnsmasq[0].server="$SERVER"
+		uci commit dhcp
+	fi
+	uci -q set dhcp.@dnsmasq[0].noresolv='1'
+	uci commit dhcp
+}
+
+set_led() {
+	is_rr_inited && return
+	# все лампочки гаснут после загрузки
+	# красным загорится 'WAN' если пропадает линк
+	uci -q set system.led_lan_1=led
+	uci -q set system.led_lan_1.name='lan-1'
+	uci -q set system.led_lan_1.sysfs='blue:lan-1'
+	uci -q set system.led_lan_1.trigger='none'
+	uci -q set system.led_lan_1.default='0'
+	uci -q set system.led_lan_2=led
+	uci -q set system.led_lan_2.name='lan-2'
+	uci -q set system.led_lan_2.sysfs='blue:lan-2'
+	uci -q set system.led_lan_2.trigger='none'
+	uci -q set system.led_lan_2.default='0'
+	uci -q set system.led_lan_3=led
+	uci -q set system.led_lan_3.name='lan-3'
+	uci -q set system.led_lan_3.sysfs='blue:lan-3'
+	uci -q set system.led_lan_3.trigger='none'
+	uci -q set system.led_lan_3.default='0'
+	uci -q set system.led_wan=led
+	uci -q set system.led_wan.name='wan-on'
+	uci -q set system.led_wan.sysfs='blue:wan'
+	uci -q set system.led_wan.trigger='none'
+	uci -q set system.led_wan.default='0'
+	uci -q set system.led_wan_off=led
+	uci -q set system.led_wan_off.name='wan-off'
+	uci -q set system.led_wan_off.sysfs='red:wan'
+	uci -q set system.led_wan_off.trigger='netdev'
+	# тут поменять на свой физический интерфейс
+	uci -q set system.led_wan_off.dev='wan'
+	uci -q set system.led_wan_off.mode='link'
+	uci -q set system.led_mesh2=led
+	uci -q set system.led_mesh2.name='mesh-2g'
+	uci -q set system.led_mesh2.sysfs='blue:mesh'
+	uci -q set system.led_mesh2.trigger='none'
+	uci -q set system.led_mesh2.default='0'
+	uci -q set system.led_mesh5=led
+	uci -q set system.led_mesh5.name='mesh-5g'
+	uci -q set system.led_mesh5.sysfs='blue:mesh'
+	uci -q set system.led_mesh5.trigger='none'
+	uci -q set system.led_mesh5.default='0'
+	uci -q add system led
+	uci -q set system.@led[-1].name='power'
+	uci -q set system.@led[-1].sysfs='blue:power'
+	uci -q set system.@led[-1].trigger='none'
+	uci -q set system.@led[-1].default='0'
+	uci -q add system led
+	uci -q set system.@led[-1].name='wlan-2g'
+	uci -q set system.@led[-1].sysfs='blue:wlan-2ghz'
+	uci -q set system.@led[-1].trigger='none'
+	uci -q set system.@led[-1].default='0'
+	uci -q add system led
+	uci -q set system.@led[-1].name='wlan-5g'
+	uci -q set system.@led[-1].sysfs='red:wlan-5ghz'
+	uci -q set system.@led[-1].trigger='none'
+	uci -q set system.@led[-1].default='0'
+	uci commit system
+}
+
+set_internet_detector() {
+	is_rr_inited && return
+    uci -q set internet-detector.internet.mod_public_ip_enabled='1'
+    uci -q set internet-detector.internet.mod_public_ip_provider='opendns1'
+	uci -q set internet-detector.internet.mod_led_control_enabled='0'
+	uci -q set internet-detector.internet.mod_led_control_led1_name='blue:wan'
+	uci -q set internet-detector.internet.mod_led_control_led1_action_1='2'
+	uci -q set internet-detector.internet.mod_led_control_led1_action_2='1'
+	uci -q set internet-detector.internet.mod_led_control_led2_name='red:wan'
+	uci -q set internet-detector.internet.mod_led_control_led2_action_1='2'
+	uci -q set internet-detector.internet.mod_led_control_led2_action_2='1'
+	uci commit internet-detector
+	# uci -q del system.led_wan
+	# uci -q del system.led_wan_off.mode
+	# uci -q del system.led_wan_off.dev
+	# uci -q set system.led_wan_off.trigger='none'
+	# uci -q set system.led_wan_off.default='1'
+	# uci -q del system.led_wan_off.mode='link'
+	# uci -q del system.led_wan_off.dev='wan'
+	# uci commit system
+	# service internet-detector restart
+	# internet-detector settings
+	uci -q set internet-detector.internet.mod_reboot_enabled='1'
+	uci -q set internet-detector.internet.mod_user_scripts_dead_period='900'
+	echo usb-restart > /etc/internet-detector/down-script.internet
+	uci commit internet-detector
+}
+
+set_postupg() {
+	cat <<EOF >/etc/init.d/postupgfix 2>/dev/null
+#!/bin/sh /etc/rc.common
+
+start() {
+	# sort menu
+	sed -i 's|"admin/status/amneziawg"|"admin/vpn/amneziawg"|' /usr/share/luci/menu.d/luci-proto-amneziawg.json 2>/dev/null
+	sed -i 's|"admin/status/wireguard"|"admin/vpn/wireguard"|' /usr/share/luci/menu.d/luci-proto-wireguard.json 2>/dev/null
+	sed -i 's|"admin/services/ksmbd"|"admin/nas/ksmbd"|' /usr/share/luci/menu.d/luci-app-ksmbd.json 2>/dev/null
+	sed -i 's|"admin/system/filemanager"|"admin/nas/filemanager"|' /usr/share/luci/menu.d/luci-app-filemanager.json 2>/dev/null	
+
+	# remove mm page
+	[ -f /usr/share/luci/menu.d/luci-proto-modemmanager.json ] && rm /usr/share/luci/menu.d/luci-proto-modemmanager.json
+
+	# replace ugly names
+	sed -i 's/"title": "UPnP IGD & PCP"/"title": "UPnP"/' /usr/share/luci/menu.d/luci-app-upnp.json
+	
+	# replace led settings menu
+	jq -e 'has("admin/system/leds")' /usr/share/luci/menu.d/luci-mod-system.json >/dev/null && jq 'del(."admin/system/leds")' /usr/share/luci/menu.d/luci-mod-system.json > /tmp/menu.json && mv /tmp/menu.json /usr/share/luci/menu.d/luci-mod-system.json
+
+	# automodem
+	[ -f /etc/hotplug.d/tty/25-modemmanager-tty ] && rm /etc/hotplug.d/tty/25-modemmanager-tty
+	[ -f /etc/usb-mode.json ] && sed -i '/413c:81d7_disable/! s/413c:81d7/413c:81d7_disable/' /etc/usb-mode.json
+	[ -f /etc/usb-mode.json ] && sed -i '/413c:81e0_disable/! s/413c:81e0/413c:81e0_disable/' /etc/usb-mode.json
+	[ -f /etc/usb-mode.json ] && sed -i '/03f0:0857_disable/! s/03f0:0857/03f0:0857_disable/' /etc/usb-mode.json
+
+	# remove custom rr repo
+	sed -i '/^src\/gz routerich http/d' /etc/opkg/customfeeds.conf
+}
+EOF
+	chmod +x /etc/init.d/postupgfix
+	rm /etc/rc.d/S99postupgfix
+	ln -s ../init.d/postupgfix /etc/rc.d/S99postupgfix
+	/etc/init.d/postupgfix restart
+}
+
+set_rr_tailscale() {
+	if opkg list-installed | grep -q '^luci-app-tailscale -'; then
+		current_server=$(uci -q get tailscale.settings.login_server 2>/dev/null)
+		if [ -z "$current_server" ]; then
+			uci -q set tailscale.settings.login_server="https://rc.routerich.ru/"
+			uci commit tailscale
+		fi
+	fi
+}
+
+set_igmp() {
+	is_rr_inited && return
+	opkg list-installed | grep -q '^igmpproxy -' || return
+	local TARGET="br-lan"
+	local FOUND=""
+	local s name
+	for s in $(uci show network | grep "=device" | sed -E 's/([^=]+)=device.*/\1/'); do
+		name=$(uci -q get "$s.name")
+		[ "$name" = "$TARGET" ] && FOUND="$s" && break
+	done
+	[ -n "$FOUND" ] || return
+	uci -q set "$FOUND.igmp_snooping"='1'
+	uci commit network
+	uci -q set igmpproxy.@igmpproxy[0].verbose="0"
+	uci -q set igmpproxy.@phyint[0].altnet="0.0.0.0/0"
+	uci commit igmpproxy
+}
+
+hold_rr_defaults() {
+	opkg flag hold routerich-defaults
+}
+
+mark_rr_init() {
+	touch /etc/config/.rr-init
+}
+
+copy_routerich_firmware
+add_repository
+add_rr_version
+set_wan
+set_packet_steering
+set_hw_offloading
+set_offload_delay
+set_firewall
+set_upnp
+set_luci_nas
+set_ntp
+set_system
+set_wifi
+wifi_fix
+set_dnsmasq
+set_ttyd
+set_ksmbd
+set_pptp
+set_doh
+set_dot
+set_dfp
+set_led
+set_internet_detector
+set_postupg
+set_rr_tailscale
+set_igmp
+mark_rr_init
+
+exit 0
