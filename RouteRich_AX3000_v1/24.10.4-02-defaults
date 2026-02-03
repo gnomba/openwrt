@@ -6,7 +6,7 @@ set -x
 
 copy_routerich_firmware() {
 	factory_mtd=/dev/$(cat /proc/mtd | grep -i factory | awk '{print $1}' | sed 's/://')
-	dd if=$factory_mtd of=/lib/firmware/mediatek/mt7981_eeprom_mt7976_dbdc.bin bs=1 count=32 conv=notrunc >/dev/null 2>&1
+	dd if=$factory_mtd of=/lib/firmware/mediatek/mt7981_eeprom_mt7976_dbdc.bin bs=1 count=32 conv=notrunc
 }
 
 add_repository() {
@@ -77,6 +77,7 @@ set_wan() {
 	uci -q set wizard.default.hw_wan="$WANDEV"
 	uci commit wizard
 	echo "$(echo "$MAC" | awk -F: '{print toupper($5$6)}')" > /tmp/last_4_mac_wan.txt
+	echo "$WANDEV" >> /tmp/dev_wan.txt
 }
 
 set_packet_steering() {
@@ -213,7 +214,6 @@ set_wifi() {
 		uci -q set wireless.default_radio1.wpa_group_rekey='86400' 2>/dev/null
 	fi
 	uci commit wireless
-	wifi
 }
 
 wifi_fix() {
@@ -225,7 +225,6 @@ wifi_fix() {
 		uci -q delete wireless.$radio
 	done
 	uci commit wireless
-	wifi
 }
 
 set_dnsmasq() {
@@ -241,6 +240,9 @@ set_dnsmasq() {
 
 set_ttyd () {
 	uci -q set ttyd.@ttyd[-1].debug='0'
+	uci -q set ttyd.@ttyd[-1].credential='root:1234567890'
+	uci -q set ttyd.@ttyd[-1].uid='0'
+	uci -q set ttyd.@ttyd[-1].gid='0'
 	uci commit ttyd
 }
 
@@ -286,8 +288,6 @@ set_doh() {
 		uci -q set https-dns-proxy.$id.bootstrap_dns="94.140.14.14,94.140.15.15" 2>/dev/null
 		uci -q set https-dns-proxy.$id.resolver_url="https://dns.adguard-dns.com/dns-query" 2>/dev/null
 		uci commit https-dns-proxy
-		# /etc/init.d/https-dns-proxy disable >/dev/null 2>&1
-		# /etc/init.d/https-dns-proxy stop >/dev/null 2>&1
 	fi
 }
 
@@ -308,52 +308,52 @@ set_dot() {
 		while uci show stubby | grep -q 'stubby.@resolver'; do
 			uci -q del stubby.@resolver[0]
 		done
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='94.140.14.14'
 		uci -q set stubby.@resolver[-1].tls_auth_name='dns.adguard.com'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='94.140.15.15'
 		uci -q set stubby.@resolver[-1].tls_auth_name='dns.adguard.com'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='2a10:50c0::ad1:ff'
 		uci -q set stubby.@resolver[-1].tls_auth_name='dns.adguard.com'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='2a10:50c0::ad2:ff'
 		uci -q set stubby.@resolver[-1].tls_auth_name='dns.adguard.com'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='8.8.8.8'
 		uci -q set stubby.@resolver[-1].tls_auth_name='dns.google'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='1.1.1.1'
 		uci -q set stubby.@resolver[-1].tls_auth_name='cloudflare-dns.com'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='2001:4860:4860::8888'
 		uci -q set stubby.@resolver[-1].tls_auth_name='dns.google'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='2606:4700:4700::1111'
 		uci -q set stubby.@resolver[-1].tls_auth_name='cloudflare-dns.com'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='8.8.4.4'
 		uci -q set stubby.@resolver[-1].tls_auth_name='dns.google'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='1.0.0.1'
 		uci -q set stubby.@resolver[-1].tls_auth_name='cloudflare-dns.com'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='2001:4860:4860::8844'
 		uci -q set stubby.@resolver[-1].tls_auth_name='dns.google'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='2606:4700:4700::1001'
 		uci -q set stubby.@resolver[-1].tls_auth_name='cloudflare-dns.com'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='9.9.9.9'
 		uci -q set stubby.@resolver[-1].tls_auth_name='dns.quad9.net'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='149.112.112.112'
 		uci -q set stubby.@resolver[-1].tls_auth_name='dns.quad9.net'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='2620:fe::fe'
 		uci -q set stubby.@resolver[-1].tls_auth_name='dns.quad9.net'
-		uci add stubby resolver >/dev/null 2>&1
+		uci add stubby resolver
 		uci -q set stubby.@resolver[-1].address='2620:fe::9'
 		uci -q set stubby.@resolver[-1].tls_auth_name='dns.quad9.net'
 		uci commit stubby
@@ -377,7 +377,6 @@ set_dfp() {
 
 set_led() {
 	is_rr_inited && return
-	# все лампочки гаснут после загрузки
 	# красным загорится 'WAN' если пропадает линк
 	uci -q set system.led_lan_1=led
 	uci -q set system.led_lan_1.name='lan-1'
@@ -403,8 +402,7 @@ set_led() {
 	uci -q set system.led_wan_off.name='wan-off'
 	uci -q set system.led_wan_off.sysfs='red:wan'
 	uci -q set system.led_wan_off.trigger='netdev'
-	# тут поменять на свой физический интерфейс
-	uci -q set system.led_wan_off.dev='wan'
+	uci -q set system.led_wan_off.dev="$(cat /tmp/dev_wan.txt)"
 	uci -q set system.led_wan_off.mode='link'
 	uci -q set system.led_mesh2=led
 	uci -q set system.led_mesh2.name='mesh-2g'
@@ -445,17 +443,6 @@ set_internet_detector() {
 	uci -q set internet-detector.internet.mod_led_control_led2_name='red:wan'
 	uci -q set internet-detector.internet.mod_led_control_led2_action_1='2'
 	uci -q set internet-detector.internet.mod_led_control_led2_action_2='1'
-	uci commit internet-detector
-	# uci -q del system.led_wan
-	# uci -q del system.led_wan_off.mode
-	# uci -q del system.led_wan_off.dev
-	# uci -q set system.led_wan_off.trigger='none'
-	# uci -q set system.led_wan_off.default='1'
-	# uci -q del system.led_wan_off.mode='link'
-	# uci -q del system.led_wan_off.dev='wan'
-	# uci commit system
-	# service internet-detector restart
-	# internet-detector settings
 	uci -q set internet-detector.internet.mod_reboot_enabled='1'
 	uci -q set internet-detector.internet.mod_user_scripts_dead_period='900'
 	echo usb-restart > /etc/internet-detector/down-script.internet
@@ -493,7 +480,6 @@ start() {
 }
 EOF
 	chmod +x /etc/init.d/postupgfix
-	rm /etc/rc.d/S99postupgfix
 	ln -s ../init.d/postupgfix /etc/rc.d/S99postupgfix
 	/etc/init.d/postupgfix restart
 }
@@ -530,8 +516,36 @@ hold_rr_defaults() {
 	opkg flag hold routerich-defaults
 }
 
+set_adblock() {
+	uci set adblock.global.adb_trigger="$(cat /tmp/dev_wan.txt)"
+	uci set adblock.global.adb_feed='adguard adguard_tracking certpl oisd_big oisd_nsfw'
+	uci commit adblock
+	/etc/init.d/adblock enable
+  	/etc/init.d/adblock reload
+  	/etc/init.d/adblock restart
+}
+
+set_ddns() {
+	/etc/init.d/ddns stop
+	/etc/init.d/ddns disable
+}
+
+set_tmux() {
+	echo -e "set -gq mouse on\nset -gq history-limit 100000\nset -gq status-position top\nset-option -ga terminal-overrides ',*:enacs@:smacs@:rmacs@:acsc@'" > /root/.tmux.conf
+}
+
 mark_rr_init() {
 	touch /etc/config/.rr-init
+	uci set wdoc-singbox.main.enabled='1'
+	uci commit wdoc-singbox
+	uci set wdoc.main.enabled='1'
+	uci commit wdoc
+	uci commit
+	for i in sing-box stubby doh-proxy dns-failsafe-proxy dnsmasq; do
+  		/etc/init.d/${i} enable
+  		/etc/init.d/${i} reload
+  		/etc/init.d/${i} restart
+	done
 }
 
 copy_routerich_firmware
@@ -560,6 +574,9 @@ set_internet_detector
 set_postupg
 set_rr_tailscale
 set_igmp
+set_adblock
+set_ddns
+set_tmux
 mark_rr_init
 
 exit 0
