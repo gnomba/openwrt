@@ -1,3 +1,5 @@
+#!/bin/sh
+
 vDETECTED="$(dmesg | grep -i 'Machine model:' | awk '{print $5}')"
 is_rr() {
 	if [[ "${vDETECTED}" == "Routerich" ]]; then
@@ -20,3 +22,5 @@ set_n5beta() {
 	if ! is_rr; then sed -i "s/findKey=\"RouteRich\"/findKey=\"OpenWrt\"/g" ${vFILE}; fi
 	sh ${vFILE}
 }
+
+exit 0

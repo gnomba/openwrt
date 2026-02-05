@@ -1,3 +1,4 @@
+#!/bin/sh
 ## detect WAN and MAC: dev_mac="$(grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}' /sys/class/net/*/* | grep -v '00:00:00:00:00:00\|ff:ff:ff:ff:ff:ff' | sed 's/address:/ /g;s/\// /g' | awk '{print $4" "$5}' | sort -k 2,2 | head -n 1)"
 
 # STEP-00: настроить тырнетский на ролтоныче
@@ -299,3 +300,5 @@ set_dns_services
 set_n5beta
 set_ZB
 start_test
+
+exit 0
