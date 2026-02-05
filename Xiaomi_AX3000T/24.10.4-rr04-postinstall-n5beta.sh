@@ -23,4 +23,6 @@ set_n5beta() {
 	sh ${vFILE}
 }
 
+set_n5beta
+
 exit 0
