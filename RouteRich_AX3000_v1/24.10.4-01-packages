@@ -12,7 +12,8 @@ base-files
 bind-dig
 bind-libs
 block-mount
-bridger
+bridge
+-bridger
 busybox
 ca-bundle
 cgi-io

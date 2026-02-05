@@ -141,13 +141,8 @@ EOF
 
 set_ntp() {
 	is_rr_inited && return
-	uci -q del system.ntp.server 2>/dev/null
-	uci add_list system.ntp.server="89.109.251.21" 2>/dev/null
-	uci add_list system.ntp.server="194.190.168.1" 2>/dev/null
-	uci add_list system.ntp.server="93.90.103.9" 2>/dev/null
-	uci add_list system.ntp.server="185.211.244.47" 2>/dev/null
-	uci add_list system.ntp.server="93.95.98.77" 2>/dev/null
-	uci add_list system.ntp.server="90.188.9.144" 2>/dev/null
+	uci set system.ntp.server=''
+	uci set system.ntp.server='89.109.251.21 194.190.168.1 93.90.103.9 185.211.244.47 93.95.98.77 90.188.9.144'
 	uci commit system
 }
 
@@ -157,21 +152,30 @@ set_system() {
     h0sTname="RouteRich_$(cat /tmp/last_4_mac_wan.txt)"
     passw0rd="1234567890"
 	if [ "$current_hostname" = "OpenWrt" ]; then
-		uci -q set system.@system[0].hostname="$h0sTname" 2>/dev/null
-		uci -q set system.@system[0].timezone='MSK-3' 2>/dev/null
-		uci -q set system.@system[0].zonename='Europe/Moscow' 2>/dev/null
-        uci -q set system.@system[0].log_size='128' 2>/dev/null
-	    uci -q set system.@system[0].zram_comp_algo='lz4' 2>/dev/null
+		uci -q set system.@system[0].hostname="$h0sTname"
+		uci -q set system.@system[0].timezone='MSK-3'
+		uci -q set system.@system[0].zonename='Europe/Moscow'
+        uci -q set system.@system[0].log_size='128'
+	    uci -q set system.@system[0].zram_comp_algo='lz4'
 		uci commit system
-		/etc/init.d/system reload 2>/dev/null
+		/etc/init.d/system reload
         uci set network.lan.ipaddr='192.168.1.1'
 	    uci set network.lan.netmask='255.255.255.0'
 	    uci commit network
 	    if [ -n "${passw0rd}" ]; then
 	    	(echo "${passw0rd}"; sleep 1; echo "${passw0rd}") | passwd > /dev/null
 	    fi
-	    /etc/init.d/network restart 2>/dev/null
+	    /etc/init.d/network restart
 	fi
+	echo -e "export HISTFILE=/root/.ash_history\nexport HISTSIZE=10000" >> /etc/profile
+	echo -e "sh <(wget -qO- https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/Xiaomi_AX3000T/24.10.4-rr04-postinstall-n5beta)\nsh <(wget -qO- https://raw.githubusercontent.com/kkkkCampbell/master/refs/heads/test_config_script/test_config_script_nightly)" > /root/.ash_history
+	echo '# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+for i in sing-box stubby doh-proxy dns-failsafe-proxy; do
+	service ${i} reload
+	service ${i} restart
+done
+exit 0' > /etc/rc.local
 }
 
 set_wifi() {
@@ -182,36 +186,36 @@ set_wifi() {
     wlan_name_5g="${wlan_name_2g}_5G"
     passw0rd="1234567890"
 	if [ "$current_ssid0" = "OpenWrt" ]; then
-		uci -q set wireless.radio0.disabled='0' 2>/dev/null
-		uci -q set wireless.radio0.country='RU' 2>/dev/null
-		uci -q set wireless.radio0.channel='auto' 2>/dev/null
-		uci -q set wireless.radio0.band='2g' 2>/dev/null
-		uci -q set wireless.radio0.htmode='HE40' 2>/dev/null
-		uci -q set wireless.radio0.cell_density='0' 2>/dev/null
-		uci -q set wireless.default_radio0.device='radio0' 2>/dev/null
-		uci -q set wireless.default_radio0.network='lan' 2>/dev/null
-		uci -q set wireless.default_radio0.ssid="${wlan_name_2g}" 2>/dev/null
-		uci -q set wireless.default_radio0.mode='ap' 2>/dev/null
-		uci -q set wireless.default_radio0.encryption='psk2' 2>/dev/null
-		uci -q set wireless.default_radio0.key="$passw0rd" 2>/dev/null
-		uci -q set wireless.default_radio0.dtim_period='3' 2>/dev/null
-		uci -q set wireless.default_radio0.wpa_group_rekey='86400' 2>/dev/null
+		uci -q set wireless.radio0.disabled='0'
+		uci -q set wireless.radio0.country='RU'
+		uci -q set wireless.radio0.channel='auto'
+		uci -q set wireless.radio0.band='2g'
+		uci -q set wireless.radio0.htmode='HE40'
+		uci -q set wireless.radio0.cell_density='0'
+		uci -q set wireless.default_radio0.device='radio0'
+		uci -q set wireless.default_radio0.network='lan'
+		uci -q set wireless.default_radio0.ssid="${wlan_name_2g}"
+		uci -q set wireless.default_radio0.mode='ap'
+		uci -q set wireless.default_radio0.encryption='psk2'
+		uci -q set wireless.default_radio0.key="$passw0rd"
+		uci -q set wireless.default_radio0.dtim_period='3'
+		uci -q set wireless.default_radio0.wpa_group_rekey='86400'
 	fi
 	if [ "$current_ssid1" = "OpenWrt" ]; then
-		uci -q set wireless.radio1.disabled='0' 2>/dev/null
-		uci -q set wireless.radio1.country='RU' 2>/dev/null
-		uci -q set wireless.radio1.channel='36' 2>/dev/null
-		uci -q set wireless.radio1.band='5g' 2>/dev/null
-		uci -q set wireless.radio1.htmode='HE160' 2>/dev/null
-		uci -q set wireless.radio1.cell_density='0' 2>/dev/null
-		uci -q set wireless.default_radio1.device='radio1' 2>/dev/null
-		uci -q set wireless.default_radio1.network='lan' 2>/dev/null
-		uci -q set wireless.default_radio1.ssid="${wlan_name_5g}" 2>/dev/null
-		uci -q set wireless.default_radio1.mode='ap' 2>/dev/null
-		uci -q set wireless.default_radio1.encryption='psk2' 2>/dev/null
-		uci -q set wireless.default_radio1.key="$passw0rd" 2>/dev/null
-		uci -q set wireless.default_radio1.dtim_period='3' 2>/dev/null
-		uci -q set wireless.default_radio1.wpa_group_rekey='86400' 2>/dev/null
+		uci -q set wireless.radio1.disabled='0'
+		uci -q set wireless.radio1.country='RU'
+		uci -q set wireless.radio1.channel='36'
+		uci -q set wireless.radio1.band='5g'
+		uci -q set wireless.radio1.htmode='HE160'
+		uci -q set wireless.radio1.cell_density='0'
+		uci -q set wireless.default_radio1.device='radio1'
+		uci -q set wireless.default_radio1.network='lan'
+		uci -q set wireless.default_radio1.ssid="${wlan_name_5g}"
+		uci -q set wireless.default_radio1.mode='ap'
+		uci -q set wireless.default_radio1.encryption='psk2'
+		uci -q set wireless.default_radio1.key="$passw0rd"
+		uci -q set wireless.default_radio1.dtim_period='3'
+		uci -q set wireless.default_radio1.wpa_group_rekey='86400'
 	fi
 	uci commit wireless
 }
