@@ -3,7 +3,7 @@
 vDETECTED="$(dmesg | grep -i 'Machine model:' | awk '{print $5}')"
 vDOMAIN_LIST="tcpdata.com raw.githubusercontent.com github.com downloads.openwrt.org"
 for i in ${vDOMAIN_LIST}; do
-	ping -c 5 $i
+	(ping -c 15 $i)&
 done
 
 is_rr() {
