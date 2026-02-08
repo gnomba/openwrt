@@ -20,11 +20,14 @@ is_rr() {
 }
 
 set_n5beta() {
-	sleep 5
+	#sleep 5
 	local vURL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/podkop0711/universal_config_new_podkop.sh"
 	local vFILE="/tmp/universal_config_new_podkop.sh"
 	wget ${vURL} -O ${vFILE}
-	if ! is_rr; then sed -i "s/findKey=\"RouteRich\"/findKey=\"OpenWrt\"/g" ${vFILE}; fi
+	if ! is_rr; then
+		sed -i "s/findKey=\"RouteRich\"/findKey=\"OpenWrt\"/g" ${vFILE}
+		sed -i "s/^sleep 10/sleep 20/;s/After 10 second/After 20 second/" ${vFILE}
+	fi
 	sh ${vFILE}
 }
 
