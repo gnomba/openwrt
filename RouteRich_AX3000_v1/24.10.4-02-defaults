@@ -88,7 +88,7 @@ set_packet_steering() {
 
 set_hw_offloading() {
 	is_rr_inited && return
-	uci -q del firewall.@defaults[0].syn_flood 2>/dev/null
+	uci -q del firewall.@defaults[0].syn_flood
 	uci -q set firewall.@defaults[0].synflood_protect='1'
 	uci -q set firewall.@defaults[0].flow_offloading='1'
 	uci -q set firewall.@defaults[0].flow_offloading_hw='1'
@@ -233,12 +233,12 @@ wifi_fix() {
 
 set_dnsmasq() {
 	is_rr_inited && return
-	uci -q del dhcp.@dnsmasq[0].filterwin2k 2>/dev/null
-	uci -q del dhcp.@dnsmasq[0].filter_a 2>/dev/null
-	uci -q del dhcp.@dnsmasq[0].filter_aaaa 2>/dev/null
-	uci -q set dhcp.@dnsmasq[0].cachesize='0' 2>/dev/null
-	uci -q set dhcp.@dnsmasq[0].nonegcache='1' 2>/dev/null
-	uci -q set dhcp.@dnsmasq[0].confdir='/tmp/dnsmasq.d' 2>/dev/null
+	uci -q del dhcp.@dnsmasq[0].filterwin2k
+	uci -q del dhcp.@dnsmasq[0].filter_a
+	uci -q del dhcp.@dnsmasq[0].filter_aaaa
+	uci -q set dhcp.@dnsmasq[0].cachesize='0'
+	uci -q set dhcp.@dnsmasq[0].nonegcache='1'
+	uci -q set dhcp.@dnsmasq[0].confdir='/tmp/dnsmasq.d'
 	uci commit dhcp
 }
 
@@ -284,13 +284,13 @@ set_pptp() {
 set_doh() {
 	is_rr_inited && return
 	if opkg list-installed | grep -q '^https-dns-proxy -'; then
-		uci -q del https-dns-proxy.config.canary_domains_mozilla 2>/dev/null
-		uci -q del https-dns-proxy.config.canary_domains_icloud 2>/dev/null
-		uci -q set https-dns-proxy.config.force_dns='0' 2>/dev/null
+		uci -q del https-dns-proxy.config.canary_domains_mozilla
+		uci -q del https-dns-proxy.config.canary_domains_icloud
+		uci -q set https-dns-proxy.config.force_dns='0'
 		while uci -q delete https-dns-proxy.@https-dns-proxy[0]; do :; done
 		id="$(uci add https-dns-proxy https-dns-proxy)"
-		uci -q set https-dns-proxy.$id.bootstrap_dns="94.140.14.14,94.140.15.15" 2>/dev/null
-		uci -q set https-dns-proxy.$id.resolver_url="https://dns.adguard-dns.com/dns-query" 2>/dev/null
+		uci -q set https-dns-proxy.$id.bootstrap_dns="94.140.14.14,94.140.15.15"
+		uci -q set https-dns-proxy.$id.resolver_url="https://dns.adguard-dns.com/dns-query"
 		uci commit https-dns-proxy
 	fi
 }
@@ -371,7 +371,7 @@ set_dfp() {
 	else
 		SERVER='127.0.0.1#5453'
 	fi
-	if ! uci get dhcp.@dnsmasq[0].server 2>/dev/null | grep -qw "$SERVER"; then
+	if ! uci get dhcp.@dnsmasq[0].server | grep -qw "$SERVER"; then
 		uci add_list dhcp.@dnsmasq[0].server="$SERVER"
 		uci commit dhcp
 	fi
@@ -425,12 +425,12 @@ set_led() {
 	uci -q set system.@led[-1].default='0'
 	uci -q add system led
 	uci -q set system.@led[-1].name='wlan-2g'
-	uci -q set system.@led[-1].sysfs='blue:wlan-2ghz'
+	uci -q set system.@led[-1].sysfs="$(cat /tmp/dev_wan.txt | sed 's/wan/blue:wlan-24/;s/eth1/blue:wlan-2ghz/')"
 	uci -q set system.@led[-1].trigger='none'
 	uci -q set system.@led[-1].default='0'
 	uci -q add system led
 	uci -q set system.@led[-1].name='wlan-5g'
-	uci -q set system.@led[-1].sysfs='red:wlan-5ghz'
+	uci -q set system.@led[-1].sysfs="$(cat /tmp/dev_wan.txt | sed 's/wan/red:wlan-50/;s/eth1/red:wlan-5ghz/')"
 	uci -q set system.@led[-1].trigger='none'
 	uci -q set system.@led[-1].default='0'
 	uci commit system
@@ -454,7 +454,7 @@ set_internet_detector() {
 }
 
 set_postupg() {
-	cat <<EOF >/etc/init.d/postupgfix 2>/dev/null
+	cat <<EOF >/etc/init.d/postupgfix
 #!/bin/sh /etc/rc.common
 
 start() {
@@ -490,7 +490,7 @@ EOF
 
 set_rr_tailscale() {
 	if opkg list-installed | grep -q '^luci-app-tailscale -'; then
-		current_server=$(uci -q get tailscale.settings.login_server 2>/dev/null)
+		current_server=$(uci -q get tailscale.settings.login_server)
 		if [ -z "$current_server" ]; then
 			uci -q set tailscale.settings.login_server="https://rc.routerich.ru/"
 			uci commit tailscale
