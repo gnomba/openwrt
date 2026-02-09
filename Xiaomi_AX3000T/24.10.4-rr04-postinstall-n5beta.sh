@@ -26,7 +26,7 @@ set_n5beta() {
 	wget ${vURL} -O ${vFILE}
 	if ! is_rr; then
 		sed -i "s/findKey=\"RouteRich\"/findKey=\"OpenWrt\"/g" ${vFILE}
-		sed -i 's/^sleep 10/sleep 10; uci set podkop.settings.source_network_interfaces='br-lan tailscale0'; uci commit podkop/' ${vFILE}
+		sed -i 's/^sleep 10/uci set podkop.settings.source_network_interfaces='br-lan tailscale0'; uci commit podkop; sleep 10/' ${vFILE}
 	fi
 	sh ${vFILE}
 }
