@@ -43,15 +43,6 @@ add_repository() {
 untrusted comment: Public usign key for ${rrver:0:5} release builds
 RWQuckAB+2WRb9rwzhWarTedFmsvy8y5kxAS3A0KXe3yUou9V/Nfbqty
 PUBKEYR
-    ### for Fantastic Packages ###
-    echo "src/gz fantastic_packages_packages https://fantastic-packages.github.io/releases/${rrver:0:5}/packages/$OPENWRT_ARCH/packages
-src/gz fantastic_packages_luci     https://fantastic-packages.github.io/releases/${rrver:0:5}/packages/$OPENWRT_ARCH/luci
-src/gz fantastic_packages_special  https://fantastic-packages.github.io/releases/${rrver:0:5}/packages/$OPENWRT_ARCH/special" >> $customfeeds_conf
-    KEYID_f=53ff2b6672243d28
-    cat <<- PUBKEYF > $etc_opkg_keys/$KEYID_f
-untrusted comment: Public usign key for fantastic-packages builds
-RWRT/ytmciQ9KFjHE8DQ97piX7oHvdr49H3VLlJDuJNmuaKFguOrwXBG
-PUBKEYF
 }
 
 is_rr_inited() {
@@ -160,8 +151,8 @@ EOF
 
 set_ntp() {
 	is_rr_inited && return
-	uci -q del system.ntp.server 2>/dev/null
-	uci set system.ntp.server='3.ru.pool.ntp.org 2.ru.pool.ntp.org 1.ru.pool.ntp.org 0.ru.pool.ntp.org'
+	uci set system.ntp.server=''
+	uci set system.ntp.server='89.109.251.21 194.190.168.1 93.90.103.9 185.211.244.47 93.95.98.77 90.188.9.144'
 	uci commit system
 }
 
