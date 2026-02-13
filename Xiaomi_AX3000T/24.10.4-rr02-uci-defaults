@@ -1,3 +1,4 @@
+#!/bin/sh
 ### uci-defaults Xiaomi Mi Router AX3000T [ROUTERICH mod] ###
 setup_log="/tmp/setup.log"
 echo "# log potential errors: $setup_log"
@@ -520,7 +521,17 @@ set_ddns
 set_tmux
 mark_rr_init
 
-echo -e "140.82.121.4    github.com\n185.199.108.133 raw.githubusercontent.com\n185.199.109.133 raw.githubusercontent.com\n185.199.110.133 raw.githubusercontent.com\n
-185.199.111.133 raw.githubusercontent.com\n185.199.108.153 fantastic-packages.github.io\n185.199.109.153 fantastic-packages.github.io\n185.199.110.153 fantastic-packages.github.io\n
-185.199.111.153 fantastic-packages.github.io\n185.163.119.85  mirror-03.infra.openwrt.org\n104.21.5.135    tcpdata.com\n172.67.133.126  tcpdata.com\n
-104.21.24.103   elysiatools.com\n172.67.218.47   elysiatools.com\n" >> /etc/hosts
+exit 0
+
+vDOMAIN_LIST="raw.githubusercontent.com github.com firmware-selector.openwrt.org mirror-03.infra.openwrt.org tcpdata.com elysiatools.com engage.cloudflareclient.com"
+for vDOMAIN in $vDOMAIN_LIST; do
+  vLIST_IP="$(nslookup $vDOMAIN 8.8.4.4 | grep '^Address:' | grep -v ':53$' | awk '{print $2}')"
+  for vIP in $vLIST_IP; do
+   echo "$vIP $vDOMAIN" >> /etc/hosts
+  done
+done
+# ---
+vDOMAIN_LIST="raw.githubusercontent.com github.com firmware-selector.openwrt.org mirror-03.infra.openwrt.org tcpdata.com elysiatools.com engage.cloudflareclient.com"
+for vDOMAIN in $vDOMAIN_LIST; do
+  sed -i "/ $vDOMAIN$/d" /etc/hosts
+done
