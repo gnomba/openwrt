@@ -172,6 +172,7 @@ set_system() {
 	echo '# Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 for i in sing-box stubby doh-proxy dns-failsafe-proxy; do
+	service ${i} enable
 	service ${i} reload
 	service ${i} restart
 done

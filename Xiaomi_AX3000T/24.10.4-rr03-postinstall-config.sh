@@ -263,6 +263,16 @@ set_dns_services() {
 	done
 }
 
+set_rr_tailscale() {
+	if opkg list-installed | grep -q '^luci-app-tailscale -'; then
+		current_server=$(uci -q get tailscale.settings.login_server)
+		if [ -z "$current_server" ]; then
+			uci -q set tailscale.settings.login_server="https://rc.routerich.ru/"
+			uci commit tailscale
+		fi
+	fi
+}
+
 set_n5() {
 	sleep 5
 	local vURL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/wdoctrack/universal_config_new_podkop.sh"
@@ -296,6 +306,7 @@ set_banner
 set_https_dns_proxy
 install_packages
 set_dns_services
+set_rr_tailscale
 #set_n5
 set_n5beta
 set_ZB
