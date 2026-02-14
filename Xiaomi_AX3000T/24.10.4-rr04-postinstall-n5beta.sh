@@ -12,7 +12,7 @@ is_rr() {
 		echo "┌──────────┐"
 		echo "│ DETECTED │ ${vMODEL}"
 		echo "└──────────┘"
-		curl -s "https://tcpdata.com/ascii/${vDETECTED}?style=banner&border=true" | jq -r '.ascii'
+		curl --insecure -s "https://tcpdata.com/ascii/${vDETECTED}?style=banner&border=true" | jq -r '.ascii'
 		return 0
 	else
 		return 1
@@ -23,7 +23,7 @@ set_n5beta() {
 	#sleep 5
 	local vURL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/podkop0711/universal_config_new_podkop.sh"
 	local vFILE="/tmp/universal_config_new_podkop.sh"
-	wget ${vURL} -O ${vFILE}
+	wget --no-check-certificate ${vURL} -O ${vFILE}
 	if ! is_rr; then
 		sed -i "s/findKey=\"RouteRich\"/findKey=\"OpenWrt\"/g" ${vFILE}
 		sed -i "s/^sleep 10/uci set podkop.settings.source_network_interfaces='br-lan tailscale0'\; uci commit podkop\; sleep 10/" ${vFILE}
