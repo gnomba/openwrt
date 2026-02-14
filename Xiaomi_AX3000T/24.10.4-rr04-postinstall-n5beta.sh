@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "check_certificate = off" >> ~/.wgetrc
+
 vDETECTED="$(dmesg | grep -i 'Machine model:' | awk '{print $5}')"
 vDOMAIN_LIST="tcpdata.com raw.githubusercontent.com github.com downloads.openwrt.org"
 for i in ${vDOMAIN_LIST}; do
@@ -29,6 +31,7 @@ set_n5beta() {
 		sed -i 's/wget/wget --no-check-certificate/g' ${vFILE}
 	fi
 	sh ${vFILE}
+	sed -i "/^check_certificate = off/d" ~/.wgetrc
 }
 
 set_n5beta
