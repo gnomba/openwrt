@@ -26,7 +26,7 @@ set_n5beta() {
 	wget --no-check-certificate ${vURL} -O ${vFILE}
 	if ! is_rr; then
 		sed -i "s/findKey=\"RouteRich\"/findKey=\"OpenWrt\"/g" ${vFILE}
-		sed -i "s/^sleep 10/uci set podkop.settings.source_network_interfaces='br-lan tailscale0'\; uci commit podkop\; sleep 10/" ${vFILE}
+		sed -i 's/wget/wget --no-check-certificate/g' ${vFILE}
 	fi
 	sh ${vFILE}
 }
