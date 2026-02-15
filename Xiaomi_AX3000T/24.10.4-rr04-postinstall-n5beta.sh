@@ -2,6 +2,8 @@
 
 echo "check_certificate = off" >> ~/.wgetrc
 echo "insecure" >> ~/.curlrc
+export http_proxy=http://127.0.0.1:18080/
+export https_proxy=http://127.0.0.1:18080/
 
 vDETECTED="$(dmesg | grep -i 'Machine model:' | awk '{print $5}')"
 vDOMAIN_LIST="tcpdata.com raw.githubusercontent.com github.com downloads.openwrt.org"
@@ -34,6 +36,8 @@ set_n5beta() {
 	sh ${vFILE}
 	sed -i "/^check_certificate = off/d" ~/.wgetrc
 	sed -i "/^insecure/d" ~/.curlrc
+	unset http_proxy
+	unset https_proxy
 }
 
 set_n5beta
