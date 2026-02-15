@@ -1,6 +1,7 @@
 #!/bin/sh
 
 echo "check_certificate = off" >> ~/.wgetrc
+echo "insecure" >> ~/.curlrc
 
 vDETECTED="$(dmesg | grep -i 'Machine model:' | awk '{print $5}')"
 vDOMAIN_LIST="tcpdata.com raw.githubusercontent.com github.com downloads.openwrt.org"
@@ -32,6 +33,7 @@ set_n5beta() {
 	fi
 	sh ${vFILE}
 	sed -i "/^check_certificate = off/d" ~/.wgetrc
+	sed -i "/^insecure/d" ~/.curlrc
 }
 
 set_n5beta
