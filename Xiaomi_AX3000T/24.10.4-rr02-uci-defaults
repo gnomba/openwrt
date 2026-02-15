@@ -22,9 +22,9 @@ sleep 5
 echo 'routerich,ax3000' > /tmp/sysinfo/board_name
 echo 'Routerich AX3000' > /tmp/sysinfo/model
 for i in sing-box stubby doh-proxy dns-failsafe-proxy; do
-	service ${i} enable
-	service ${i} reload
-	service ${i} restart
+	/etc/init.d/${i} enable
+	/etc/init.d/${i} reload
+	/etc/init.d/${i} restart
 done
 exit 0' > $etc_rclocal
 }
