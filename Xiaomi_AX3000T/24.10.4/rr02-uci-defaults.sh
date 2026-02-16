@@ -38,7 +38,6 @@ add_repository() {
     rrver="24.10.4"
     repo_url="src/gz routerich https://github.com/routerich/packages.routerich/raw/$rrver/routerich"
     sed -i 's/^src\/gz openwrt_core/#src\/gz openwrt_core/' $distfeeds_conf
-	sed -i 's/downloads.openwrt.org/mirror-03.infra.openwrt.org/g' $distfeeds_conf
 	sed -i "1a src\/gz routerich_core https:\/\/github.com\/routerich\/packages.routerich\/raw\/$rrver\/core" $distfeeds_conf
 	if ! grep -qF "$repo_url" "$distfeeds_conf"; then
         echo "$repo_url" >> "$distfeeds_conf"
