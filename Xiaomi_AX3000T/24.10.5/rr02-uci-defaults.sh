@@ -523,7 +523,7 @@ mark_rr_init
 
 exit 0
 
-vDOMAIN_LIST="raw.githubusercontent.com github.com firmware-selector.openwrt.org downloads.openwrt.org mirror-03.infra.openwrt.org tcpdata.com elysiatools.com engage.cloudflareclient.com"
+vDOMAIN_LIST="raw.githubusercontent.com github.com firmware-selector.openwrt.org downloads.openwrt.org santa-atmo.ru dulcet-fox-556b08.netlify.app warp-config-generator-theta.vercel.app tcpdata.com elysiatools.com engage.cloudflareclient.com"
 for vDOMAIN in $vDOMAIN_LIST; do
   vLIST_IP="$(nslookup $vDOMAIN 77.88.8.1 | grep '^Address:' | grep -v ':53$' | awk '{print $2}' || nslookup $vDOMAIN 77.88.8.2 | grep '^Address:' | grep -v ':53$' | awk '{print $2}')"
   for vIP in $vLIST_IP; do
