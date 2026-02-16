@@ -179,7 +179,6 @@ wdoc
 wdoc-singbox
 wdoc-warp
 wdoc-wg
-wpad-mesh-openssl
 xmm-modem
 youtubeUnblock
 zapret
