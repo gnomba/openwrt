@@ -36,6 +36,9 @@ set_n5beta() {
 	sh ${vFILE}
 	sed -i "/^check_certificate = off/d" ~/.wgetrc
 	sed -i "/^insecure/d" ~/.curlrc
+	uci set podkop.settings.dns_server='77.88.8.1'
+	uci set podkop.settings.bootstrap_dns_server='77.88.8.1'
+	uci commit podkop
 	#unset http_proxy
 	#unset https_proxy
 }

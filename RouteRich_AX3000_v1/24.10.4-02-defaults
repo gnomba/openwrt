@@ -168,7 +168,7 @@ set_system() {
 	    /etc/init.d/network restart
 	fi
 	echo -e "export HISTFILE=/root/.ash_history\nexport HISTSIZE=10000" >> /etc/profile
-	echo -e "sh <(wget -qO- https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/Xiaomi_AX3000T/24.10.4-rr04-postinstall-n5beta.sh)\nsh <(wget -qO- https://raw.githubusercontent.com/kkkkCampbell/master/refs/heads/test_config_script/test_config_script_nightly)" > /root/.ash_history
+	echo -e "sh <(wget -qO- https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_n5beta.sh)\nsh <(wget -qO- https://raw.githubusercontent.com/kkkkCampbell/master/refs/heads/test_config_script/test_config_script_nightly)" > /root/.ash_history
 	echo '# Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 for i in sing-box stubby doh-proxy dns-failsafe-proxy; do
