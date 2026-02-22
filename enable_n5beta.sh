@@ -29,10 +29,8 @@ set_n5beta() {
 	local vURL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/podkop0711/universal_config_new_podkop.sh"
 	local vFILE="/tmp/universal_config_new_podkop.sh"
 	wget --no-check-certificate ${vURL} -O ${vFILE}
-	if ! is_rr; then
-		sed -i "s/findKey=\"RouteRich\"/findKey=\"OpenWrt\"/g" ${vFILE}
-		sed -i 's/wget/wget --no-check-certificate/g' ${vFILE}
-	fi
+	sed -i "s/^findKey=\"RouteRich/findKey=\"OpenWrt/g" ${vFILE}
+	sed -i 's/wget/wget --no-check-certificate/g' ${vFILE}
 	sh ${vFILE}
 	sed -i "/^check_certificate = off/d" ~/.wgetrc
 	sed -i "/^insecure/d" ~/.curlrc

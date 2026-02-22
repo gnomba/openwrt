@@ -287,11 +287,7 @@ set_n5() {
 
 set_n5beta() {
 	sleep 5
-	local vURL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/podkop0711/universal_config_new_podkop.sh"
-	local vFILE="/tmp/universal_config_new_podkop.sh"
-	wget ${vURL} -O ${vFILE}
-	if ! is_rr; then sed -i "s/findKey=\"RouteRich\"/findKey=\"OpenWrt\"/g" ${vFILE}; fi
-	sh ${vFILE}
+	sh <(wget --no-check-certificate -qO- https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_n5beta.sh)
 }
 
 set_ZB() {
