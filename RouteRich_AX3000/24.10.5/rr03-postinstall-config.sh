@@ -32,7 +32,7 @@ set_banner() {
 	echo "└──────────┘"
 	curl -s "https://tcpdata.com/ascii/${vDETECTED}?style=banner&border=true" | jq -r '.ascii'
 	curl -s -X POST "https://elysiatools.com/en/api/tools/ascii-art-generator" -d "text=OpenWrt&font=${vFONT}" | jq -r '.data.result' > ${vETC_BANNER}
-	if ! is_rr; then echo " ${vMODEL} [ROUTERICH mod]" >> ${vETC_BANNER}; fi
+    echo " ${vMODEL} [OpenWrt RouterRich Mod]" >> ${vETC_BANNER}
 	echo " -----------------------------------------------------" >> ${vETC_BANNER}
 	echo " ${NAME} ${VERSION}, ${BUILD_ID}" >> ${vETC_BANNER}
 	echo " -----------------------------------------------------" >> ${vETC_BANNER}
