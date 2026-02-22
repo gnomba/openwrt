@@ -1,6 +1,5 @@
-# https://firmware-selector.openwrt.org/?version=24.10.5&target=mediatek%2Ffilogic&id=routerich_ax3000
-# RouteRich AX3000 [USB2.0]
-# RouteRich AX3000 v1 [USB3.0]
+# RouteRich AX3000 [USB2.0]: https://firmware-selector.openwrt.org/?version=24.10.5&target=mediatek%2Ffilogic&id=routerich_ax3000
+# RouteRich AX3000 v1 [USB3.0]: https://firmware-selector.openwrt.org/?version=24.10.5&target=mediatek%2Ffilogic&id=routerich_ax3000-v1
 6in4
 6to4
 acl

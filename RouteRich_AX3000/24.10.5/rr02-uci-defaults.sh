@@ -409,7 +409,7 @@ set_dfp() {
 }
 
 set_led() {
-	is_rr_inited && return
+	#is_rr_inited && return
 	# красным загорится 'WAN' если пропадает линк
 	uci -q set system.led_lan_1=led
 	uci -q set system.led_lan_1.name='lan-1'
@@ -565,7 +565,7 @@ set_pptp
 set_doh
 set_dot
 set_dfp
-(sleep 22; set_led)&
+(sleep 24; set_led)&
 set_postupg
 set_rr_tailscale
 set_igmp
@@ -575,16 +575,3 @@ set_tmux
 mark_rr_init
 
 exit 0
-
-vDOMAIN_LIST="raw.githubusercontent.com github.com firmware-selector.openwrt.org downloads.openwrt.org santa-atmo.ru dulcet-fox-556b08.netlify.app warp-config-generator-theta.vercel.app tcpdata.com elysiatools.com engage.cloudflareclient.com"
-for vDOMAIN in $vDOMAIN_LIST; do
-  vLIST_IP="$(nslookup $vDOMAIN 77.88.8.1 | grep '^Address:' | grep -v ':53$' | awk '{print $2}' || nslookup $vDOMAIN 77.88.8.2 | grep '^Address:' | grep -v ':53$' | awk '{print $2}')"
-  for vIP in $vLIST_IP; do
-   echo "$vIP $vDOMAIN" >> /etc/hosts
-  done
-done
-# ---
-
-for vDOMAIN in $vDOMAIN_LIST; do
-  sed -i "/ $vDOMAIN$/d" /etc/hosts
-done

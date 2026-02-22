@@ -7,6 +7,15 @@
 #	curl -s "https://tcpdata.com/ascii/Xiaomi?style=$i&border=false" | jq -r '.ascii'
 #	echo " -----------------------------------------------------"
 #done
+
+vDOMAIN_LIST="raw.githubusercontent.com github.com firmware-selector.openwrt.org downloads.openwrt.org santa-atmo.ru dulcet-fox-556b08.netlify.app warp-config-generator-theta.vercel.app tcpdata.com elysiatools.com engage.cloudflareclient.com"
+for vDOMAIN in $vDOMAIN_LIST; do
+  vLIST_IP="$(nslookup $vDOMAIN 77.88.8.1 | grep '^Address:' | grep -v ':53$' | awk '{print $2}' || nslookup $vDOMAIN 77.88.8.2 | grep '^Address:' | grep -v ':53$' | awk '{print $2}')"
+  for vIP in $vLIST_IP; do
+   echo "$vIP $vDOMAIN" >> /etc/hosts
+  done
+done
+
 vDETECTED="$(dmesg | grep -i 'Machine model:' | awk '{print $5}')"
 is_rr() {
 	if [[ "${vDETECTED}" == "Routerich" ]]; then
@@ -288,6 +297,10 @@ set_n5() {
 set_n5beta() {
 	sleep 5
 	sh <(wget --no-check-certificate -qO- https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_n5beta.sh)
+    vDOMAIN_LIST="raw.githubusercontent.com github.com firmware-selector.openwrt.org downloads.openwrt.org santa-atmo.ru dulcet-fox-556b08.netlify.app warp-config-generator-theta.vercel.app tcpdata.com elysiatools.com engage.cloudflareclient.com"
+    for vDOMAIN in $vDOMAIN_LIST; do
+        sed -i "/ $vDOMAIN$/d" /etc/hosts
+    done
 }
 
 set_ZB() {
