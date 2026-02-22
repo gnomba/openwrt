@@ -227,7 +227,7 @@ set_system() {
 	uci -q set system.@system[0].zram_comp_algo='lz4'
 	uci commit system
 	/etc/init.d/system reload 2>/dev/null
-	uci set network.lan.ipaddr='192.168.31.1'
+	uci set network.lan.ipaddr='192.168.1.1'
 	uci set network.lan.netmask='255.255.255.0'
 	uci commit network
 	if [ -n "${passw0rd}" ]; then
