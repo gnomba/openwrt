@@ -565,7 +565,7 @@ set_pptp
 set_doh
 set_dot
 set_dfp
-set_led
+(sleep 22; set_led)&
 set_postupg
 set_rr_tailscale
 set_igmp
