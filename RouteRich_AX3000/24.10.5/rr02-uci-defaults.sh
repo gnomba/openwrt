@@ -12,6 +12,9 @@ passw0rd="1234567890"
 
 rr_mod() {
     etc_rclocal="/etc/rc.local"
+    sed -i 's/^NAME="OpenWrt/NAME="RouteRich/' /etc/os-release
+    sed -i 's/^PRETTY_NAME="OpenWrt/PRETTY_NAME="RouteRich/' /etc/os-release
+    sed -i 's/^OPENWRT_RELEASE="OpenWrt/OPENWRT_RELEASE="RouteRich/' /etc/os-release
     echo 'RR-3.9.0' > /etc/routerich_release
     echo '# Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
