@@ -34,9 +34,19 @@ set_n5beta() {
 	sh ${vFILE}
 	sed -i "/^check_certificate = off/d" ~/.wgetrc
 	sed -i "/^insecure/d" ~/.curlrc
-	uci set podkop.settings.dns_server='77.88.8.1'
-	uci set podkop.settings.bootstrap_dns_server='77.88.8.1'
+	uci set podkop.settings.dns_server='8.8.8.8'
+	uci set podkop.settings.bootstrap_dns_server='8.8.4.4'
 	uci commit podkop
+	uci set wdoc.main.enabled='1'
+	uci commit wdoc
+	uci set wdoc-singbox.main.enabled='1'
+	uci commit wdoc-singbox
+	uci set internet-detector.warp=instance
+	uci set internet-detector.warp.iface='awg10'
+	uci set internet-detector.warp.mod_public_ip_enabled='1'
+	uci set internet-detector.warp.mod_public_ip_provider='opendns1'
+	uci set internet-detector.warp.enabled='1'
+	uci commit internet-detector
 	#unset http_proxy
 	#unset https_proxy
 }
