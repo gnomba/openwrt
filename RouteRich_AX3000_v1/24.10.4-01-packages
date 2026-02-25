@@ -482,7 +482,7 @@ wget-ssl
 whois
 wifi-scripts
 wireless-regdb
-wpad-openssl
+wpad-mesh-openssl
 wsdd2
 wwan
 xl2tpd
