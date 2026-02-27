@@ -49,6 +49,8 @@ set_n5beta() {
 	uci set internet-detector.warp.mod_public_ip_provider='opendns1'
 	uci set internet-detector.warp.enabled='1'
 	uci commit internet-detector
+	opkg remove --force-remove luci-app-zapret zapret
+	rm -fv /opt/zapret/ipset/zapret-hosts-user-exclude.txt
 	#unset http_proxy
 	#unset https_proxy
 }
