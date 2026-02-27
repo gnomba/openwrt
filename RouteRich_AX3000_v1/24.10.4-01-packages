@@ -1,3 +1,4 @@
+# https://firmware.routerich.ru/?version=24.10.4&target=mediatek%2Ffilogic&id=routerich_ax3000
 # https://firmware.routerich.ru/?version=24.10.4&target=mediatek%2Ffilogic&id=routerich_ax3000-v1
 6in4
 6to4
@@ -324,9 +325,9 @@ luci-app-wdoc-warp
 luci-app-wdoc-wg
 luci-app-wizard
 luci-app-wol
-luci-app-youtubeUnblock
-luci-app-zapret
-luci-app-zerotier
+-luci-app-youtubeUnblock
+-luci-app-zapret
+-luci-app-zerotier
 luci-base
 luci-compat
 luci-i18n-access-control-ru
@@ -357,7 +358,7 @@ luci-i18n-wdoc-singbox-ru
 luci-i18n-wdoc-warp-ru
 luci-i18n-wdoc-wg-ru
 luci-i18n-wol-ru
-luci-i18n-zerotier-ru
+-luci-i18n-zerotier-ru
 luci-lib-base
 luci-lib-ip
 luci-lib-jsonc
@@ -487,7 +488,7 @@ wsdd2
 wwan
 xl2tpd
 xmm-modem
-youtubeUnblock
-zapret
-zerotier-lite
+-youtubeUnblock
+-zapret
+-zerotier-lite
 zlib

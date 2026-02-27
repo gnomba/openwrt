@@ -125,9 +125,9 @@ luci-app-wdoc-singbox
 luci-app-wdoc-warp
 luci-app-wdoc-wg
 luci-app-wizard
-luci-app-youtubeUnblock
-luci-app-zapret
-luci-app-zerotier
+-luci-app-youtubeUnblock
+-luci-app-zapret
+-luci-app-zerotier
 luci-i18n-access-control-ru
 luci-i18n-amneziawg-ru
 luci-i18n-atinout-ru
@@ -146,10 +146,10 @@ luci-i18n-ussd-ru
 luci-i18n-wdoc-singbox-ru
 luci-i18n-wdoc-warp-ru
 luci-i18n-wdoc-wg-ru
-luci-i18n-zerotier-ru
+-luci-i18n-zerotier-ru
 luci-proto-xmm
 luci-theme-routerich
-mesh-button
+-mesh-button
 modemband
 modeminfo
 modeminfo-qmi
@@ -180,9 +180,9 @@ wdoc-singbox
 wdoc-warp
 wdoc-wg
 xmm-modem
-youtubeUnblock
-zapret
-zerotier-lite"
+-youtubeUnblock
+-zapret
+-zerotier-lite"
 
 	opkg update
 	opkg install ${vPACKAGES_RR}

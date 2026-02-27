@@ -380,6 +380,7 @@ luci-ssl
 luci-theme-bootstrap
 -luci-theme-routerich
 mbim-utils
+-mesh-button
 mc
 miniupnpd-nftables
 -modemband
@@ -410,6 +411,7 @@ netifd
 nftables-json
 odhcp6c
 odhcpd-ipv6only
+openssl-util
 openwrt-keyring
 -opera-proxy
 opkg
@@ -427,6 +429,7 @@ qmi-utils
 qrencode
 resolveip
 -routerich-defaults
+-routerich-diag
 rpcd
 rpcd-mod-file
 rpcd-mod-iwinfo
@@ -444,6 +447,8 @@ tmux
 ttyd
 ubi-utils
 uboot-envtools
+-uboot-routerich
+-uboot-routerich-ax3000
 ubox
 ubus
 ubusd
@@ -478,7 +483,7 @@ wget-ssl
 whois
 wifi-scripts
 wireless-regdb
-wpad-openssl
+wpad-mesh-openssl
 wsdd2
 wwan
 xl2tpd
