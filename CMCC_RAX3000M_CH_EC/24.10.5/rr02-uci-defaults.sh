@@ -237,16 +237,17 @@ set_dnsmasq() {
 	uci -q set dhcp.@dnsmasq[0].cachesize='0' 2>/dev/null
 	uci -q set dhcp.@dnsmasq[0].nonegcache='1' 2>/dev/null
 	uci -q set dhcp.@dnsmasq[0].confdir='/tmp/dnsmasq.d' 2>/dev/null
-	vVIA_COMSS_LIST="comss.ru comss.one chatgpt.com oaistatic.com oaiusercontent.com openai.com microsoft.com windowsupdate.com bing.com supercell.com supercellid.com supercellgames.com clashroyale.com brawlstars.com clash.com clashofclans.com x.ai grok.com github.com forzamotorsport.net forzaracingchampionship.com forzarc.com gamepass.com orithegame.com renovacionxboxlive.com tellmewhygame.com xbox.co xbox.com xbox.eu xbox.org xbox360.co xbox360.com xbox360.eu xbox360.org xboxab.com xboxgamepass.com xboxgamestudios.com xboxlive.cn xboxlive.com xboxone.co xboxone.com xboxone.eu xboxplayanywhere.com xboxservices.com xboxstudios.com xbx.lv sentry.io usercentrics.eu recaptcha.net gstatic.com brawlstarsgame.com"
+	vVIA_COMSS_LIST="comss.ru comss.one chatgpt.com oaistatic.com oaiusercontent.com openai.com microsoft.com windowsupdate.com bing.com x.ai grok.com raw.githubusercontent.com github.com firmware-selector.openwrt.org downloads.openwrt.org santa-atmo.ru dulcet-fox-556b08.netlify.app warp-config-generator-theta.vercel.app tcpdata.com elysiatools.com engage.cloudflareclient.com gstatic.com"
+	uci set dhcp.@dnsmasq[0].server=""
 	for vCOMSS_ITEM in ${vVIA_COMSS_LIST}; do
-    	uci add_list dhcp.@dnsmasq[0].server="/*.${vCOMSS_ITEM}/127.0.0.1#5056"
+		uci add_list dhcp.@dnsmasq[0].server="/*.${vCOMSS_ITEM}/127.0.0.1#5056"
 	done
 	while uci -q delete dhcp.@domain[0]; do :; done
 	vDHCP_DOMAIN_LIST="chatgpt.com openai.com webrtc.chatgpt.com ios.chat.openai.com searchgpt.com"
 	for vDOMAIN_ITEM in ${vDHCP_DOMAIN_LIST}; do
-    	uci add dhcp domain
-    	uci set dhcp.@domain[-1].name="${vDOMAIN_ITEM}"
-    	uci set dhcp.@domain[-1].ip="83.220.169.155"
+		uci add dhcp domain
+		uci set dhcp.@domain[-1].name="${vDOMAIN_ITEM}"
+		uci set dhcp.@domain[-1].ip="83.220.169.155"
 	done
 	uci commit dhcp
 }

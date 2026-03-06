@@ -114,7 +114,6 @@ luci-app-log-viewer
 luci-app-mmconfig
 luci-app-modemband
 luci-app-modeminfo
--luci-app-podkop
 luci-app-smstools3
 luci-app-stubby
 luci-app-tailscale
@@ -125,9 +124,6 @@ luci-app-wdoc-singbox
 luci-app-wdoc-warp
 luci-app-wdoc-wg
 luci-app-wizard
--luci-app-youtubeUnblock
--luci-app-zapret
--luci-app-zerotier
 luci-i18n-access-control-ru
 luci-i18n-amneziawg-ru
 luci-i18n-atinout-ru
@@ -138,7 +134,6 @@ luci-i18n-log-ru
 luci-i18n-mmconfig-ru
 luci-i18n-modemband-ru
 luci-i18n-modeminfo-ru
--luci-i18n-podkop-ru
 luci-i18n-smstools3-ru
 luci-i18n-stubby-ru
 luci-i18n-tailscale-ru
@@ -146,10 +141,9 @@ luci-i18n-ussd-ru
 luci-i18n-wdoc-singbox-ru
 luci-i18n-wdoc-warp-ru
 luci-i18n-wdoc-wg-ru
--luci-i18n-zerotier-ru
 luci-proto-xmm
 luci-theme-routerich
--mesh-button
+mesh-button
 modemband
 modeminfo
 modeminfo-qmi
@@ -170,7 +164,6 @@ modeminfo-serial-xmm
 modeminfo-serial-yuge
 modeminfo-serial-zte
 opera-proxy
--podkop
 routerich-defaults
 routerich-diag
 smount
@@ -179,10 +172,7 @@ wdoc
 wdoc-singbox
 wdoc-warp
 wdoc-wg
-xmm-modem
--youtubeUnblock
--zapret
--zerotier-lite"
+xmm-modem"
 
 	opkg update
 	opkg install ${vPACKAGES_RR}
@@ -253,10 +243,10 @@ set_dns_services() {
 	uci -q set dhcp.@dnsmasq[0].noresolv='1'
 	uci commit dhcp
 	# wdoc
-	uci set wdoc-singbox.main.enabled='1'
-	uci commit wdoc-singbox
 	uci set wdoc.main.enabled='1'
 	uci commit wdoc
+	uci set wdoc-singbox.main.enabled='1'
+	uci commit wdoc-singbox
 	uci commit
 	# enable-restart dns services #
 	for i in sing-box stubby doh-proxy dns-failsafe-proxy dnsmasq; do
@@ -264,6 +254,8 @@ set_dns_services() {
   		service ${i} reload
   		service ${i} restart
 	done
+	echo -e "export HISTFILE=/root/.ash_history\nexport HISTSIZE=10000" >> /etc/profile
+	echo -e "sh <(wget --no-check-certificate -qO- https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_n5beta.sh)\nsh <(wget --no-check-certificate -qO- https://raw.githubusercontent.com/kkkkCampbell/master/refs/heads/test_config_script/test_config_script_nightly)" > /root/.ash_history
 }
 
 set_rr_tailscale() {
@@ -292,6 +284,19 @@ set_n5beta() {
 	wget ${vURL} -O ${vFILE}
 	if ! is_rr; then sed -i "s/findKey=\"RouteRich\"/findKey=\"OpenWrt\"/g" ${vFILE}; fi
 	sh ${vFILE}
+	uci set podkop.settings.dns_server='8.8.8.8'
+	uci set podkop.settings.bootstrap_dns_server='8.8.4.4'
+	uci commit podkop
+	uci set internet-detector.internet.description='Provider'
+	uci set internet-detector.warp=instance
+	uci set internet-detector.warp.description='Cloudflare'
+	uci set internet-detector.warp.iface='awg10'
+	uci set internet-detector.warp.mod_public_ip_enabled='1'
+	uci set internet-detector.warp.mod_public_ip_provider='opendns1'
+	uci set internet-detector.warp.enabled='1'
+	uci commit internet-detector
+	opkg remove --force-remove luci-app-zapret zapret
+	rm -fv /opt/zapret/ipset/zapret-hosts-user-exclude.txt
 }
 
 set_ZB() {
