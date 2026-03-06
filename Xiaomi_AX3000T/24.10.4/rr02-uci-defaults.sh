@@ -475,7 +475,9 @@ hold_rr_defaults() {
 }
 
 set_adblock() {
-	uci set adblock.global.adb_trigger='wan'
+	uci set adblock.global.adb_trigger=
+	uci set adblock.global.adb_feed='adguard adguard_tracking certpl oisd_big oisd_nsfw'
+	uci commit adblock
 	uci commit adblock
 }
 
