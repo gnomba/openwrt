@@ -42,6 +42,7 @@ set_n5beta() {
 	uci set wdoc-singbox.main.enabled='1'
 	uci commit wdoc-singbox
 	uci set internet-detector.internet.description='Provider'
+	uci set internet-detector.internet.mod_public_ip_enabled='1'
 	uci set internet-detector.warp=instance
 	uci set internet-detector.warp.description='Cloudflare'
 	uci set internet-detector.warp.iface='awg10'
