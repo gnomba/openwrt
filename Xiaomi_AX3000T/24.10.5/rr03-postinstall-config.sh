@@ -114,7 +114,6 @@ luci-app-log-viewer
 luci-app-mmconfig
 luci-app-modemband
 luci-app-modeminfo
--luci-app-podkop
 luci-app-smstools3
 luci-app-stubby
 luci-app-tailscale
@@ -125,9 +124,6 @@ luci-app-wdoc-singbox
 luci-app-wdoc-warp
 luci-app-wdoc-wg
 luci-app-wizard
--luci-app-youtubeUnblock
--luci-app-zapret
--luci-app-zerotier
 luci-i18n-access-control-ru
 luci-i18n-amneziawg-ru
 luci-i18n-atinout-ru
@@ -138,7 +134,6 @@ luci-i18n-log-ru
 luci-i18n-mmconfig-ru
 luci-i18n-modemband-ru
 luci-i18n-modeminfo-ru
--luci-i18n-podkop-ru
 luci-i18n-smstools3-ru
 luci-i18n-stubby-ru
 luci-i18n-tailscale-ru
@@ -146,7 +141,6 @@ luci-i18n-ussd-ru
 luci-i18n-wdoc-singbox-ru
 luci-i18n-wdoc-warp-ru
 luci-i18n-wdoc-wg-ru
--luci-i18n-zerotier-ru
 luci-proto-xmm
 luci-theme-routerich
 mesh-button
@@ -170,7 +164,6 @@ modeminfo-serial-xmm
 modeminfo-serial-yuge
 modeminfo-serial-zte
 opera-proxy
--podkop
 routerich-defaults
 routerich-diag
 smount
@@ -179,10 +172,7 @@ wdoc
 wdoc-singbox
 wdoc-warp
 wdoc-wg
-xmm-modem
--youtubeUnblock
--zapret
--zerotier-lite"
+xmm-modem"
 
 	opkg update
 	opkg install ${vPACKAGES_RR}
