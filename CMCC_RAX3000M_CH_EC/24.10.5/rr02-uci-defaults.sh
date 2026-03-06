@@ -1,5 +1,5 @@
 #!/bin/sh
-### uci-defaults Xiaomi Mi Router AX3000T [ROUTERICH mod] ###
+### uci-defaults CMCC RAX3000M CH EC [ROUTERICH mod] ###
 setup_log="/tmp/setup.log"
 echo "# log potential errors: $setup_log"
 exec >$setup_log 2>&1
@@ -15,7 +15,7 @@ rr_mod() {
     etc_rclocal="/etc/rc.local"
     echo 'routerich,ax3000' > /tmp/sysinfo/board_name
     echo 'Routerich AX3000' > /tmp/sysinfo/model
-    echo 'RR-3.8.2' > /etc/routerich_release
+    echo 'RR-3.9.0' > /etc/routerich_release
     echo '# Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 sleep 5
@@ -35,7 +35,7 @@ add_repository() {
     etc_opkg_keys="/etc/opkg/keys"
     mkdir -pv $etc_opkg_keys 2>/dev/null
     ### for Routerich Packages ###
-    rrver="24.10.4"
+    rrver="24.10.5"
     repo_url="src/gz routerich https://github.com/routerich/packages.routerich/raw/$rrver/routerich"
     sed -i 's/^src\/gz openwrt_core/#src\/gz openwrt_core/' $distfeeds_conf
 	sed -i "1a src\/gz routerich_core https:\/\/github.com\/routerich\/packages.routerich\/raw\/$rrver\/core" $distfeeds_conf
@@ -165,8 +165,8 @@ set_wifi() {
 	echo "MAC=$MAC"
 	last_4_mac_wan="$(echo "$MAC" | awk -F: '{print toupper($5$6)}')"
 	echo "last_4_mac_wan=$last_4_mac_wan"
-	wlan_name_2g="Xiaomich_${last_4_mac_wan}"
-	wlan_name_5g="${wlan_name_2g}_5G"
+	wlan_name_2g="CMCC-${last_4_mac_wan}"
+	wlan_name_5g="${wlan_name_2g}-5G"
 	wlan_mode="ap"
 	wlan_encryption="psk2"
 	echo "last_4_mac_wan=$last_4_mac_wan"
@@ -212,7 +212,7 @@ set_system() {
 	echo "MAC=$MAC"
 	last_4_mac_wan="$(echo "$MAC" | awk -F: '{print toupper($5$6)}')"
 	echo "last_4_mac_wan=$last_4_mac_wan"
-	hostname="Xiaomich_${last_4_mac_wan}"
+	hostname="CMCC-${last_4_mac_wan}"
 	uci -q set system.@system[0].hostname=$hostname
 	uci -q set system.@system[0].timezone='MSK-3'
 	uci -q set system.@system[0].log_size='128'
@@ -220,7 +220,7 @@ set_system() {
 	uci -q set system.@system[0].zram_comp_algo='lz4'
 	uci commit system
 	/etc/init.d/system reload 2>/dev/null
-	uci set network.lan.ipaddr='192.168.31.1'
+	uci set network.lan.ipaddr='192.168.10.1'
 	uci set network.lan.netmask='255.255.255.0'
 	uci commit network
 	if [ -n "${passw0rd}" ]; then
@@ -262,7 +262,7 @@ set_ttyd() {
 set_ksmbd() {
 	is_rr_inited && return
 	MEM_KB=$(awk '/MemTotal/ { print $2 }' /proc/meminfo)
-	uci -q set ksmbd.@globals[0].description='Xiaomich Share'
+	uci -q set ksmbd.@globals[0].description='CMCC Share'
 	uci commit ksmbd
 	buf_size=$( [ "$MEM_KB" -gt 480000 ] && echo "8MB" || ( [ "$MEM_KB" -gt 230000 ] && echo "4MB" || echo "2MB" ) )
 	cat <<EOF >/etc/ksmbd/ksmbd.conf.template
@@ -400,11 +400,18 @@ set_dfp() {
 set_led() {
 	is_rr_inited && return
 	# system led #
-	# горит синим пока есть линк у 'WAN'
+	# горит зеленым - есть линк у 'WAN'
+	# горит красным - нет линка у 'WAN'
 	while uci -q delete system.@led[0]; do :; done
 	uci add system led
 	uci set system.@led[-1].name='wan-on'
-	uci set system.@led[-1].sysfs='blue:status'
+	uci set system.@led[-1].sysfs='green:status'
+	uci set system.@led[-1].trigger='netdev'
+	uci set system.@led[-1].dev="$WANDEV"
+	uci set system.@led[-1].mode='link'
+	uci add system led
+	uci set system.@led[-1].name='wan-off'
+	uci set system.@led[-1].sysfs='red:status'
 	uci set system.@led[-1].trigger='netdev'
 	uci set system.@led[-1].dev="$WANDEV"
 	uci set system.@led[-1].mode='link'

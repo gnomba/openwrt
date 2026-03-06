@@ -406,7 +406,7 @@ set_led() {
 	uci set system.@led[-1].name='wan-on'
 	uci set system.@led[-1].sysfs='blue:status'
 	uci set system.@led[-1].trigger='netdev'
-	uci set system.@led[-1].dev='wan'
+	uci set system.@led[-1].dev="$WANDEV"
 	uci set system.@led[-1].mode='link'
 	uci commit system
 }

@@ -98,6 +98,7 @@ doh-proxy
 internet-detector
 kmod-amneziawg
 kmod-natflow
+kmod-nf-conntrack-bridge
 ksmbd-rrplug
 lua-ipops
 luci-app-access-control
@@ -148,7 +149,7 @@ luci-i18n-wdoc-wg-ru
 -luci-i18n-zerotier-ru
 luci-proto-xmm
 luci-theme-routerich
-mesh-button
+-mesh-button
 modemband
 modeminfo
 modeminfo-qmi
@@ -263,8 +264,6 @@ set_dns_services() {
   		service ${i} reload
   		service ${i} restart
 	done
-	echo -e "export HISTFILE=/root/.ash_history\nexport HISTSIZE=10000" >> /etc/profile
-	echo -e "sh <(wget --no-check-certificate -qO- https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_n5beta.sh)\nsh <(wget --no-check-certificate -qO- https://raw.githubusercontent.com/kkkkCampbell/master/refs/heads/test_config_script/test_config_script_nightly)" > /root/.ash_history
 }
 
 set_rr_tailscale() {
