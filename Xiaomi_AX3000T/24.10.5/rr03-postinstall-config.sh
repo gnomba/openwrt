@@ -253,10 +253,10 @@ set_dns_services() {
 	uci -q set dhcp.@dnsmasq[0].noresolv='1'
 	uci commit dhcp
 	# wdoc
-	uci set wdoc-singbox.main.enabled='1'
-	uci commit wdoc-singbox
 	uci set wdoc.main.enabled='1'
 	uci commit wdoc
+	uci set wdoc-singbox.main.enabled='1'
+	uci commit wdoc-singbox
 	uci commit
 	# enable-restart dns services #
 	for i in sing-box stubby doh-proxy dns-failsafe-proxy dnsmasq; do
@@ -294,6 +294,19 @@ set_n5beta() {
 	wget ${vURL} -O ${vFILE}
 	if ! is_rr; then sed -i "s/findKey=\"RouteRich\"/findKey=\"OpenWrt\"/g" ${vFILE}; fi
 	sh ${vFILE}
+	uci set podkop.settings.dns_server='8.8.8.8'
+	uci set podkop.settings.bootstrap_dns_server='8.8.4.4'
+	uci commit podkop
+	uci set internet-detector.internet.description='Provider'
+	uci set internet-detector.warp=instance
+	uci set internet-detector.warp.description='Cloudflare'
+	uci set internet-detector.warp.iface='awg10'
+	uci set internet-detector.warp.mod_public_ip_enabled='1'
+	uci set internet-detector.warp.mod_public_ip_provider='opendns1'
+	uci set internet-detector.warp.enabled='1'
+	uci commit internet-detector
+	opkg remove --force-remove luci-app-zapret zapret
+	rm -fv /opt/zapret/ipset/zapret-hosts-user-exclude.txt
 }
 
 set_ZB() {
