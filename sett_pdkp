@@ -1,3 +1,4 @@
+# 0.7.14
 podkop.settings=settings
 podkop.settings.dns_type='doh'
 podkop.settings.dns_server='8.8.8.8'

@@ -1,3 +1,4 @@
+# 0.7.0-r18
 zeroblock.settings=settings
 zeroblock.settings.log_level='warn'
 zeroblock.settings.dns_type='doh'
