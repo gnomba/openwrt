@@ -20,6 +20,7 @@ cgi-io
 chat
 comgt
 comgt-ncm
+conntrack
 coreutils
 coreutils-base64
 coreutils-sleep
@@ -251,6 +252,8 @@ libmount1
 libnatpmp1
 libncurses6
 libnetfilter-conntrack3
+libnetfilter-cthelper0
+libnetfilter-cttimeout1
 libnetfilter-queue1
 libnettle8
 libnfnetlink0
