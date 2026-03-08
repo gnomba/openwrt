@@ -13,14 +13,14 @@ MAC="$(jq .[].wan.macaddr /etc/board.json | grep -v null | sed 's/"//g')"
 
 rr_mod() {
     etc_rclocal="/etc/rc.local"
-    echo 'routerich,ax3000' > /tmp/sysinfo/board_name
-    echo 'Routerich AX3000' > /tmp/sysinfo/model
+    echo 'routerich,ax3000-v1' > /tmp/sysinfo/board_name
+    echo 'Routerich AX3000 v1' > /tmp/sysinfo/model
     echo 'RR-3.9.0' > /etc/routerich_release
     echo '# Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 sleep 5
-echo 'routerich,ax3000' > /tmp/sysinfo/board_name
-echo 'Routerich AX3000' > /tmp/sysinfo/model
+echo 'routerich,ax3000-v1' > /tmp/sysinfo/board_name
+echo 'Routerich AX3000 v1' > /tmp/sysinfo/model
 for i in sing-box stubby doh-proxy dns-failsafe-proxy; do
 	/etc/init.d/${i} enable
 	/etc/init.d/${i} reload
@@ -485,12 +485,12 @@ set_adblock() {
 	uci set adblock.global.adb_trigger="$WANDEV"
 	uci set adblock.global.adb_feed='adguard adguard_tracking certpl oisd_big oisd_nsfw'
 	uci commit adblock
-	uci commit adblock
+	uci commit
 }
 
 set_ddns() {
-	uci delete ddns.myddns_ipv6
-	uci commit ddns
+	/etc/init.d/ddns stop
+	/etc/init.d/ddns disable
 }
 
 set_tmux() {

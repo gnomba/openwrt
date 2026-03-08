@@ -475,15 +475,15 @@ hold_rr_defaults() {
 }
 
 set_adblock() {
-	uci set adblock.global.adb_trigger=
+	uci set adblock.global.adb_trigger="$WANDEV"
 	uci set adblock.global.adb_feed='adguard adguard_tracking certpl oisd_big oisd_nsfw'
 	uci commit adblock
-	uci commit adblock
+	uci commit
 }
 
 set_ddns() {
-	uci delete ddns.myddns_ipv6
-	uci commit ddns
+	/etc/init.d/ddns stop
+	/etc/init.d/ddns disable
 }
 
 set_tmux() {

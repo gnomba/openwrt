@@ -1,0 +1,45 @@
+podkop.settings=settings
+podkop.settings.dns_type='doh'
+podkop.settings.dns_server='8.8.8.8'
+podkop.settings.bootstrap_dns_server='8.8.4.4'
+podkop.settings.dns_rewrite_ttl='60'
+podkop.settings.enable_output_network_interface='0'
+podkop.settings.enable_badwan_interface_monitoring='0'
+podkop.settings.enable_yacd='0'
+podkop.settings.disable_quic='1'
+podkop.settings.update_interval='1d'
+podkop.settings.download_lists_via_proxy='1'
+podkop.settings.dont_touch_dhcp='1'
+podkop.settings.config_path='/etc/sing-box/config.json'
+podkop.settings.cache_path='/tmp/sing-box/cache.db'
+podkop.settings.exclude_ntp='1'
+podkop.settings.shutdown_correctly='1'
+podkop.settings.download_lists_via_proxy_section='main'
+podkop.settings.source_network_interfaces='br-lan'
+podkop.settings.log_level='warn'
+podkop.main=section
+podkop.main.connection_type='proxy'
+podkop.main.proxy_config_type='outbound'
+podkop.main.enable_udp_over_tcp='0'
+podkop.main.shutdown_correctly='1'
+podkop.main.user_domain_list_type='text'
+podkop.main.user_subnet_list_type='disabled'
+podkop.main.mixed_proxy_enabled='0'
+podkop.main.outbound_json='{
+  "type": "http",
+  "tag": "http-proxy",
+  "server": "127.0.0.1",
+  "server_port": 18080
+}'
+podkop.main.user_domains_text='myip.com down.warbler.cc'
+podkop.main.community_lists='block geoblock google_ai hdrezka tiktok twitter'
+podkop.Youtube_Discord=section
+podkop.Youtube_Discord.connection_type='vpn'
+podkop.Youtube_Discord.interface='awg10'
+podkop.Youtube_Discord.domain_resolver_enabled='0'
+podkop.Youtube_Discord.user_domain_list_type='text'
+podkop.Youtube_Discord.user_subnet_list_type='disabled'
+podkop.Youtube_Discord.mixed_proxy_enabled='0'
+podkop.Youtube_Discord.user_domains_text='2ip.ru amazonaws.com whatsapp.com whatsapp.net whatsapp.biz wa.me'
+podkop.Youtube_Discord.remote_subnet_lists='https://raw.githubusercontent.com/HybridNetworks/whatsapp-cidr/main/WhatsApp/whatsapp_cidr_ipv4.txt'
+podkop.Youtube_Discord.community_lists='youtube' 'telegram' 'meta'
