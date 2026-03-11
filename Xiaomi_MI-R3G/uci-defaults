@@ -171,8 +171,6 @@ uci get network.globals.packet_steering > /dev/null || {
 }
 
 echo "# ddns #"
-uci delete ddns.myddns_ipv6
-uci commit ddns
 /etc/init.d/ddns disable
 /etc/init.d/ddns stop
 
@@ -182,7 +180,3 @@ echo -e "set -gq mouse on\nset -gq history-limit 100000\nset -gq status-position
 echo "# igmpproxy #"
 /etc/init.d/igmpproxy disable
 /etc/init.d/igmpproxy stop
-
-echo "# zerotier #"
-/etc/init.d/zerotier stop
-/etc/init.d/zerotier disable
