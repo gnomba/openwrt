@@ -308,8 +308,6 @@ set_dot() {
 	SERVER='127.0.0.1#5453'
 	uci -q set dhcp.@dnsmasq[0].noresolv='0'
 	uci add_list dhcp.@dnsmasq[0].server="${SERVER}"
-	uci add_list dhcp.@dnsmasq[0].server="/*.comss.ru/127.0.0.1#5056"
-	uci add_list dhcp.@dnsmasq[0].server="/*.comss.one/127.0.0.1#5056"
 	uci commit dhcp
 	/etc/init.d/dnsmasq reload
 	/etc/init.d/dnsmasq enable
@@ -343,7 +341,7 @@ start() {
 	# replace ugly names
 	sed -i 's/"title": "UPnP IGD & PCP"/"title": "UPnP"/' /usr/share/luci/menu.d/luci-app-upnp.json
 	# replace led settings menu
-	jq -e 'has("admin/system/leds")' /usr/share/luci/menu.d/luci-mod-system.json >/dev/null && jq 'del(."admin/system/leds")' /usr/share/luci/menu.d/luci-mod-system.json > /tmp/menu.json && mv /tmp/menu.json /usr/share/luci/menu.d/luci-mod-system.json
+	#jq -e 'has("admin/system/leds")' /usr/share/luci/menu.d/luci-mod-system.json >/dev/null && jq 'del(."admin/system/leds")' /usr/share/luci/menu.d/luci-mod-system.json > /tmp/menu.json && mv /tmp/menu.json /usr/share/luci/menu.d/luci-mod-system.json
 	# automodem
 	[ -f /etc/hotplug.d/tty/25-modemmanager-tty ] && rm /etc/hotplug.d/tty/25-modemmanager-tty
 	[ -f /etc/usb-mode.json ] && sed -i '/413c:81d7_disable/! s/413c:81d7/413c:81d7_disable/' /etc/usb-mode.json
@@ -365,6 +363,8 @@ set_tailscale() {
 			uci -q set tailscale.settings.login_server="https://rc.routerich.ru/"
 			uci commit tailscale
 		fi
+		/etc/init.d/tailscale disable
+		/etc/init.d/tailscale stop
 	fi
 }
 
