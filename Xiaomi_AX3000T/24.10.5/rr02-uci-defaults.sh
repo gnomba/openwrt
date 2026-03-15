@@ -1,6 +1,6 @@
 #!/bin/sh
 ### uci-defaults Xiaomi Mi Router AX3000T [ROUTERICH mod] ###
-setup_log="/tmp/setup.log"
+setup_log="/root/setup.log"
 echo "# log potential errors: $setup_log"
 exec >$setup_log 2>&1
 set -x

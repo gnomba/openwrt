@@ -1,7 +1,7 @@
 #!/bin/sh
 ### uci-defaults RouteRich AX3000 [USB2.0] ###
 ### uci-defaults RouteRich AX3000 v1 [USB3.0] ###
-setup_log="/tmp/setup.log"
+setup_log="/root/setup.log"
 echo "# log potential errors: $setup_log"
 exec >$setup_log 2>&1
 set -x

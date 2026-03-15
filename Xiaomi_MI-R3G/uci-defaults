@@ -1,5 +1,5 @@
 ### uci-defaults Xiaomi MI R3G ###
-setup_log="/tmp/setup.log"
+setup_log="/root/setup.log"
 echo "# log potential errors: $setup_log"
 exec >$setup_log 2>&1
 set -x

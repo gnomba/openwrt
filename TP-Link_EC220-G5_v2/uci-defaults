@@ -1,7 +1,7 @@
 ### uci-defaults TP-Link EC220-G5 v2 ###
 
-echo "# log potential errors: /tmp/setup.log"
-exec >/tmp/setup.log 2>&1
+echo "# log potential errors: /root/setup.log"
+exec >/root/setup.log 2>&1
 
 set -x
 ip a | grep 'state\|ether'
