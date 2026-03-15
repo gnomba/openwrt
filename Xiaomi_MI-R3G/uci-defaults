@@ -2,6 +2,7 @@
 setup_log="/root/setup.log"
 echo "# log potential errors: $setup_log"
 exec >$setup_log 2>&1
+sleep 21
 set -x
 . /etc/os-release
 lsmod | grep mt7
