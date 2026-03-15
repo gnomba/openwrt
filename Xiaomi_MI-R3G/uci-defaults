@@ -19,7 +19,7 @@ get_wan_dev(){ # определяем имя wan-порта
 }
 
 get_mac(){ # нужный mac-адрес выбираем фильтром после 'grep'
-	(for i in $(ls /sys/class/net/); do cat /sys/class/net/${i}/address; done) | sort -u | grep -v '^00:\|^$' | tail -n 2 | head -n 1
+	(for i in $(ls /sys/class/net/); do cat /sys/class/net/${i}/address; done) | sort -u | grep -v '^00:\|^$' | tail -n 1
 }
 
 last_4_mac(){ # определяем последние 4 символа mac-адреса
