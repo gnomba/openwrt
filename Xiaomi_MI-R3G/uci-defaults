@@ -7,6 +7,7 @@ set -x
 . /etc/os-release
 lsmod | grep mt7
 ip l
+(for i in $(ls /sys/class/net/); do cat /sys/class/net/${i}/address; done) | sort -u | grep -v '^00:\|^$'
 passw0rd="1234567890"
 
 get_manufacturer(){ # нужное имя выбираем через 'awk' 
