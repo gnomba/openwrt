@@ -51,6 +51,7 @@ hostapd-utils
 htop
 https-dns-proxy
 iconv
+igmpproxy
 -internet-detector
 ip-tiny
 iperf3
@@ -306,6 +307,7 @@ luci-app-ddns
 luci-app-filemanager
 luci-app-firewall
 -luci-app-hostacl
+luci-app-https-dns-proxy
 -luci-app-internet-detector
 -luci-app-ksmbd
 -luci-app-ledcontrol
@@ -342,6 +344,7 @@ luci-i18n-ddns-ru
 -luci-i18n-doh-proxy-ru
 luci-i18n-filemanager-ru
 luci-i18n-firewall-ru
+luci-i18n-https-dns-proxy-ru
 -luci-i18n-internet-detector-ru
 -luci-i18n-ksmbd-ru
 -luci-i18n-ledcontrol-ru
@@ -443,6 +446,7 @@ sing-box-tiny
 -sms-tool
 -smstools3
 stubby
+tailscale
 -tailscale-lite
 terminfo
 tmux
