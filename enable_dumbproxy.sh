@@ -11,15 +11,25 @@ vPROXY_LOCAL_IP="127.0.0.1"
 vPROXY_LOCAL_PORT="8080"
 vPROXY_DNS="doh://8.8.4.4"
 read -p "Proxy protocol [По умолчанию: h2]: " vPROXY_protocol
-if [[ -z "$vPROXY_protocol" ]]; then vPROXY_protocol="h2"; fi
+if [[ -z "$vPROXY_protocol" ]]; then
+        vPROXY_protocol="h2"
+fi
 read -p "Proxy port [По умолчанию: 443]: " vPROXY_port
-if [[ -z "$vPROXY_port" ]]; then vPROXY_port="443"; fi
+if [[ -z "$vPROXY_port" ]]; then
+        vPROXY_port="443"
+fi
 read -p "Proxy host [По умолчанию: <ip_or_domain>]: " vPROXY_host
-if [[ -z "$vPROXY_host" ]]; then vPROXY_host="<ip_or_domain>"; fi
+if [[ -z "$vPROXY_host" ]]; then
+        vPROXY_host="<ip_or_domain>"
+fi
 read -p "Proxy user [По умолчанию: <login>]: " vPROXY_user
-if [[ -z "$vPROXY_user" ]]; then vPROXY_user="<login>"; fi
+if [[ -z "$vPROXY_user" ]]; then
+        vPROXY_user="<login>"
+fi
 read -p "Proxy password [По умолчанию: <password>]: " vPROXY_password
-if [[ -z "$vPROXY_password" ]]; then vPROXY_password="<password>"; fi
+if [[ -z "$vPROXY_password" ]]; then
+        vPROXY_password="<password>"
+fi
 
 vPATH="/usr/bin/${vNAME}"
 vURL="https://github.com/SenseUnit/${vNAME}/releases/download/v${vVER}"
