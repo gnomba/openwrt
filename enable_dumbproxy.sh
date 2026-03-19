@@ -10,23 +10,23 @@ vCONF_FILE="/etc/config/${vNAME}"
 vPROXY_LOCAL_IP="127.0.0.1"
 vPROXY_LOCAL_PORT="8080"
 vPROXY_DNS="doh://8.8.4.4"
-read -p "Proxy protocol [По умолчанию: h2]: " vPROXY_protocol
+read -p "Proxy protocol [Default: h2]: " vPROXY_protocol
 if [[ -z "$vPROXY_protocol" ]]; then
         vPROXY_protocol="h2"
 fi
-read -p "Proxy port [По умолчанию: 443]: " vPROXY_port
+read -p "Proxy port [Default: 443]: " vPROXY_port
 if [[ -z "$vPROXY_port" ]]; then
         vPROXY_port="443"
 fi
-read -p "Proxy host [По умолчанию: <ip_or_domain>]: " vPROXY_host
+read -p "Proxy host [Default: <ip_or_domain>]: " vPROXY_host
 if [[ -z "$vPROXY_host" ]]; then
         vPROXY_host="<ip_or_domain>"
 fi
-read -p "Proxy user [По умолчанию: <login>]: " vPROXY_user
+read -p "Proxy user [Default: <login>]: " vPROXY_user
 if [[ -z "$vPROXY_user" ]]; then
         vPROXY_user="<login>"
 fi
-read -p "Proxy password [По умолчанию: <password>]: " vPROXY_password
+read -p "Proxy password [Default: <password>]: " vPROXY_password
 if [[ -z "$vPROXY_password" ]]; then
         vPROXY_password="<password>"
 fi
