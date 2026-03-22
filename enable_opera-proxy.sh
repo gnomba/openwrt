@@ -7,8 +7,9 @@ vNAME="opera-proxy"
 service ${vNAME} stop
 vARCH="$OPENWRT_ARCH"
 vVER="v1.15.0"
-vLAN_IP="${uci get network.lan.ipaddr}"
+vLAN_IP="$(uci get network.lan.ipaddr)"
 vLOCAL_IP="127.0.0.1"
+
 read -p "Select IP for opera-proxy (1 or 2): " choice_ip
 case ${choice_ip} in
     1)
@@ -24,6 +25,7 @@ case ${choice_ip} in
     vPROXY_IP="${vLAN_IP}"
     ;;
 esac
+
 vPROXY_PORT="18080"
 vPROXY_DNS="https://8.8.4.4/dns-query"
 #vPROXY_COUNTRY="EU" # AM,Americas : EU,Europe : AS,Asia # -country ${vPROXY_COUNTRY}
