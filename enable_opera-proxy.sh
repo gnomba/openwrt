@@ -9,8 +9,8 @@ vARCH="$OPENWRT_ARCH"
 vVER="v1.15.0"
 vLAN_IP="${uci get network.lan.ipaddr}"
 vLOCAL_IP="127.0.0.1"
-read -p "Выберите ip для opera-proxy (1 или 2): " choice
-case $choice in
+read -p "Select IP for opera-proxy (1 or 2): " choice_ip
+case ${choice_ip} in
     1)
     echo "${vLOCAL_IP}"
     vPROXY_IP="${vLOCAL_IP}"
