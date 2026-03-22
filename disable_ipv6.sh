@@ -19,8 +19,8 @@ set -x
 vNAME="disable_ipv6"
 vSERVICE_FILE="/etc/init.d/${vNAME}"
 
-uci delete network.wan6
-uci commit network
+#uci delete network.wan6
+#uci commit network
 
 echo 1 > /proc/sys/net/ipv6/conf/all/${vNAME}
 

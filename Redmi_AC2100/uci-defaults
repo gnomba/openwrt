@@ -302,14 +302,14 @@ set_dot() {
 		uci -q set stubby.@resolver[-1].address='2a10:50c0::ad2:ff'
 		uci -q set stubby.@resolver[-1].tls_auth_name='dns.adguard.com'
 		uci commit stubby
-		/etc/init.d/stubby reload
-		/etc/init.d/stubby enable
-		/etc/init.d/stubby restart
+		/etc/init.d/stubby disable
+		/etc/init.d/stubby stop
+		#/etc/init.d/stubby restart
 	fi
 	SERVER='127.0.0.1#5453'
-	uci -q set dhcp.@dnsmasq[0].noresolv='0'
-	uci add_list dhcp.@dnsmasq[0].server="${SERVER}"
-	uci commit dhcp
+	#uci -q set dhcp.@dnsmasq[0].noresolv='0'
+	#uci add_list dhcp.@dnsmasq[0].server="${SERVER}"
+	#uci commit dhcp
 	/etc/init.d/dnsmasq reload
 	/etc/init.d/dnsmasq enable
 	/etc/init.d/dnsmasq restart
