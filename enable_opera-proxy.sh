@@ -2,12 +2,19 @@
 # INFO: https://github.com/gnomba/openwrt/tree/main/_packages
 
 set -x
-
 . /etc/os-release
 vNAME="opera-proxy"
+service ${vNAME} stop
 vARCH="$OPENWRT_ARCH"
 vVER="v1.15.0"
-vPROXY_IP="127.0.0.1"
+vLAN_IP="${uci get network.lan.ipaddr}"
+vLOCAL_IP="127.0.0.1"
+read -p "Выберите ip для opera-proxy (1 или 2): " choice
+case $choice in
+    1) echo "${vLOCAL_IP}"; vPROXY_IP="${vLOCAL_IP}" ;;
+    2) echo "${vLAN_IP}"; vPROXY_IP="${vLAN_IP}" ;;
+    *) echo "Wrong choice... SET => ${vLOCAL_IP} ..."; vPROXY_IP="${vLOCAL_IP}" ;;
+esac
 vPROXY_PORT="18080"
 vPROXY_DNS="https://8.8.4.4/dns-query"
 #vPROXY_COUNTRY="EU" # AM,Americas : EU,Europe : AS,Asia # -country ${vPROXY_COUNTRY}
