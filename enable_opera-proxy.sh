@@ -6,7 +6,7 @@ set -x
 vNAME="opera-proxy"
 service ${vNAME} stop
 vARCH="$OPENWRT_ARCH"
-vVER="v1.15.0"
+vVER="1.16.0"
 vLAN_IP="$(uci get network.lan.ipaddr)"
 vLOCAL_IP="127.0.0.1"
 
@@ -27,7 +27,8 @@ case ${choice_ip} in
 esac
 
 vPROXY_PORT="18080"
-vPROXY_DNS="https://8.8.4.4/dns-query"
+# -bind-address ${vPROXY_IP}:${vPROXY_PORT}
+#vPROXY_DNS="https://8.8.4.4/dns-query" # -bootstrap-dns ${vPROXY_DNS}
 #vPROXY_COUNTRY="EU" # AM,Americas : EU,Europe : AS,Asia # -country ${vPROXY_COUNTRY}
 vPATH="/usr/bin/${vNAME}"
 vURL="https://github.com/gnomba/openwrt/raw/refs/heads/main/_packages/${vARCH}"
@@ -65,7 +66,7 @@ STOP=89
 PROG=${vPATH}
 start_service() {
         procd_open_instance
-        procd_set_param command "\$PROG" -bootstrap-dns ${vPROXY_DNS} -bind-address ${vPROXY_IP}:${vPROXY_PORT} -verbosity 50
+        procd_set_param command "\$PROG" -verbosity 50
         procd_set_param stdout 1
         procd_set_param stderr 1
         procd_set_param respawn \${respawn_threshold:-3600} \${respawn_timeout:-5} \${respawn_retry:-5}
