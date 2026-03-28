@@ -71,6 +71,8 @@ pkg_install() {
 pkg_install
 mv -fv /opt/clash/config.yaml /opt/clash/config_orig.yaml
 curl -o /opt/clash/config.yaml https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/sett_ssclash
+echo -e "myip.com\n4pda.ru\n4pda.to\nproxy.golang.org\ngolang.org\nsum.golang.org" > /opt/clash/lst/file-user-list-proxy.txt
+echo -e "2ip.ru\namazonaws.com\nwhatsapp.com\nwhatsapp.net\nwhatsapp.biz\nwa.me" > /opt/clash/lst/file-user-list-warp.txt
 
 echo "Определена архитектура: $ARCH (OpenWrt target: $TARGET)"
 echo "Скачиваем: $FILE_mihomo"
