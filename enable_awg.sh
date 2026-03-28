@@ -121,13 +121,34 @@ if command -v opkg >/dev/null 2>&1; then
     opkg install --force-checksum --no-check-certificate ${FILE_AWG_TOOLS}.ipk
     opkg install --force-checksum --no-check-certificate ${FILE_AWG_PROTO}.ipk
     opkg install --force-checksum --no-check-certificate ${FILE_AWG_LANG}.ipk
+    opkg install iptables
 else
     apk update
     apk add --allow-untrusted ${FILE_AWG_KMOD}.apk
     apk add --allow-untrusted ${FILE_AWG_TOOLS}.apk
     apk add --allow-untrusted ${FILE_AWG_PROTO}.apk
     apk add --allow-untrusted ${FILE_AWG_LANG}.apk
+    apk add iptables
 fi
+
+# 1. Создаём отдельную таблицу маршрутизации для AWG
+echo "200 awg_warp" >> /etc/iproute2/rt_tables
+# 2. Добавляем правило: если метка 0x10 — использовать таблицу awg_warp
+ip rule add fwmark 16 table awg_warp priority 30000
+# 3. Копируем default route из awg10 в нашу таблицу
+ip route add default dev awg10 table awg_warp
+
+cat > /etc/firewall.user << 'EOF'
+iptables -t mangle -A PREROUTING -m mark --mark 0x2 -j MARK --set-mark 16
+ip6tables -t mangle -A PREROUTING -m mark --mark 0x2 -j MARK --set-mark 16 2>/dev/null || true
+
+# Защита от петель
+iptables -t mangle -A PREROUTING -m mark --mark 16 -m addrtype --dst-type LOCAL -j RETURN
+EOF
+chmod +x /etc/firewall.user
+
+/etc/init.d/firewall restart
+/etc/init.d/clash restart
 
 # Создание UCI интерфейса awg10 с proto=amneziawg
 uci set network.awg10=interface

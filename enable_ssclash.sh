@@ -13,7 +13,7 @@ FILE_ssclash_apk="${BASE_URL_ssclash}/download/v${VERSION_ssclash}/luci-app-sscl
 
 BASE_URL_mihomo="https://github.com/MetaCubeX/mihomo/releases"
 ARCH="$(uname -m)"
-TARGET="$(grep -o 'TARGET=[^ ]*' /etc/openwrt_release | cut -d= -f2 || echo "")"
+TARGET="$(grep -o 'ARCH=[^ ]*' /etc/openwrt_release | cut -d= -f2 || echo "")"
 VERSION_mihomo="$(curl -fs -o/dev/null -w %{redirect_url} ${BASE_URL_mihomo}/latest | cut -b 51-)"
 case "$ARCH" in
     x86_64|amd64)
@@ -76,7 +76,7 @@ echo -e "2ip.ru\namazonaws.com\nwhatsapp.com\nwhatsapp.net\nwhatsapp.biz\nwa.me"
 
 echo "Определена архитектура: $ARCH (OpenWrt target: $TARGET)"
 echo "Скачиваем: $FILE_mihomo"
-curl -L -o - ${$FILE_mihomo} | gunzip > /opt/clash/bin/clash
+curl -L -o - ${FILE_mihomo} | gunzip > /opt/clash/bin/clash
 chmod +x /opt/clash/bin/clash
 ls -la /opt/clash/bin/
 
