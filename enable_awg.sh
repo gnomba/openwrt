@@ -131,13 +131,6 @@ else
     apk add iptables
 fi
 
-# 1. Создаём отдельную таблицу маршрутизации для AWG
-echo "200 awg_warp" >> /etc/iproute2/rt_tables
-# 2. Добавляем правило: если метка 0x10 — использовать таблицу awg_warp
-ip rule add fwmark 16 table awg_warp priority 30000
-# 3. Копируем default route из awg10 в нашу таблицу
-ip route add default dev awg10 table awg_warp
-
 cat > /etc/firewall.user << 'EOF'
 iptables -t mangle -A PREROUTING -m mark --mark 0x2 -j MARK --set-mark 16
 ip6tables -t mangle -A PREROUTING -m mark --mark 0x2 -j MARK --set-mark 16 2>/dev/null || true
@@ -146,6 +139,31 @@ ip6tables -t mangle -A PREROUTING -m mark --mark 0x2 -j MARK --set-mark 16 2>/de
 iptables -t mangle -A PREROUTING -m mark --mark 16 -m addrtype --dst-type LOCAL -j RETURN
 EOF
 chmod +x /etc/firewall.user
+
+cat > /etc/hotplug.d/iface/95-awg-warp << 'EOF'
+#!/bin/sh
+
+if [ "$ACTION" = "ifup" ] && [ "$INTERFACE" = "awg10" ]; then
+    echo "$(date) === AWG10 up - setting up PBR ===" >> /tmp/awg_pbr.log
+
+    # Создаём таблицу
+    grep -q "200 awg_warp" /etc/iproute2/rt_tables || echo "200 awg_warp" >> /etc/iproute2/rt_tables
+
+    # Удаляем старое правило и добавляем новое
+    ip rule del fwmark 16 table awg_warp 2>/dev/null || true
+    ip rule add fwmark 16 table awg_warp priority 30001
+
+    # Обновляем маршрут
+    ip route flush table awg_warp 2>/dev/null || true
+    ip route add default dev awg10 table awg_warp
+
+    echo "$(date) PBR for AWG_WARP configured successfully" >> /tmp/awg_pbr.log
+fi
+EOF
+chmod +x /etc/hotplug.d/iface/95-awg-warp
+
+ip rule show | grep -E '0x10|16|awg_warp'
+ip route show table awg_warp
 
 /etc/init.d/firewall restart
 /etc/init.d/clash restart
