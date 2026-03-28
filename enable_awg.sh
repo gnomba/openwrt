@@ -48,7 +48,7 @@ getWARPConfig() {
     local priv=$(echo "$json" | jq -r '.result.key')
     local address=$(echo "$json" | jq -r '.result.config.interface.addresses.v4')
     local pub=$(echo "$json" | jq -r '.result.config.peers[0].public_key')
-    local endpoint=$(echo "$json" | jq -r '.result.config.peers[0].endpoint')
+    local endpoint=$(echo "$json" | jq -r '.result.config.peers[0].endpoint.v4' | awk -F: '{print $1}')
     local allowed=$(echo "$json" | jq -r '.result.config.peers[0].allowed_ips')
     
     uci set network.${INTERFACE_NAME}=interface
