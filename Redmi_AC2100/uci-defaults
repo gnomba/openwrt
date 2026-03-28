@@ -390,6 +390,8 @@ set_adblock() {
 	uci set adblock.global.adb_trigger="$(get_wan_dev)"
 	uci set adblock.global.adb_feed='adguard adguard_tracking certpl oisd_big oisd_nsfw'
 	uci commit adblock
+	/etc/init.d/adblock stop
+	/etc/init.d/adblock disable
 }
 
 set_ddns() {

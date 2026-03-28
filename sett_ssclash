@@ -1,0 +1,259 @@
+mode: rule # режим работы по правилам
+tproxy-port: 7894 # порт прозрачного прокси
+ipv6: false # выключаем IPv6
+log-level: error # уровень предупреждений в журнале
+allow-lan: true # если true, можно открыть SOCKS5 для ваших устройств
+unified-delay: true # серверы пингуются по два раза, показывая лучшую скорость
+tcp-concurrent: true # ускоряет работу
+external-controller: 0.0.0.0:9090 # адрес Dashboard панели Clash
+external-ui: ./ui # папка, в которую Clash качает файлы панели
+#secret: "Kruto!P@ro11" # пароль на панель можно менять
+external-ui-url: "https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip" # ссылка позволяет обновлять панель
+
+dns:
+  enable: true
+  listen: 0.0.0.0:7874          # DNS-порт mihomo
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-filter-mode: rule
+  fake-ip-range: 198.18.0.0/15
+  fake-ip-filter:
+    # Эти списки идут через opera-proxy → им НЕ нужен fake-ip
+    - RULE-SET,file-user-list-proxy,real-ip
+    - RULE-SET,block,real-ip
+    - RULE-SET,geoblock,real-ip
+    - RULE-SET,twitter,real-ip
+    - RULE-SET,hdrezka,real-ip
+    - RULE-SET,tiktok,real-ip
+    - RULE-SET,google_ai,real-ip
+    # Эти списки идут через AWG → им нужен fake-ip
+    - RULE-SET,file-user-list-warp,fake-ip
+    - RULE-SET,youtube,fake-ip
+    - RULE-SET,telegram,fake-ip
+    - RULE-SET,meta,fake-ip
+    #- RULE-SET,whatsapp_cidr_ipv4,fake-ip
+    # Всё остальное (ya.ru, vk.com, обычные сайты) — реальный IP
+    - MATCH,real-ip
+  default-nameserver:
+    - 8.8.4.4
+    - 8.8.8.8
+    - 1.0.0.1
+    - 1.1.1.1
+    - 77.88.8.8
+    - 77.88.8.1
+    - 9.9.9.9
+    - 149.112.112.112
+  nameserver:
+    - https://8.8.8.8/dns-query
+    - tls://8.8.8.8
+    - https://cloudflare-dns.com/dns-query
+    - tls://1dot1dot1dot1.cloudflare-dns.com
+    - https://common.dot.dns.yandex.net
+    - tls://common.dot.dns.yandex.net
+    - https://dns.quad9.net/dns-query
+    - tls://dns.quad9.net
+  rules:
+    - QUERY-TYPE,HTTPS,REJECT
+    - DOMAIN-SUFFIX,use-application-dns.net,REJECT
+
+tun:
+  enable: false
+
+sniffer:
+  enable: false                 # обязательно отключено
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+routing-mark: 2 # необходимо помечать траффик, которым управляет Clash для маршрутизации по правилам
+
+proxies:
+  - name: opera-proxy
+    type: http
+    server: 127.0.0.1
+    port: 18080
+    udp: true
+#  - name: dumbproxy
+#    type: http
+#    server: 127.0.0.1
+#    port: 8080
+#    udp: true
+
+proxy-groups:
+  - name: OPERA_PROXY
+    type: select
+    proxies:
+      - opera-proxy
+      - DIRECT
+  - name: AWG_WARP
+    type: select
+    proxies:
+      - DIRECT
+#  - name: DUMBPROXY
+#    type: select
+#    proxies:
+#      - dumbproxy
+#      - DIRECT
+
+rule-providers:
+  file-user-list-proxy:
+    type: file
+    behavior: domain
+    format: text
+    path: ./lst/file-user-list-proxy.txt
+  file-user-list-warp:
+    type: file
+    behavior: domain
+    format: text
+    path: ./lst/file-user-list-warp.txt
+  block:
+    type: http
+    behavior: domain
+    #url: "https://github.com/itdoginfo/allow-domains/releases/latest/download/block_domain.mrs"
+    #path: ./ruleset/block_domain.mrs
+    format: text
+    url: "https://raw.githubusercontent.com/itdoginfo/allow-domains/refs/heads/main/Categories/block.lst"
+    path: ./ruleset/block.txt
+    interval: 86400
+    download-detour: DIRECT
+    header:
+      User-Agent:
+        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+  geoblock:
+    type: http
+    behavior: domain
+    #url: "https://github.com/itdoginfo/allow-domains/releases/latest/download/geoblock_domain.mrs"
+    #path: ./ruleset/geoblock_domain.mrs
+    format: text
+    url: "https://raw.githubusercontent.com/itdoginfo/allow-domains/refs/heads/main/Categories/geoblock.lst"
+    path: ./ruleset/geoblock.txt
+    interval: 86400
+    download-detour: DIRECT
+    header:
+      User-Agent:
+        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+  twitter:
+    type: http
+    behavior: domain
+    #url: "https://github.com/itdoginfo/allow-domains/releases/latest/download/twitter_domain.mrs"
+    #path: ./ruleset/twitter_domain.mrs
+    format: text
+    url: "https://raw.githubusercontent.com/itdoginfo/allow-domains/refs/heads/main/Services/twitter.lst"
+    path: ./ruleset/twitter.txt
+    interval: 86400
+    download-detour: DIRECT
+    header:
+      User-Agent:
+        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+  hdrezka:
+    type: http
+    behavior: domain
+    #url: "https://github.com/itdoginfo/allow-domains/releases/latest/download/hdrezka_domain.mrs"
+    #path: ./ruleset/hdrezka_domain.mrs
+    format: text
+    url: "https://raw.githubusercontent.com/itdoginfo/allow-domains/refs/heads/main/Services/hdrezka.lst"
+    path: ./ruleset/hdrezka.txt
+    interval: 86400
+    download-detour: DIRECT
+    header:
+      User-Agent:
+        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+  tiktok:
+    type: http
+    behavior: domain
+    #url: "https://github.com/itdoginfo/allow-domains/releases/latest/download/tiktok_domain.mrs"
+    #path: ./ruleset/tiktok_domain.mrs
+    format: text
+    url: "https://raw.githubusercontent.com/itdoginfo/allow-domains/refs/heads/main/Services/tiktok.lst"
+    path: ./ruleset/tiktok.txt
+    interval: 86400
+    download-detour: DIRECT
+    header:
+      User-Agent:
+        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+  google_ai:
+    type: http
+    behavior: domain
+    #url: "https://github.com/itdoginfo/allow-domains/releases/latest/download/google_ai_domain.mrs"
+    #path: ./ruleset/google_ai_domain.mrs
+    format: text
+    url: "https://raw.githubusercontent.com/itdoginfo/allow-domains/refs/heads/main/Services/google_ai.lst"
+    path: ./ruleset/google_ai.txt
+    interval: 86400
+    download-detour: DIRECT
+    header:
+      User-Agent:
+        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+  youtube:
+    type: http
+    behavior: domain
+    #url: "https://github.com/itdoginfo/allow-domains/releases/latest/download/youtube_domain.mrs"
+    #path: ./ruleset/youtube_domain.mrs
+    format: text
+    url: "https://raw.githubusercontent.com/itdoginfo/allow-domains/refs/heads/main/Services/youtube.lst"
+    path: ./ruleset/youtube.txt
+    interval: 86400
+    download-detour: DIRECT
+    header:
+      User-Agent:
+        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+  telegram:
+    type: http
+    behavior: domain
+    #url: "https://github.com/itdoginfo/allow-domains/releases/latest/download/telegram_domain.mrs"
+    #path: ./ruleset/telegram_domain.mrs
+    format: text
+    url: "https://raw.githubusercontent.com/itdoginfo/allow-domains/refs/heads/main/Services/telegram.lst"
+    path: ./ruleset/telegram.txt
+    interval: 86400
+    download-detour: DIRECT
+    header:
+      User-Agent:
+        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+  meta:
+    type: http
+    behavior: domain
+    #url: "https://github.com/itdoginfo/allow-domains/releases/latest/download/meta_domain.mrs"
+    #path: ./ruleset/meta_domain.mrs
+    format: text
+    url: "https://raw.githubusercontent.com/itdoginfo/allow-domains/refs/heads/main/Services/meta.lst"
+    path: ./ruleset/meta.txt
+    interval: 86400
+    download-detour: DIRECT
+    header:
+      User-Agent:
+        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+  whatsapp_cidr_ipv4:
+    type: http
+    behavior: ipcidr
+    format: text
+    url: "https://raw.githubusercontent.com/HybridNetworks/whatsapp-cidr/main/WhatsApp/whatsapp_cidr_ipv4.txt"
+    path: ./ruleset/whatsapp_cidr_ipv4.txt
+    interval: 86400
+    download-detour: DIRECT
+    header:
+      User-Agent:
+        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+
+rules:
+  - AND,((NETWORK,udp),(DST-PORT,443)),REJECT
+  # opera-proxy
+  - RULE-SET,file-user-list-proxy,OPERA_PROXY
+  - RULE-SET,block,OPERA_PROXY
+  - RULE-SET,geoblock,OPERA_PROXY
+  - RULE-SET,twitter,OPERA_PROXY
+  - RULE-SET,hdrezka,OPERA_PROXY
+  - RULE-SET,tiktok,OPERA_PROXY
+  - RULE-SET,google_ai,OPERA_PROXY
+  #- DOMAIN,downloads.openwrt.org,OPERA_PROXY
+  # awg-warp
+  - RULE-SET,file-user-list-warp,AWG_WARP
+  - RULE-SET,youtube,AWG_WARP
+  - RULE-SET,telegram,AWG_WARP
+  - RULE-SET,meta,AWG_WARP
+  - RULE-SET,whatsapp_cidr_ipv4,AWG_WARP
+  # dumbproxy
+  #- RULE-SET,<rule-providers-name>,DUMBPROXY
+  # direct
+  - MATCH,DIRECT
