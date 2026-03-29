@@ -31,7 +31,7 @@ dns:
     - RULE-SET,youtube,fake-ip
     - RULE-SET,telegram,fake-ip
     - RULE-SET,meta,fake-ip
-    - IP-CIDR,whatsapp_cidr_ipv4,fake-ip
+    #- IP-CIDR,whatsapp_cidr_ipv4,fake-ip
     # Всё остальное (ya.ru, vk.com, обычные сайты) — реальный IP
     - MATCH,real-ip
   default-nameserver:
