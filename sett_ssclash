@@ -256,4 +256,6 @@ rules:
   #- RULE-SET,<rule-providers-name>,DUMBPROXY
   # direct
   - DOMAIN,downloads.openwrt.org,DIRECT
+  - DOMAIN,firmware-selector.openwrt.org,DIRECT
+  - DOMAIN,downloads.openwrt.org,DIRECT
   - MATCH,DIRECT

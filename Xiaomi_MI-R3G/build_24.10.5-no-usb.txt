@@ -134,7 +134,7 @@ kmod-mac80211
 kmod-mii
 kmod-mppe
 kmod-mt7603
-kmod-mt76x2
+kmod-mt7615-firmware
 kmod-mtd-rw
 -kmod-natflow
 kmod-nf-conntrack
@@ -202,6 +202,7 @@ kmod-udptunnel6
 -kmod-usb-xhci-hcd
 -kmod-usb-xhci-mtk
 -kmod-usb3
+kmod-zram
 -ksmbd-avahi-service
 -ksmbd-rrplug
 -ksmbd-server
@@ -498,3 +499,4 @@ xl2tpd
 -zapret
 -zerotier-lite
 zlib
+zram-swap
