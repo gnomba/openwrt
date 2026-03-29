@@ -131,14 +131,36 @@ else
     apk add iptables
 fi
 
-cat > /etc/firewall.user << 'EOF'
-iptables -t mangle -A PREROUTING -m mark --mark 0x2 -j MARK --set-mark 16
-ip6tables -t mangle -A PREROUTING -m mark --mark 0x2 -j MARK --set-mark 16 2>/dev/null || true
+cat > /etc/init.d/awg_pbr << 'EOF'
+#!/bin/sh /etc/rc.common
 
-# Защита от петель
-iptables -t mangle -A PREROUTING -m mark --mark 16 -m addrtype --dst-type LOCAL -j RETURN
+START=99
+USE_PROCD=1
+
+start_service() {
+    echo "$(date) === Starting AWG_PBR service ===" >> /tmp/awg_pbr.log
+
+    # Применяем mangle правило
+    iptables -t mangle -A PREROUTING -m mark --mark 0x2 -j MARK --set-mark 16 2>/dev/null || true
+
+    # Защита от петель
+    iptables -t mangle -A PREROUTING -m mark --mark 16 -d 192.168.0.0/16 -j RETURN 2>/dev/null || true
+    iptables -t mangle -A PREROUTING -m mark --mark 16 -d 172.16.0.0/12 -j RETURN 2>/dev/null || true
+    iptables -t mangle -A PREROUTING -m mark --mark 16 -d 10.0.0.0/8 -j RETURN 2>/dev/null || true
+
+    echo "$(date) AWG_PBR mangle rules applied" >> /tmp/awg_pbr.log
+}
+
+stop_service() {
+    echo "$(date) Stopping AWG_PBR" >> /tmp/awg_pbr.log
+}
+
+service_triggers() {
+    procd_add_reload_trigger "firewall" "clash"
+}
 EOF
-chmod +x /etc/firewall.user
+chmod +x /etc/init.d/awg_pbr
+/etc/init.d/awg_pbr enable
 
 cat > /etc/hotplug.d/iface/95-awg-warp << 'EOF'
 #!/bin/sh
@@ -146,14 +168,11 @@ cat > /etc/hotplug.d/iface/95-awg-warp << 'EOF'
 if [ "$ACTION" = "ifup" ] && [ "$INTERFACE" = "awg10" ]; then
     echo "$(date) === AWG10 up - setting up PBR ===" >> /tmp/awg_pbr.log
 
-    # Создаём таблицу
     grep -q "200 awg_warp" /etc/iproute2/rt_tables || echo "200 awg_warp" >> /etc/iproute2/rt_tables
 
-    # Удаляем старое правило и добавляем новое
     ip rule del fwmark 16 table awg_warp 2>/dev/null || true
-    ip rule add fwmark 16 table awg_warp priority 30001
+    ip rule add fwmark 16 table awg_warp priority 29999
 
-    # Обновляем маршрут
     ip route flush table awg_warp 2>/dev/null || true
     ip route add default dev awg10 table awg_warp
 
@@ -162,6 +181,7 @@ fi
 EOF
 chmod +x /etc/hotplug.d/iface/95-awg-warp
 
+iptables -t mangle -L PREROUTING -v -n | grep -E 'MARK|0x2|0x10'
 ip rule show | grep -E '0x10|16|awg_warp'
 ip route show table awg_warp
 
