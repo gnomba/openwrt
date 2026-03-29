@@ -85,16 +85,14 @@ proxy-groups:
     type: select
     proxies:
       - opera-proxy
-      - DIRECT
-  - name: AWG_WARP
-    type: select
-    proxies:
-      - DIRECT
+#  - name: AWG_WARP
+#    type: select
+#    proxies:
+#      - awg-warp
 #  - name: DUMBPROXY
 #    type: select
 #    proxies:
 #      - dumbproxy
-#      - DIRECT
 
 rule-providers:
   file-user-list-proxy:
