@@ -2,7 +2,7 @@ mode: rule # режим работы по правилам
 tproxy-port: 7894 # порт прозрачного прокси
 ipv6: false # выключаем IPv6
 log-level: error # уровень предупреждений в журнале
-allow-lan: false # если true, можно открыть SOCKS5 для ваших устройств
+allow-lan: true # если true, можно открыть SOCKS5 для ваших устройств
 unified-delay: true # серверы пингуются по два раза, показывая лучшую скорость
 tcp-concurrent: true # ускоряет работу
 external-controller: 0.0.0.0:9090 # адрес Dashboard панели Clash
@@ -253,6 +253,7 @@ rules:
   # dumbproxy
   #- RULE-SET,<rule-providers-name>,DUMBPROXY
   # direct
+  - DOMAIN,github.com,DIRECT
   - DOMAIN,downloads.openwrt.org,DIRECT
   - DOMAIN,firmware-selector.openwrt.org,DIRECT
   - DOMAIN,sysupgrade.openwrt.org,DIRECT
