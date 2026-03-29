@@ -257,5 +257,5 @@ rules:
   # direct
   - DOMAIN,downloads.openwrt.org,DIRECT
   - DOMAIN,firmware-selector.openwrt.org,DIRECT
-  - DOMAIN,downloads.openwrt.org,DIRECT
+  - DOMAIN,sysupgrade.openwrt.org,DIRECT
   - MATCH,DIRECT
