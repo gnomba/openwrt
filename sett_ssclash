@@ -1,7 +1,7 @@
 mode: rule # режим работы по правилам
 tproxy-port: 7894 # порт прозрачного прокси
 ipv6: false # выключаем IPv6
-log-level: debug # уровень предупреждений в журнале
+log-level: error # уровень предупреждений в журнале
 allow-lan: false # если true, можно открыть SOCKS5 для ваших устройств
 unified-delay: true # серверы пингуются по два раза, показывая лучшую скорость
 tcp-concurrent: true # ускоряет работу
@@ -247,11 +247,11 @@ rules:
   - RULE-SET,tiktok,OPERA_PROXY
   - RULE-SET,google_ai,OPERA_PROXY
   # awg-warp
-  - RULE-SET,file-user-list-warp,AWG_WARP
-  - RULE-SET,youtube,AWG_WARP
-  - RULE-SET,telegram,AWG_WARP
-  - RULE-SET,meta,AWG_WARP
-  - RULE-SET,whatsapp_cidr_ipv4,AWG_WARP
+  - RULE-SET,file-user-list-warp,OPERA_PROXY
+  - RULE-SET,youtube,OPERA_PROXY
+  - RULE-SET,telegram,OPERA_PROXY
+  - RULE-SET,meta,OPERA_PROXY
+  - RULE-SET,whatsapp_cidr_ipv4,OPERA_PROXY
   # dumbproxy
   #- RULE-SET,<rule-providers-name>,DUMBPROXY
   # direct
