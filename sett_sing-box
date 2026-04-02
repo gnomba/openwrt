@@ -1,0 +1,279 @@
+{
+  "log": {
+    "disabled": false,
+    "level": "warn",
+    "timestamp": false
+  },
+  "dns": {
+    "servers": [
+      {
+        "type": "udp",
+        "tag": "bootstrap-dns-server",
+        "server": "8.8.4.4",
+        "server_port": 53
+      },
+      {
+        "type": "https",
+        "tag": "dns-server",
+        "server": "8.8.8.8",
+        "server_port": 443
+      },
+      {
+        "type": "fakeip",
+        "tag": "fakeip-server",
+        "inet4_range": "198.18.0.0/15"
+      }
+    ],
+    "rules": [
+      {
+        "action": "reject",
+        "query_type": "HTTPS"
+      },
+      {
+        "action": "reject",
+        "domain_suffix": "use-application-dns.net"
+      },
+      {
+        "action": "route",
+        "server": "fakeip-server",
+        "rewrite_ttl": 60,
+        "domain": [
+          "fakeip.podkop.fyi",
+          "ip.podkop.fyi"
+        ],
+        "rule_set": [
+          "main-geoblock-community-ruleset",
+          "main-block-community-ruleset",
+          "main-twitter-community-ruleset",
+          "main-hdrezka-community-ruleset",
+          "main-tiktok-community-ruleset",
+          "main-google_ai-community-ruleset",
+          "main-user-domains-ruleset",
+          "Youtube_Discord-youtube-community-ruleset",
+          "Youtube_Discord-telegram-community-ruleset",
+          "Youtube_Discord-meta-community-ruleset",
+          "Youtube_Discord-user-domains-ruleset"
+        ]
+      }
+    ],
+    "final": "dns-server",
+    "strategy": "ipv4_only",
+    "independent_cache": true
+  },
+  "ntp": {},
+  "certificate": {},
+  "endpoints": [],
+  "inbounds": [
+    {
+      "type": "tproxy",
+      "tag": "tproxy-in",
+      "listen": "127.0.0.1",
+      "listen_port": 1602,
+      "tcp_fast_open": true,
+      "udp_fragment": true
+    },
+    {
+      "type": "direct",
+      "tag": "dns-in",
+      "listen": "127.0.0.42",
+      "listen_port": 53
+    },
+    {
+      "type": "mixed",
+      "tag": "service-mixed-in",
+      "listen": "127.0.0.1",
+      "listen_port": 4534
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct",
+      "tag": "direct-out"
+    },
+    {
+      "type": "http",
+      "tag": "main-out",
+      "server": "127.0.0.1",
+      "server_port": 8080
+    },
+    {
+      "type": "direct",
+      "tag": "Youtube_Discord-out",
+      "bind_interface": "awg10"
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "action": "sniff",
+        "inbound": [
+          "tproxy-in",
+          "dns-in"
+        ]
+      },
+      {
+        "action": "hijack-dns",
+        "protocol": "dns"
+      },
+      {
+        "action": "reject",
+        "inbound": "tproxy-in",
+        "protocol": "quic"
+      },
+      {
+        "action": "route",
+        "inbound": "tproxy-in",
+        "outbound": "main-out",
+        "domain": "ip.podkop.fyi"
+      },
+      {
+        "action": "route-options",
+        "domain": "fakeip.podkop.fyi",
+        "override_port": 8443
+      },
+      {
+        "action": "route",
+        "inbound": "tproxy-in",
+        "outbound": "direct-out",
+        "source_ip_cidr": "192.168.76.149"
+      },
+      {
+        "action": "route",
+        "inbound": "tproxy-in",
+        "outbound": "main-out",
+        "rule_set": [
+          "main-geoblock-community-ruleset",
+          "main-block-community-ruleset",
+          "main-twitter-community-ruleset",
+          "main-hdrezka-community-ruleset",
+          "main-tiktok-community-ruleset",
+          "main-google_ai-community-ruleset",
+          "main-user-domains-ruleset"
+        ]
+      },
+      {
+        "action": "route",
+        "inbound": "tproxy-in",
+        "outbound": "Youtube_Discord-out",
+        "rule_set": [
+          "Youtube_Discord-youtube-community-ruleset",
+          "Youtube_Discord-telegram-community-ruleset",
+          "Youtube_Discord-meta-community-ruleset",
+          "Youtube_Discord-user-domains-ruleset",
+          "Youtube_Discord-remote-subnets-ruleset"
+        ]
+      },
+      {
+        "action": "route",
+        "inbound": "service-mixed-in",
+        "outbound": "main-out"
+      }
+    ],
+    "rule_set": [
+      {
+        "type": "remote",
+        "tag": "main-geoblock-community-ruleset",
+        "format": "binary",
+        "url": "https://github.com/itdoginfo/allow-domains/releases/latest/download/geoblock.srs",
+        "download_detour": "main-out",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "main-block-community-ruleset",
+        "format": "binary",
+        "url": "https://github.com/itdoginfo/allow-domains/releases/latest/download/block.srs",
+        "download_detour": "main-out",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "main-twitter-community-ruleset",
+        "format": "binary",
+        "url": "https://github.com/itdoginfo/allow-domains/releases/latest/download/twitter.srs",
+        "download_detour": "main-out",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "main-hdrezka-community-ruleset",
+        "format": "binary",
+        "url": "https://github.com/itdoginfo/allow-domains/releases/latest/download/hdrezka.srs",
+        "download_detour": "main-out",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "main-tiktok-community-ruleset",
+        "format": "binary",
+        "url": "https://github.com/itdoginfo/allow-domains/releases/latest/download/tiktok.srs",
+        "download_detour": "main-out",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "main-google_ai-community-ruleset",
+        "format": "binary",
+        "url": "https://github.com/itdoginfo/allow-domains/releases/latest/download/google_ai.srs",
+        "download_detour": "main-out",
+        "update_interval": "1d"
+      },
+      {
+        "type": "local",
+        "tag": "main-user-domains-ruleset",
+        "format": "source",
+        "path": "/tmp/sing-box/rulesets/main-user-domains-ruleset.json"
+      },
+      {
+        "type": "remote",
+        "tag": "Youtube_Discord-youtube-community-ruleset",
+        "format": "binary",
+        "url": "https://github.com/itdoginfo/allow-domains/releases/latest/download/youtube.srs",
+        "download_detour": "main-out",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Youtube_Discord-telegram-community-ruleset",
+        "format": "binary",
+        "url": "https://github.com/itdoginfo/allow-domains/releases/latest/download/telegram.srs",
+        "download_detour": "main-out",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Youtube_Discord-meta-community-ruleset",
+        "format": "binary",
+        "url": "https://github.com/itdoginfo/allow-domains/releases/latest/download/meta.srs",
+        "download_detour": "main-out",
+        "update_interval": "1d"
+      },
+      {
+        "type": "local",
+        "tag": "Youtube_Discord-user-domains-ruleset",
+        "format": "source",
+        "path": "/tmp/sing-box/rulesets/Youtube_Discord-user-domains-ruleset.json"
+      },
+      {
+        "type": "local",
+        "tag": "Youtube_Discord-remote-subnets-ruleset",
+        "format": "source",
+        "path": "/tmp/sing-box/rulesets/Youtube_Discord-remote-subnets-ruleset.json"
+      }
+    ],
+    "final": "direct-out",
+    "auto_detect_interface": true,
+    "default_domain_resolver": "dns-server"
+  },
+  "services": [],
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "path": "/tmp/sing-box/cache.db",
+      "store_fakeip": true
+    },
+    "clash_api": {
+      "external_controller": "192.168.76.1:9090"
+    }
+  }
+}
