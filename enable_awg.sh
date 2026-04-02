@@ -121,72 +121,72 @@ if command -v opkg >/dev/null 2>&1; then
     opkg install --force-checksum --no-check-certificate ${FILE_AWG_TOOLS}.ipk
     opkg install --force-checksum --no-check-certificate ${FILE_AWG_PROTO}.ipk
     opkg install --force-checksum --no-check-certificate ${FILE_AWG_LANG}.ipk
-    opkg install iptables
+    #opkg install iptables
 else
     apk update
     apk add --allow-untrusted ${FILE_AWG_KMOD}.apk
     apk add --allow-untrusted ${FILE_AWG_TOOLS}.apk
     apk add --allow-untrusted ${FILE_AWG_PROTO}.apk
     apk add --allow-untrusted ${FILE_AWG_LANG}.apk
-    apk add iptables
+    #apk add iptables
 fi
 
-cat > /etc/init.d/awg_pbr << 'EOF'
-#!/bin/sh /etc/rc.common
+#cat > /etc/init.d/awg_pbr << 'EOF'
+##!/bin/sh /etc/rc.common
 
-START=99
-USE_PROCD=1
+#START=99
+#USE_PROCD=1
 
-start_service() {
-    echo "$(date) === Starting AWG_PBR service ===" >> /tmp/awg_pbr.log
+#start_service() {
+#    echo "$(date) === Starting AWG_PBR service ===" >> /tmp/awg_pbr.log
 
-    # Применяем mangle правило
-    iptables -t mangle -A PREROUTING -m mark --mark 0x2 -j MARK --set-mark 16 2>/dev/null || true
+#    # Применяем mangle правило
+#    iptables -t mangle -A PREROUTING -m mark --mark 0x2 -j MARK --set-mark 16 2>/dev/null || true
 
-    # Защита от петель
-    iptables -t mangle -A PREROUTING -m mark --mark 16 -d 192.168.0.0/16 -j RETURN 2>/dev/null || true
-    iptables -t mangle -A PREROUTING -m mark --mark 16 -d 172.16.0.0/12 -j RETURN 2>/dev/null || true
-    iptables -t mangle -A PREROUTING -m mark --mark 16 -d 10.0.0.0/8 -j RETURN 2>/dev/null || true
+#    # Защита от петель
+#    iptables -t mangle -A PREROUTING -m mark --mark 16 -d 192.168.0.0/16 -j RETURN 2>/dev/null || true
+#    iptables -t mangle -A PREROUTING -m mark --mark 16 -d 172.16.0.0/12 -j RETURN 2>/dev/null || true
+#    iptables -t mangle -A PREROUTING -m mark --mark 16 -d 10.0.0.0/8 -j RETURN 2>/dev/null || true
 
-    echo "$(date) AWG_PBR mangle rules applied" >> /tmp/awg_pbr.log
-}
+#    echo "$(date) AWG_PBR mangle rules applied" >> /tmp/awg_pbr.log
+#}
 
-stop_service() {
-    echo "$(date) Stopping AWG_PBR" >> /tmp/awg_pbr.log
-}
+#stop_service() {
+#    echo "$(date) Stopping AWG_PBR" >> /tmp/awg_pbr.log
+#}
 
-service_triggers() {
-    procd_add_reload_trigger "firewall" "clash"
-}
-EOF
-chmod +x /etc/init.d/awg_pbr
-/etc/init.d/awg_pbr enable
+#service_triggers() {
+#    procd_add_reload_trigger "firewall" "clash"
+#}
+#EOF
+#chmod +x /etc/init.d/awg_pbr
+#/etc/init.d/awg_pbr enable
 
-cat > /etc/hotplug.d/iface/95-awg-warp << 'EOF'
-#!/bin/sh
+#cat > /etc/hotplug.d/iface/95-awg-warp << 'EOF'
+##!/bin/sh
 
-if [ "$ACTION" = "ifup" ] && [ "$INTERFACE" = "awg10" ]; then
-    echo "$(date) === AWG10 up - setting up PBR ===" >> /tmp/awg_pbr.log
+#if [ "$ACTION" = "ifup" ] && [ "$INTERFACE" = "awg10" ]; then
+#    echo "$(date) === AWG10 up - setting up PBR ===" >> /tmp/awg_pbr.log
 
-    grep -q "200 awg_warp" /etc/iproute2/rt_tables || echo "200 awg_warp" >> /etc/iproute2/rt_tables
+#    grep -q "200 awg_warp" /etc/iproute2/rt_tables || echo "200 awg_warp" >> /etc/iproute2/rt_tables
 
-    ip rule del fwmark 16 table awg_warp 2>/dev/null || true
-    ip rule add fwmark 16 table awg_warp priority 29999
+#    ip rule del fwmark 16 table awg_warp 2>/dev/null || true
+#    ip rule add fwmark 16 table awg_warp priority 29999
 
-    ip route flush table awg_warp 2>/dev/null || true
-    ip route add default dev awg10 table awg_warp
+#    ip route flush table awg_warp 2>/dev/null || true
+#    ip route add default dev awg10 table awg_warp
 
-    echo "$(date) PBR for AWG_WARP configured successfully" >> /tmp/awg_pbr.log
-fi
-EOF
-chmod +x /etc/hotplug.d/iface/95-awg-warp
+#    echo "$(date) PBR for AWG_WARP configured successfully" >> /tmp/awg_pbr.log
+#fi
+#EOF
+#chmod +x /etc/hotplug.d/iface/95-awg-warp
 
-iptables -t mangle -L PREROUTING -v -n | grep -E 'MARK|0x2|0x10'
-ip rule show | grep -E '0x10|16|awg_warp'
-ip route show table awg_warp
+#iptables -t mangle -L PREROUTING -v -n | grep -E 'MARK|0x2|0x10'
+#ip rule show | grep -E '0x10|16|awg_warp'
+#ip route show table awg_warp
 
-/etc/init.d/firewall restart
-/etc/init.d/clash restart
+#/etc/init.d/firewall restart
+#/etc/init.d/clash restart
 
 # Создание UCI интерфейса awg10 с proto=amneziawg
 uci set network.awg10=interface
