@@ -123,6 +123,7 @@ luci-app-wdoc-singbox
 luci-app-wdoc-warp
 luci-app-wdoc-wg
 luci-app-wizard
+luci-app-zeroblock
 luci-i18n-access-control-ru
 luci-i18n-amneziawg-ru
 luci-i18n-atinout-ru
@@ -171,7 +172,8 @@ wdoc
 wdoc-singbox
 wdoc-warp
 wdoc-wg
-xmm-modem"
+xmm-modem
+zeroblock"
 
 	opkg update
 	opkg install ${vPACKAGES_RR} || opkg install ${vPACKAGES_RR}

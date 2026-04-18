@@ -330,6 +330,7 @@ luci-app-wizard
 luci-app-wol
 -luci-app-youtubeUnblock
 -luci-app-zapret
+luci-app-zeroblock
 -luci-app-zerotier
 luci-base
 luci-compat
@@ -493,5 +494,6 @@ xl2tpd
 xmm-modem
 -youtubeUnblock
 -zapret
+zeroblock
 -zerotier-lite
 zlib
