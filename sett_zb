@@ -137,7 +137,8 @@ uci set zeroblock.MAIN.community_lists_invert='0'
 uci set zeroblock.MAIN.user_domains_text='myip.com
 down.warbler.cc
 xdaforums.com
-crdroid.net'
+crdroid.net
+from-lord-serial.ru'
 uci set zeroblock.YOUTUBE_DISCORD=section
 uci set zeroblock.YOUTUBE_DISCORD.connection_type='vpn'
 uci set zeroblock.YOUTUBE_DISCORD.interface='awg10'
@@ -158,6 +159,11 @@ whatsapp.com
 whatsapp.net
 whatsapp.biz
 wa.me
-web.telegram.org'
+web.telegram.org
+apkpure.com
+apkpure.net
+ppa.launchpadcontent.net
+launchpadcontent.net
+api.snapcraft.io'
 uci set zeroblock.YOUTUBE_DISCORD.user_lists='https://raw.githubusercontent.com/HybridNetworks/whatsapp-cidr/main/WhatsApp/whatsapp_cidr_ipv4.txt'
 uci commit zeroblock
