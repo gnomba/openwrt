@@ -15,7 +15,7 @@ rr_mod() {
     etc_rclocal="/etc/rc.local"
     echo 'routerich,ax3000' > /tmp/sysinfo/board_name
     echo 'Routerich AX3000' > /tmp/sysinfo/model
-    echo 'RR-3.9.0' > /etc/routerich_release
+    echo 'RR-3.10.3' > /etc/routerich_release
     echo '# Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 sleep 5
@@ -35,19 +35,20 @@ add_repository() {
     etc_opkg_keys="/etc/opkg/keys"
     mkdir -pv $etc_opkg_keys 2>/dev/null
     ### for Routerich Packages ###
-    rrver="24.10.5"
-    repo_url="src/gz routerich https://github.com/routerich/packages.routerich/raw/$rrver/routerich"
-    sed -i 's/^src\/gz openwrt_core/#src\/gz openwrt_core/' $distfeeds_conf
-	sed -i "1a src\/gz routerich_core https:\/\/github.com\/routerich\/packages.routerich\/raw\/$rrver\/core" $distfeeds_conf
-	if ! grep -qF "$repo_url" "$distfeeds_conf"; then
-        echo "$repo_url" >> "$distfeeds_conf"
-    fi
-	sed -i '/^src\/gz routerich http/d' $customfeeds_conf
-    KEYID_r=2e724001fb65916f
-    cat <<- PUBKEYR > $etc_opkg_keys/$KEYID_r
-untrusted comment: Public usign key for ${rrver:0:5} release builds
-RWQuckAB+2WRb9rwzhWarTedFmsvy8y5kxAS3A0KXe3yUou9V/Nfbqty
-PUBKEYR
+    echo "src/gz routerich_core https://packages.routerich.ru/24.10/mediatek/filogic/24.10.6/core
+src/gz routerich_base https://packages.routerich.ru/24.10/mediatek/filogic/24.10.6/base
+src/gz routerich_luci https://packages.routerich.ru/24.10/mediatek/filogic/24.10.6/luci
+src/gz routerich_packages https://packages.routerich.ru/24.10/mediatek/filogic/24.10.6/packages
+src/gz routerich_routing https://packages.routerich.ru/24.10/mediatek/filogic/24.10.6/routing
+src/gz routerich_telephony https://packages.routerich.ru/24.10/mediatek/filogic/24.10.6/telephony
+src/gz routerich https://packages.routerich.ru/24.10/mediatek/filogic/routerich" > $distfeeds_conf
+	echo "# add your custom package feeds here
+#
+# src/gz example_feed_name http://www.example.com/path/to/files" > $customfeeds_conf
+	echo "untrusted comment: Public usign key for release builds
+RWQuckAB+2WRb9rwzhWarTedFmsvy8y5kxAS3A0KXe3yUou9V/Nfbqty" > $etc_opkg_keys/2e724001fb65916f
+	echo "untrusted comment: Public usign key for 24.10 release builds
+RWTTEMbygz6X95lKDAulctZy3aj15823THXfyrfXgwGbxZlXBd2brNcw" > $etc_opkg_keys/d310c6f2833e97f7
 }
 
 is_rr_inited() {
@@ -157,7 +158,7 @@ EOF
 set_ntp() {
 	is_rr_inited && return
 	uci set system.ntp.server=''
-	uci set system.ntp.server='89.109.251.21 194.190.168.1 93.90.103.9 185.211.244.47 93.95.98.77 90.188.9.144'
+	uci set system.ntp.server='0.ru.pool.ntp.org 1.ru.pool.ntp.org 2.ru.pool.ntp.org 3.ru.pool.ntp.org'
 	uci commit system
 }
 
@@ -165,7 +166,7 @@ set_wifi() {
 	echo "MAC=$MAC"
 	last_4_mac_wan="$(echo "$MAC" | awk -F: '{print toupper($5$6)}')"
 	echo "last_4_mac_wan=$last_4_mac_wan"
-	wlan_name_2g="Xiaomich_${last_4_mac_wan}"
+	wlan_name_2g="Xiaomi_${last_4_mac_wan}"
 	wlan_name_5g="${wlan_name_2g}_5G"
 	wlan_mode="ap"
 	wlan_encryption="psk2"
@@ -212,7 +213,7 @@ set_system() {
 	echo "MAC=$MAC"
 	last_4_mac_wan="$(echo "$MAC" | awk -F: '{print toupper($5$6)}')"
 	echo "last_4_mac_wan=$last_4_mac_wan"
-	hostname="Xiaomich_${last_4_mac_wan}"
+	hostname="Xiaomi_${last_4_mac_wan}"
 	uci -q set system.@system[0].hostname=$hostname
 	uci -q set system.@system[0].timezone='MSK-3'
 	uci -q set system.@system[0].log_size='128'
@@ -264,7 +265,7 @@ set_ttyd() {
 set_ksmbd() {
 	is_rr_inited && return
 	MEM_KB=$(awk '/MemTotal/ { print $2 }' /proc/meminfo)
-	uci -q set ksmbd.@globals[0].description='Xiaomich Share'
+	uci -q set ksmbd.@globals[0].description='Xiaomi Share'
 	uci commit ksmbd
 	buf_size=$( [ "$MEM_KB" -gt 480000 ] && echo "8MB" || ( [ "$MEM_KB" -gt 230000 ] && echo "4MB" || echo "2MB" ) )
 	cat <<EOF >/etc/ksmbd/ksmbd.conf.template
