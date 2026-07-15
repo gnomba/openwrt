@@ -144,6 +144,7 @@ luci-i18n-tailscale-ru
 luci-i18n-wdoc-singbox-ru
 luci-i18n-wdoc-warp-ru
 luci-i18n-wdoc-wg-ru
+luci-proto-amneziawg
 #luci-proto-xmm
 luci-theme-routerich
 #mesh-button
@@ -169,7 +170,7 @@ luci-theme-routerich
 opera-proxy
 routerich-defaults
 routerich-diag
-smount
+#smount
 tailscale-lite
 wdoc
 wdoc-singbox
@@ -180,6 +181,7 @@ wdoc-wg
 
 	opkg update
 	opkg install ${vPACKAGES_RR} || opkg install ${vPACKAGES_RR}
+	opkg remove --force-removal-of-dependent-packages kmod-usb-storage kmod-usb-storage-extras kmod-usb-storage-uas hdparm kmod-fs-exfat kmod-fs-vfat kmod-fs-ntfs3
 }
 
 set_dns_services() {

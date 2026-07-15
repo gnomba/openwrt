@@ -102,7 +102,7 @@ kmod-fs-ext4
 -kmod-fs-ksmbd
 kmod-fs-netfs
 -kmod-fs-ntfs3
-kmod-fs-smbfs-common
+-kmod-fs-smbfs-common
 -kmod-fs-vfat
 kmod-gpio-button-hotplug
 kmod-gre
