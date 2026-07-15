@@ -307,7 +307,7 @@ luci-app-filemanager
 luci-app-firewall
 -luci-app-hostacl
 -luci-app-internet-detector
-luci-app-ksmbd
+-luci-app-ksmbd
 -luci-app-ledcontrol
 -luci-app-log-viewer
 -luci-app-mmconfig
@@ -343,7 +343,7 @@ luci-i18n-ddns-ru
 luci-i18n-filemanager-ru
 luci-i18n-firewall-ru
 -luci-i18n-internet-detector-ru
-luci-i18n-ksmbd-ru
+-luci-i18n-ksmbd-ru
 -luci-i18n-ledcontrol-ru
 -luci-i18n-log-ru
 -luci-i18n-mmconfig-ru

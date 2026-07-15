@@ -92,6 +92,7 @@ set_https_dns_proxy() {
 
 install_packages() {
 	vPACKAGES_RR="xray-core
+sing-box-rr
 amneziawg-tools
 #atinout
 #automodem
@@ -168,7 +169,6 @@ luci-theme-routerich
 opera-proxy
 routerich-defaults
 routerich-diag
-sing-box-rr
 smount
 tailscale-lite
 wdoc
