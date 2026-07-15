@@ -91,7 +91,8 @@ set_https_dns_proxy() {
 }
 
 install_packages() {
-	vPACKAGES_RR="amneziawg-tools
+	vPACKAGES_RR="xray-core
+amneziawg-tools
 #atinout
 #automodem
 doh-proxy
@@ -175,7 +176,7 @@ wdoc-singbox
 wdoc-warp
 wdoc-wg
 #xmm-modem
-zeroblock"
+#zeroblock"
 
 	opkg update
 	opkg install ${vPACKAGES_RR} || opkg install ${vPACKAGES_RR}
@@ -303,10 +304,17 @@ set_n5beta() {
 	rm -fv /opt/zapret/ipset/zapret-hosts-user-exclude.txt
 }
 
+set_awg() {
+	sh <(wget -qO- https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/enable_awg.sh)
+}
+
 set_ZB() {
 	echo "+---------------------+"
 	echo "| Имя функции: $FUNCNAME |"
 	echo "+---------------------+"
+	service zapret2 stop
+	sleep 3
+	sh <(wget -qO- https://raw.githubusercontent.com/kkkkCampbell/master/refs/heads/zbautoconf/zbautoconf_latest)
 }
 
 start_test() {
@@ -320,7 +328,8 @@ install_packages
 set_dns_services
 set_rr_tailscale
 #set_n5
-set_n5beta
+#set_n5beta
+set_awg
 set_ZB
 start_test
 

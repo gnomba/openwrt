@@ -284,7 +284,7 @@ libucode20230711
 libudebug
 libudev-zero
 liburcu
-libusb-1.0-0
+-libusb-1.0-0
 libustream-mbedtls20201210
 libuuid1
 libuv1

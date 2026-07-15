@@ -9,7 +9,7 @@ lsmod | grep mt7
 ip l
 passw0rd="1234567890"
 WANDEV="$(jq .[].wan.device /etc/board.json | grep -v null | sed 's/"//g')"
-MAC="$(jq .[].wan.macaddr /etc/board.json | grep -v null | sed 's/"//g')"
+MAC="$(jq .[].wan.macaddr /etc/board.json | grep -v null | sed 's/"//g' | sed -E 's/^([0-9a-fA-F]{2}:){3}(.*)/24:0f:5e:\2/')"
 
 rr_mod() {
     etc_rclocal="/etc/rc.local"
@@ -18,9 +18,9 @@ rr_mod() {
     echo 'RR-3.10.3' > /etc/routerich_release
     echo '# Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
-sleep 5
-echo 'routerich,ax3000' > /tmp/sysinfo/board_name
-echo 'Routerich AX3000' > /tmp/sysinfo/model
+#sleep 5
+#echo 'routerich,ax3000' > /tmp/sysinfo/board_name
+#echo 'Routerich AX3000' > /tmp/sysinfo/model
 for i in sing-box stubby doh-proxy dns-failsafe-proxy; do
 	/etc/init.d/${i} enable
 	/etc/init.d/${i} reload
