@@ -117,17 +117,17 @@ printf "\033[32;1m=== AmneziaWG Installer + Автогенерация WARP ===\
 # Установка пакетов
 if command -v opkg >/dev/null 2>&1; then
     opkg update
-    opkg install --force-checksum --no-check-certificate ${FILE_AWG_KMOD}.ipk
-    opkg install --force-checksum --no-check-certificate ${FILE_AWG_TOOLS}.ipk
+    #opkg install --force-checksum --no-check-certificate ${FILE_AWG_KMOD}.ipk
+    #opkg install --force-checksum --no-check-certificate ${FILE_AWG_TOOLS}.ipk
     opkg install --force-checksum --no-check-certificate ${FILE_AWG_PROTO}.ipk
-    opkg install --force-checksum --no-check-certificate ${FILE_AWG_LANG}.ipk
+    #opkg install --force-checksum --no-check-certificate ${FILE_AWG_LANG}.ipk
     #opkg install iptables
 else
     apk update
-    apk add --allow-untrusted ${FILE_AWG_KMOD}.apk
-    apk add --allow-untrusted ${FILE_AWG_TOOLS}.apk
+    #apk add --allow-untrusted ${FILE_AWG_KMOD}.apk
+    #apk add --allow-untrusted ${FILE_AWG_TOOLS}.apk
     apk add --allow-untrusted ${FILE_AWG_PROTO}.apk
-    apk add --allow-untrusted ${FILE_AWG_LANG}.apk
+    #apk add --allow-untrusted ${FILE_AWG_LANG}.apk
     #apk add iptables
 fi
 
