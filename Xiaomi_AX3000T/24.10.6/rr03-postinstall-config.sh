@@ -91,7 +91,7 @@ set_https_dns_proxy() {
 }
 
 install_packages() {
-	vPACKAGES_RR="xray-core
+	vPACKAGES_RR="#xray-core
 sing-box-rr
 amneziawg-tools
 #atinout
@@ -316,7 +316,8 @@ set_ZB() {
 	echo "+---------------------+"
 	service zapret2 stop
 	sleep 3
-	sh <(wget -qO- https://raw.githubusercontent.com/kkkkCampbell/master/refs/heads/zbautoconf/zbautoconf_latest)
+	wget -q https://raw.githubusercontent.com/kkkkCampbell/master/refs/heads/zbautoconf/zbautoconf_latest
+	sh zbautoconf_latest
 }
 
 start_test() {
