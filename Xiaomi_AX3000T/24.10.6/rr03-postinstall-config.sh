@@ -24,14 +24,14 @@ is_rr() {
 set_banner() {
 	is_rr && return 0
 	local vETC_BANNER="/etc/banner"
-	local vFONT="ANSI Shadow" # 'Big' 'Big ASCII 12' 'Big Mono 9' 'Small Shadow' 'Banner3' 'Block' 'Doom'
+	#local vFONT="ANSI Shadow" # 'Big' 'Big ASCII 12' 'Big Mono 9' 'Small Shadow' 'Banner3' 'Block' 'Doom'
 	local vMODEL="$(dmesg | grep -i 'Machine model:' | awk -F: '{print $2}' | sed 's/ //')"
 	. /etc/os-release
 	echo "┌──────────┐"
 	echo "│ DETECTED │ ${vMODEL}"
 	echo "└──────────┘"
 	curl -s "https://tcpdata.com/ascii/${vDETECTED}?style=banner&border=true" | jq -r '.ascii'
-	curl -s -X POST "https://elysiatools.com/en/api/tools/ascii-art-generator" -d "text=OpenWrt&font=${vFONT}" | jq -r '.data.result' > ${vETC_BANNER}
+	curl -s "https://tcpdata.com/ascii/OpenWrt?style=box&border=true" | jq -r '.ascii' > ${vETC_BANNER}
 	echo " ${vMODEL} [ROUTERICH mod]" >> ${vETC_BANNER}
 	echo " -----------------------------------------------------" >> ${vETC_BANNER}
 	echo " ${NAME} ${VERSION}, ${BUILD_ID}" >> ${vETC_BANNER}
