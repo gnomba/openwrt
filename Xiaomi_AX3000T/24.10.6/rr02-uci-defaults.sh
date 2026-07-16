@@ -18,9 +18,9 @@ rr_mod() {
     echo 'RR-3.10.3' > /etc/routerich_release
     echo '# Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
-#sleep 5
-#echo 'routerich,ax3000' > /tmp/sysinfo/board_name
-#echo 'Routerich AX3000' > /tmp/sysinfo/model
+#echo routerich,ax3000 > /tmp/sysinfo/board_name
+#echo Routerich AX3000 > /tmp/sysinfo/model
+sleep 180
 for i in sing-box stubby doh-proxy dns-failsafe-proxy; do
 	/etc/init.d/${i} enable
 	/etc/init.d/${i} reload

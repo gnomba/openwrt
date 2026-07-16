@@ -311,13 +311,12 @@ set_awg() {
 }
 
 set_ZB() {
-	echo "+---------------------+"
-	echo "| Имя функции: $FUNCNAME |"
-	echo "+---------------------+"
-	service zapret2 stop
-	sleep 3
-	wget -q https://raw.githubusercontent.com/kkkkCampbell/master/refs/heads/zbautoconf/zbautoconf_latest
-	sh zbautoconf_latest
+	echo "+--------+"
+	echo "| $FUNCNAME |"
+	echo "+--------+"
+	opkg install --force-checksum --no-check-certificate https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/zeroblock_0.8.4-r116_aarch64_cortex-a53.ipk
+	opkg install --force-checksum --no-check-certificate https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/luci-app-zeroblock_0.8.4-r116_all.ipk
+	sh <(wget -qO- https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/sett_zb)
 }
 
 start_test() {

@@ -1,5 +1,9 @@
-# ZB 0.8.4-r104
+#!/bin/sh
+
+# ZB 0.8.4-r116
 # SB 1.13.14-rr-edition-2.5.0-r3
+
+settings_rr() {
 # ###  API v2  ### #
 uci set zeroblock.settings=settings
 uci set zeroblock.settings.log_level='warn'
@@ -42,15 +46,15 @@ uci set zeroblock.settings.schema_version='45'
 uci set zeroblock.settings.autoremove_static_lease_default_v1='1'
 uci set zeroblock.settings.subscription_ua_migrated_v2='1'
 uci set zeroblock.settings.subscription_update_interval='1h'
-uci set zeroblock.settings.whitelist_proxy='vless://cc822ee3-51ca-001e-846d-25ed535491e9@194.55.239.131:8443?type=raw&security=reality&sni=rutube.ru&fp=firefox&pbk=10rVZPoOUP1TlQviIAsQ_jAROX0fRQxH0C92nq_zGQc&sid=43dcff53849b81e6#%F0%9F%87%AB%F0%9F%87%AE%20Finland%20%5B%2ACIDR%5D%20t.me%2Frjsxrd'
-#vless://4392b776-41a2-4300-b545-a3d2724b605b@94.250.252.5:443?encryption=none&type=xhttp&security=reality&path=/static/js/main.js&extra=null&fp=firefox&sni=cdn.tracker.yandex.net&pbk=SRHaGdtnkRYMKRlJPAIlk3gXKNH9lEo_qCzF5BOBdB4&sid=cdb4e56c#%F0%9F%87%B7%F0%9F%87%BA%20Russia%20%5B%2ACIDR%5D
+uci set zeroblock.settings.whitelist_proxy='vless://4392b776-41a2-4300-b545-a3d2724b605b@94.250.252.5:443?encryption=none&type=xhttp&security=reality&path=/static/js/main.js&extra=null&fp=firefox&sni=cdn.tracker.yandex.net&pbk=SRHaGdtnkRYMKRlJPAIlk3gXKNH9lEo_qCzF5BOBdB4&sid=cdb4e56c#%F0%9F%87%B7%F0%9F%87%BA%20Russia%20%5B%2ACIDR%5D'
+#vless://cc822ee3-51ca-001e-846d-25ed535491e9@194.55.239.131:8443?type=raw&security=reality&sni=rutube.ru&fp=firefox&pbk=10rVZPoOUP1TlQviIAsQ_jAROX0fRQxH0C92nq_zGQc&sid=43dcff53849b81e6#%F0%9F%87%AB%F0%9F%87%AE%20Finland%20%5B%2ACIDR%5D%20t.me%2Frjsxrd
 uci set zeroblock.settings.catch_all_migrated_v1='1'
 uci set zeroblock.settings.log_config_proxies='1'
 uci set zeroblock.settings.log_disable_fakeip='1'
 uci set zeroblock.settings.log_proxy_orchestrator='1'
 uci set zeroblock.settings.log_subscription_parser='1'
 uci set zeroblock.settings.log_xray_generator='1'
-uci set zeroblock.settings.subscription_update_time='19:11'
+uci set zeroblock.settings.subscription_update_time="$(date -d "@$(( $(date +%s) + 120 ))" +"%H:%M")"
 uci set zeroblock.opera=section
 uci set zeroblock.opera.enabled='1'
 uci set zeroblock.opera.connection_type='proxy'
@@ -110,7 +114,7 @@ uci set zeroblock.all.single_proxy='0'
 uci set zeroblock.all.urltest_check_interval='3m'
 uci set zeroblock.all.urltest_tolerance='50'
 uci set zeroblock.all.enable_udp_over_tcp='0'
-uci set zeroblock.all.subscription_user_agent='happ'
+uci set zeroblock.all.subscription_user_agent='happ/3.26.3/Android'
 uci set zeroblock.all.subscription_device_model='CPH2653'
 uci set zeroblock.all.subscription_device_os='Android'
 uci set zeroblock.all.subscription_os_version='16'
@@ -130,8 +134,8 @@ uci set zeroblock.all.user_domains_text='2ip.io'
 uci set zeroblock.all.catch_all='0'
 uci set zeroblock.all.interrupt_exist_connections='0'
 uci set zeroblock.all.subscription_exclude_tags='🇷🇺'
-uci set zeroblock.all.subscription_url='https://raw.githubusercontent.com/whoahaow/rjsxrd/refs/heads/main/githubmirror/bypass/bypass-all.txt'
-uci set zeroblock.all.subscription_include_tags='🇧🇦 🇨🇭 🇨🇿 🇩🇪 🇪🇪 🇫🇮 🇬🇧 🇮🇹 🇱🇻 🇳🇱 🇵🇱 🇵🇹 🇸🇪 🇺🇸 🌐 🇳🇴'
+uci set zeroblock.all.subscription_url='https://raw.githubusercontent.com/aviamastersgh/vpn-free-russia/main/verified_configs.txt'
+uci set zeroblock.all.subscription_include_tags=''
 uci set zeroblock.all.community_lists='ai block geoblock discord games googleplay messengers meta music news porn shop socials tools video youtube cdn_akamai cdn_google cdn_linode'
 uci set zeroblock.auto_config=auto_config
 uci set zeroblock.auto_config.zapret2_auto_config='0'
@@ -206,13 +210,9 @@ uci set zeroblock.engine.global_exclude_mode='route'
 uci set zeroblock.engine.xray_fragment='0'
 uci set zeroblock.engine.source_network_interfaces='br-lan tailscale0'
 uci set zeroblock.engine.bootstrap_readiness_timeout='10'
-# --------------------------#
-uci commit zeroblock
-uci commit
-/etc/init.d/zeroblock reload
-/etc/init.d/sing-box reload
-# --------------------------#
-# --------------------------#
+}
+
+settings_non_rr() {
 # ###  API v1  ### #
 uci set zeroblock.settings=settings
 uci set zeroblock.settings.log_level='warn'
@@ -232,6 +232,7 @@ uci set zeroblock.settings.update_time='09:00'
 uci set zeroblock.settings.api='v1'
 uci set zeroblock.settings.enable_bad_interface_monitoring='0'
 uci set zeroblock.settings.download_lists_via_proxy='0'
+uci set zeroblock.settings.auto_fallback_two_stage='1'
 uci set zeroblock.settings.whitelist_probe_max='100'
 uci set zeroblock.settings.lists_failure_mode='degrade'
 uci set zeroblock.settings.timeout_singbox_check='60'
@@ -252,10 +253,6 @@ uci set zeroblock.settings.subscription_ua_migrated_v2='1'
 uci set zeroblock.settings.subscription_update_interval='1h'
 uci set zeroblock.settings.whitelist_bootstrap_max_attempts='10'
 uci set zeroblock.settings.health_opera='1'
-uci set zeroblock.settings.catch_all_migrated_v1='1'
-uci set zeroblock.settings.auto_fallback_two_stage='1'
-uci set zeroblock.settings.whitelist_proxy='vless://cc822ee3-51ca-001e-846d-25ed535491e9@194.55.239.131:8443?type=raw&security=reality&sni=rutube.ru&fp=firefox&pbk=10rVZPoOUP1TlQviIAsQ_jAROX0fRQxH0C92nq_zGQc&sid=43dcff53849b81e6#%F0%9F%87%AB%F0%9F%87%AE%20Finland%20%5B%2ACIDR%5D%20t.me%2Frjsxrd'
-#vless://4392b776-41a2-4300-b545-a3d2724b605b@94.250.252.5:443?encryption=none&type=xhttp&security=reality&path=/static/js/main.js&extra=null&fp=firefox&sni=cdn.tracker.yandex.net&pbk=SRHaGdtnkRYMKRlJPAIlk3gXKNH9lEo_qCzF5BOBdB4&sid=cdb4e56c#%F0%9F%87%B7%F0%9F%87%BA%20Russia%20%5B%2ACIDR%5D
 uci set zeroblock.settings.whitelist_bootstrap_dns_server='77.88.8.8'
 uci set zeroblock.settings.whitelist_bootstrap_dns_via_whitelist='1'
 uci set zeroblock.settings.log_config_proxies='1'
@@ -263,7 +260,10 @@ uci set zeroblock.settings.log_disable_fakeip='1'
 uci set zeroblock.settings.log_proxy_orchestrator='1'
 uci set zeroblock.settings.log_subscription_parser='1'
 uci set zeroblock.settings.log_xray_generator='1'
-uci set zeroblock.settings.subscription_update_time='19:11'
+uci set zeroblock.settings.catch_all_migrated_v1='1'
+uci set zeroblock.settings.whitelist_proxy='vless://4392b776-41a2-4300-b545-a3d2724b605b@94.250.252.5:443?encryption=none&type=xhttp&security=reality&path=/static/js/main.js&extra=null&fp=firefox&sni=cdn.tracker.yandex.net&pbk=SRHaGdtnkRYMKRlJPAIlk3gXKNH9lEo_qCzF5BOBdB4&sid=cdb4e56c#%F0%9F%87%B7%F0%9F%87%BA%20Russia%20%5B%2ACIDR%5D'
+#vless://cc822ee3-51ca-001e-846d-25ed535491e9@194.55.239.131:8443?type=raw&security=reality&sni=rutube.ru&fp=firefox&pbk=10rVZPoOUP1TlQviIAsQ_jAROX0fRQxH0C92nq_zGQc&sid=43dcff53849b81e6#%F0%9F%87%AB%F0%9F%87%AE%20Finland%20%5B%2ACIDR%5D%20t.me%2Frjsxrd
+uci set zeroblock.settings.subscription_update_time="$(date -d "@$(( $(date +%s) + 120 ))" +"%H:%M")"
 uci set zeroblock.opera=section
 uci set zeroblock.opera.enabled='1'
 uci set zeroblock.opera.connection_type='proxy'
@@ -323,7 +323,7 @@ uci set zeroblock.all.single_proxy='0'
 uci set zeroblock.all.urltest_check_interval='3m'
 uci set zeroblock.all.urltest_tolerance='50'
 uci set zeroblock.all.enable_udp_over_tcp='0'
-uci set zeroblock.all.subscription_user_agent='happ'
+uci set zeroblock.all.subscription_user_agent='happ/3.26.3/Android'
 uci set zeroblock.all.subscription_device_model='CPH2581'
 uci set zeroblock.all.subscription_device_os='Android'
 uci set zeroblock.all.subscription_os_version='16'
@@ -342,10 +342,9 @@ uci set zeroblock.all.user_domain_list_type='text'
 uci set zeroblock.all.user_domains_text='2ip.io'
 uci set zeroblock.all.catch_all='0'
 uci set zeroblock.all.interrupt_exist_connections='0'
-uci set zeroblock.all.subscription_url='https://raw.githubusercontent.com/whoahaow/rjsxrd/refs/heads/main/githubmirror/bypass/bypass-all.txt'
 uci set zeroblock.all.subscription_exclude_tags='🇷🇺'
-uci set zeroblock.all.subscription_include_tags='🇧🇦 🇨🇭 🇨🇿 🇩🇪 🇪🇪 🇫🇮 🇬🇧 🇮🇹 🇱🇻 🇳🇱 🇵🇱 🇵🇹 🇸🇪 🇺🇸 🌐 🇳🇴'
 uci set zeroblock.all.community_lists='block geoblock google_ai google_meet google_play hdrezka meta news porn roblox telegram tiktok twitter youtube'
+uci set zeroblock.all.subscription_url='https://raw.githubusercontent.com/aviamastersgh/vpn-free-russia/main/verified_configs.txt'
 uci set zeroblock.auto_config=auto_config
 uci set zeroblock.auto_config.opera_auto_config='1'
 uci set zeroblock.auto_config.awg_auto_config='1'
@@ -424,9 +423,35 @@ uci set zeroblock.engine.global_exclude_mode='route'
 uci set zeroblock.engine.xray_fragment='0'
 uci set zeroblock.engine.bootstrap_readiness_timeout='10'
 uci set zeroblock.engine.source_network_interfaces='br-lan tailscale0'
-# --------------------------#
+uci set zeroblock.engine.GOMEMLIMIT='0'
+}
+
+settings_commit(){
 uci commit zeroblock
 uci commit
+/etc/init.d/zeroblock restart
+sleep 3
 /etc/init.d/zeroblock reload
+sleep 3
 /etc/init.d/sing-box reload
-# --------------------------#
+}
+
+settings_detect(){
+dmesg | grep -i 'Machine model:' | awk -F: '{print $2}' | sed 's/ //'
+}
+
+if [[ "$(ubus call system board | jq -r .board_name | awk -F',' '{print $1}')" == "routerich" ]]; then
+	echo "┌──────────┐"
+	echo "│ DETECTED │ $(settings_detect) => API v2"
+	echo "└──────────┘ "
+    settings_rr
+else
+	echo "┌──────────┐"
+	echo "│ DETECTED │ $(settings_detect) => API v1"
+	echo "└──────────┘ "
+    settings_non_rr
+fi
+
+settings_commit
+
+exit 0
