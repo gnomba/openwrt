@@ -314,8 +314,8 @@ set_ZB() {
 	echo "+--------+"
 	echo "| $FUNCNAME |"
 	echo "+--------+"
-	opkg install --force-checksum --no-check-certificate https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/zeroblock_0.8.4-r116_aarch64_cortex-a53.ipk
-	opkg install --force-checksum --no-check-certificate https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/luci-app-zeroblock_0.8.4-r116_all.ipk
+	opkg install --force-checksum --no-check-certificate https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/zeroblock_0.8.4-r134_aarch64_cortex-a53.ipk
+	opkg install --force-checksum --no-check-certificate https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/luci-app-zeroblock_0.8.4-r134_all.ipk
 	sh <(wget -qO- https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/sett_zb)
 }
 

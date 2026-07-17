@@ -46,8 +46,7 @@ uci set zeroblock.settings.schema_version='45'
 uci set zeroblock.settings.autoremove_static_lease_default_v1='1'
 uci set zeroblock.settings.subscription_ua_migrated_v2='1'
 uci set zeroblock.settings.subscription_update_interval='1h'
-uci set zeroblock.settings.whitelist_proxy='vless://4392b776-41a2-4300-b545-a3d2724b605b@94.250.252.5:443?encryption=none&type=xhttp&security=reality&path=/static/js/main.js&extra=null&fp=firefox&sni=cdn.tracker.yandex.net&pbk=SRHaGdtnkRYMKRlJPAIlk3gXKNH9lEo_qCzF5BOBdB4&sid=cdb4e56c#%F0%9F%87%B7%F0%9F%87%BA%20Russia%20%5B%2ACIDR%5D'
-#vless://cc822ee3-51ca-001e-846d-25ed535491e9@194.55.239.131:8443?type=raw&security=reality&sni=rutube.ru&fp=firefox&pbk=10rVZPoOUP1TlQviIAsQ_jAROX0fRQxH0C92nq_zGQc&sid=43dcff53849b81e6#%F0%9F%87%AB%F0%9F%87%AE%20Finland%20%5B%2ACIDR%5D%20t.me%2Frjsxrd
+uci set zeroblock.settings.whitelist_proxy='vless://fc6f7fbf-5f5b-4759-bfab-30b279009b86@stats.pixelforge.pics:8443?flow=xtls-rprx-vision&encryption=none&security=reality&sni=hartfordmedia.cloud&fp=firefox&pbk=cynncQk7kKzEQaExg-FN7pMqFaZPSXEi_Ggy7AXXmVg&sid=3f8ad1&type=tcp&headerType=none#🇫🇷%20France%20🐸'
 uci set zeroblock.settings.catch_all_migrated_v1='1'
 uci set zeroblock.settings.log_config_proxies='1'
 uci set zeroblock.settings.log_disable_fakeip='1'
@@ -261,8 +260,7 @@ uci set zeroblock.settings.log_proxy_orchestrator='1'
 uci set zeroblock.settings.log_subscription_parser='1'
 uci set zeroblock.settings.log_xray_generator='1'
 uci set zeroblock.settings.catch_all_migrated_v1='1'
-uci set zeroblock.settings.whitelist_proxy='vless://4392b776-41a2-4300-b545-a3d2724b605b@94.250.252.5:443?encryption=none&type=xhttp&security=reality&path=/static/js/main.js&extra=null&fp=firefox&sni=cdn.tracker.yandex.net&pbk=SRHaGdtnkRYMKRlJPAIlk3gXKNH9lEo_qCzF5BOBdB4&sid=cdb4e56c#%F0%9F%87%B7%F0%9F%87%BA%20Russia%20%5B%2ACIDR%5D'
-#vless://cc822ee3-51ca-001e-846d-25ed535491e9@194.55.239.131:8443?type=raw&security=reality&sni=rutube.ru&fp=firefox&pbk=10rVZPoOUP1TlQviIAsQ_jAROX0fRQxH0C92nq_zGQc&sid=43dcff53849b81e6#%F0%9F%87%AB%F0%9F%87%AE%20Finland%20%5B%2ACIDR%5D%20t.me%2Frjsxrd
+uci set zeroblock.settings.whitelist_proxy='vless://fc6f7fbf-5f5b-4759-bfab-30b279009b86@stats.pixelforge.pics:8443?flow=xtls-rprx-vision&encryption=none&security=reality&sni=hartfordmedia.cloud&fp=firefox&pbk=cynncQk7kKzEQaExg-FN7pMqFaZPSXEi_Ggy7AXXmVg&sid=3f8ad1&type=tcp&headerType=none#🇫🇷%20France%20🐸'
 uci set zeroblock.settings.subscription_update_time="$(date -d "@$(( $(date +%s) + 120 ))" +"%H:%M")"
 uci set zeroblock.opera=section
 uci set zeroblock.opera.enabled='1'
