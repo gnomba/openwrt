@@ -92,7 +92,7 @@ set_https_dns_proxy() {
 
 install_packages() {
 	vPACKAGES_RR="#xray-core
-sing-box-rr
+#sing-box-rr
 amneziawg-tools
 #atinout
 #automodem
@@ -118,14 +118,14 @@ luci-app-log-viewer
 #luci-app-modeminfo
 #luci-app-smstools3
 luci-app-stubby
-luci-app-tailscale
+#luci-app-tailscale
 luci-app-urllogger
 #luci-app-ussd
 luci-app-wdoc
 luci-app-wdoc-singbox
 luci-app-wdoc-warp
-luci-app-wdoc-wg
-luci-app-wizard
+#luci-app-wdoc-wg
+#luci-app-wizard
 luci-app-zeroblock
 luci-i18n-access-control-ru
 luci-i18n-amneziawg-ru
@@ -139,11 +139,11 @@ luci-i18n-log-ru
 #luci-i18n-modeminfo-ru
 #luci-i18n-smstools3-ru
 luci-i18n-stubby-ru
-luci-i18n-tailscale-ru
+#luci-i18n-tailscale-ru
 #luci-i18n-ussd-ru
 luci-i18n-wdoc-singbox-ru
 luci-i18n-wdoc-warp-ru
-luci-i18n-wdoc-wg-ru
+#luci-i18n-wdoc-wg-ru
 luci-proto-amneziawg
 #luci-proto-xmm
 luci-theme-routerich
@@ -168,14 +168,14 @@ luci-theme-routerich
 #modeminfo-serial-yuge
 #modeminfo-serial-zte
 opera-proxy
-routerich-defaults
-routerich-diag
+#routerich-defaults
+#routerich-diag
 #smount
-tailscale-lite
+#tailscale-lite
 wdoc
 wdoc-singbox
 wdoc-warp
-wdoc-wg
+#wdoc-wg
 #xmm-modem
 #zeroblock"
 

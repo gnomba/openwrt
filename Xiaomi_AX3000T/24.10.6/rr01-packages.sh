@@ -492,6 +492,7 @@ wsdd2
 xl2tpd
 -xmm-modem
 -youtubeUnblock
+xray-core
 -zapret
 -zerotier-lite
 zlib
