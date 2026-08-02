@@ -318,9 +318,9 @@ set_ZB() {
 	echo "+--------+"
 	SB_RR_VER="1.13.14-rr-edition-2.5.3-r1"
 	opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/sing-box-rr_${SB_RR_VER}_aarch64_cortex-a53.ipk"
-	ZB_VER="0.8.4-r235"
+	ZB_VER="0.8.4-r247"
 	opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/zeroblock_${ZB_VER}_aarch64_cortex-a53.ipk"
-	opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/zeroblock-tg_${ZB_VER}_aarch64_cortex-a53.ipk"
+	is_rr && opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/zeroblock-tg_${ZB_VER}_aarch64_cortex-a53.ipk"
 	opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/luci-app-zeroblock_${ZB_VER}_all.ipk"
 	#sh <(wget -qO- https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/sett_zb)
 }
