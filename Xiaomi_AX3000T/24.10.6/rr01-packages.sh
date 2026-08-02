@@ -201,6 +201,7 @@ kmod-udptunnel6
 -kmod-usb-xhci-hcd
 -kmod-usb-xhci-mtk
 -kmod-usb3
+kmod-zram
 -ksmbd-avahi-service
 -ksmbd-rrplug
 -ksmbd-server
@@ -496,3 +497,4 @@ xray-core
 -zapret
 -zerotier-lite
 zlib
+zram-swap
