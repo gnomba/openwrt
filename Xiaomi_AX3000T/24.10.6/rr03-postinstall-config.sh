@@ -253,6 +253,8 @@ set_dns_services() {
 	uci commit wdoc
 	uci set wdoc-singbox.main.enabled='1'
 	uci commit wdoc-singbox
+	uci set wdoc-warp.main.enabled='1'
+	uci commit wdoc-warp
 	uci commit
 	# enable-restart dns services #
 	for i in sing-box stubby doh-proxy dns-failsafe-proxy dnsmasq; do
