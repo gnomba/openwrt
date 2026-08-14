@@ -316,6 +316,8 @@ set_ZB() {
 	echo "+--------+"
 	echo "| $FUNCNAME |"
 	echo "+--------+"
+	RRWS_VER="0.2.1-r22"
+	opkg install --force-checksum --no-check-certificate "https://github.com/dedikar/RR-WARP-Scanner/releases/download/v${RRWS_VER}/luci-app-rrws_${RRWS_VER}_all.ipk"
 	AWG_IMPORTER_VER="0.1.0-r21"
 	opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/amnezia-premium-importer_${AWG_IMPORTER_VER}_aarch64_cortex-a53.ipk"
 	SB_RR_VER="1.13.18-rr-edition-2.6.3-r1"
