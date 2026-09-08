@@ -320,12 +320,14 @@ set_ZB() {
 	#opkg install --force-checksum --no-check-certificate "https://github.com/dedikar/RR-WARP-Scanner/releases/download/v${RRWS_VER}/luci-app-rrws_${RRWS_VER}_all.ipk"
 	#AWG_IMPORTER_VER="0.1.0-r25"
 	#opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/amnezia-premium-importer_${AWG_IMPORTER_VER}_aarch64_cortex-a53.ipk"
-	SB_RR_VER="1.13.18-rr-edition-2.6.5-r1"
+	XRAY_VER="26.3.27-r1"
+	opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/xray-core_${XRAY_VER}_aarch64_cortex-a53.ipk"
+	SB_RR_VER="1.14.0-rr-edition-2.7.0-r1"
 	opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/sing-box-rr_${SB_RR_VER}_aarch64_cortex-a53.ipk"
-	ZB_VER="0.8.4-r415"
+	ZB_VER="0.8.5-r3"
 	opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/zeroblock_${ZB_VER}_aarch64_cortex-a53.ipk"
 	opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/luci-app-zeroblock_${ZB_VER}_all.ipk"
-	is_rr && opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/zeroblock-tg_${ZB_VER}_aarch64_cortex-a53.ipk"
+	is_rr && ZB_TG="0.8.4-r436"; opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/zeroblock-tg_${ZB_TG}_aarch64_cortex-a53.ipk"
 	#sh <(wget -qO- https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/sett_zb)
 }
 

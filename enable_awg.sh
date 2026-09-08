@@ -202,7 +202,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #uci set network.awg10.config_file='/etc/amneziawg/warp.conf'
-#uci commit network
+uci commit network
 
 ifup awg10
 
