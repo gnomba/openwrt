@@ -327,7 +327,7 @@ set_ZB() {
 	ZB_VER="0.8.5-r31"
 	opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/zeroblock_${ZB_VER}_aarch64_cortex-a53.ipk"
 	opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/luci-app-zeroblock_${ZB_VER}_all.ipk"
-	is_rr && ZB_TG="0.8.5-r8"; opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/zeroblock-tg_${ZB_TG}_aarch64_cortex-a53.ipk"
+	is_rr && ZB_TG="0.8.5-r31"; opkg install --force-checksum --no-check-certificate "https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/_zb/zeroblock-tg_${ZB_TG}_aarch64_cortex-a53.ipk"
 	#sh <(wget -qO- https://raw.githubusercontent.com/gnomba/openwrt/refs/heads/main/sett_zb)
 	#opkg update; opkg install zeroblock luci-app-zeroblock zeroblock-tg
 }
